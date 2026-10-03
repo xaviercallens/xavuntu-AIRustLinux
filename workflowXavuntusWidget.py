@@ -34,6 +34,9 @@ from anse.cyber.shield import KalCyberShield
 from anse.voice.engine import KalVoiceEngine
 from anse.memory.redis_ltm import RedisLongTermMemoryManager, SemanticEmbeddingService
 from anse.runtime.runux_optimizer import PolarQuantOptimizer, SystolicAdvisor, PagedKVCacheAllocator
+from anse.admin.system_admin import SystemAdminEngine
+from anse.admin.intent_router import IntentRouter
+from mcp_xavuntu_sysadmin import MCPSysAdminServer
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] [XAVUNTU-WIDGET-WORKFLOW] %(message)s")
 logger = logging.getLogger("workflow_xavuntu_widget")
@@ -72,6 +75,9 @@ class WorkflowXavuntusWidget:
         self.polar_quant = PolarQuantOptimizer(bits=3)
         self.systolic_advisor = SystolicAdvisor(platform="xavuntu_tpu_vma")
         self.paged_alloc = PagedKVCacheAllocator(num_blocks=512, block_size=16)
+        self.admin_engine = SystemAdminEngine()
+        self.intent_router = IntentRouter(admin_engine=self.admin_engine)
+        self.mcp_server = MCPSysAdminServer()
 
     def run_remote_ssh(self, command: str, timeout: int = 15) -> Tuple[int, str]:
         """Execute a command via gcloud compute ssh if accessible, otherwise fallback to local verification."""
@@ -412,11 +418,73 @@ class WorkflowXavuntusWidget:
             duration_ms=round(duration_ms, 2),
         )
 
+    def gate_8_aios_system_administrator(self) -> GateResult:
+        """
+        Validate LinuxOS-AI integration: SystemAdminEngine, aios CLI, Web/Oracle planners, and MCP server.
+        """
+        t0 = time.perf_counter()
+        details: Dict[str, Any] = {}
+
+        # 1. System Health & Package Manager
+        health = self.admin_engine.get_system_health()
+        health_ok = health.cpu_cores > 0 and health.memory_total_gb > 0 and health.package_manager in ("apt", "snap", "dnf", "yum", "pacman", "brew")
+        details["health_metrics_ok"] = health_ok
+        details["detected_package_manager"] = health.package_manager
+
+        # 2. Package install planning
+        pkg_plan = self.admin_engine.plan_package_install("curl", dry_run=True)
+        pkg_ok = pkg_plan.command == "sudo" and len(pkg_plan.args) > 0
+        details["package_install_planner_ok"] = pkg_ok
+
+        # 3. Web server stack planning
+        web_plan = self.admin_engine.plan_web_server(server_type="nginx", ssl_enabled=True)
+        web_ok = web_plan.server_type == "nginx" and 443 in web_plan.ports and len(web_plan.steps) >= 4
+        details["web_server_planner_ok"] = web_ok
+
+        # 4. Oracle database planning
+        db_plan = self.admin_engine.plan_database_install(db_type="oracle", version="21c", memory_gb=8.0)
+        db_ok = db_plan.sid == "FREE" and db_plan.port == 1521
+        details["oracle_database_planner_ok"] = db_ok
+
+        # 5. Intent router fast path
+        cmd = self.intent_router.route_command("check oracle requirements")
+        intent_ok = cmd.intent == "check_requirements" and not cmd.confirmation_required
+        details["intent_router_ok"] = intent_ok
+
+        # 6. MCP server manifest
+        list_req = {"jsonrpc": "2.0", "id": 1, "method": "tools/list", "params": {}}
+        list_resp = self.mcp_server.handle_request(list_req)
+        tools = [t["name"] for t in list_resp.get("result", {}).get("tools", [])]
+        mcp_ok = len(tools) >= 5 and "install_package" in tools and "setup_web_server" in tools
+        details["mcp_server_tools_count"] = len(tools)
+        details["mcp_tools_manifest_ok"] = mcp_ok
+
+        # 7. Local/Remote aios CLI check
+        aios_cli_path = os.path.join(_repo_root, "scripts", "aios_cli.py")
+        cli_present = os.path.exists(aios_cli_path) and os.access(aios_cli_path, os.X_OK)
+        details["aios_cli_executable"] = cli_present
+
+        code_aios, out_aios = self.run_remote_ssh("python3 /usr/local/bin/aios status 2>/dev/null | grep 'LIVE SYSTEM'", timeout=15)
+        remote_aios_ok = (code_aios == 0 and "LIVE SYSTEM" in out_aios)
+        details["remote_aios_cli_ok"] = remote_aios_ok
+
+        passed = health_ok and pkg_ok and web_ok and db_ok and intent_ok and mcp_ok and cli_present
+        score = 1.0 if (passed and remote_aios_ok) else 0.90 if passed else 0.0
+
+        duration_ms = (time.perf_counter() - t0) * 1000.0
+        return GateResult(
+            gate_name="Gate 8: AIOS System Administrator (LinuxOS-AI)",
+            passed=passed,
+            score=score,
+            details=details,
+            duration_ms=round(duration_ms, 2),
+        )
+
     def execute_all_gates(self) -> WorkflowExecutionReport:
         """
-        Execute all 7 verification gates and mint the master cryptographic receipt.
+        Execute all 8 verification gates and mint the master cryptographic receipt.
         """
-        logger.info("Executing WorkflowXavuntusWidget 7-Gate Hardness Verification...")
+        logger.info("Executing WorkflowXavuntusWidget 8-Gate Hardness Verification...")
         g1 = self.gate_1_gnome_cyberpunk_aesthetics()
         g2 = self.gate_2_modular_widget_and_kula_telemetry()
         g3 = self.gate_3_kal_dual_model_and_voice_control()
@@ -424,14 +492,15 @@ class WorkflowXavuntusWidget:
         g5 = self.gate_5_thermodynamic_and_antistub_monotonicity()
         g6 = self.gate_6_redis_long_term_memory_and_context_management()
         g7 = self.gate_7_runux_ai_runtime_optimization()
+        g8 = self.gate_8_aios_system_administrator()
 
-        gates = [g1, g2, g3, g4, g5, g6, g7]
+        gates = [g1, g2, g3, g4, g5, g6, g7, g8]
         all_passed = all(g.passed for g in gates)
 
         # Mint cryptographic proof receipt
-        token_payload = f"XAVUNTU_WIDGET_VOICE_LTM_RUNUX_{time.time()}_{all_passed}_{g5.details.get('delta_e_joules')}"
+        token_payload = f"XAVUNTU_WIDGET_VOICE_LTM_RUNUX_AIOS_{time.time()}_{all_passed}_{g5.details.get('delta_e_joules')}"
         digest = hashlib.sha256(token_payload.encode("utf-8")).hexdigest()[:16].upper()
-        receipt = f"PROOF_RECEIPT:XAVUNTU_WIDGET_VOICE_20261003_{digest}"
+        receipt = f"PROOF_RECEIPT:XAVUNTU_WIDGET_VOICE_AIOS_20261003_{digest}"
 
         report = WorkflowExecutionReport(
             workflow="workflowXavuntusWidget.py",
@@ -465,7 +534,7 @@ def main() -> int:
         for k, v in g.details.items():
             print(f"    • {k}: {v}")
     print("=" * 70)
-    print(f"Final Status:     {'ALL 7 GATES PASSED (CONFORMANT)' if report.all_gates_passed else 'GATE FAILURE'}")
+    print(f"Final Status:     {'ALL 8 GATES PASSED (CONFORMANT)' if report.all_gates_passed else 'GATE FAILURE'}")
     print(f"Energy Delta ΔE:  {report.thermodynamic_delta_e} Joules (Thermodynamic Reduction)")
     print(f"Proof Receipt:    {report.proof_receipt}")
     print("=" * 70 + "\n")

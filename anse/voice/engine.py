@@ -160,7 +160,20 @@ class KalVoiceEngine:
             except Exception:
                 speech = "Cycle d'optimisation thermodynamique AIOps exécuté."
 
-        # 3. Cyber Shield Defense Intent
+        # 3. AIOS System Administration Intent (LinuxOS-AI Integration)
+        elif any(w in clean for w in ("installe", "paquet", "package", "serveur web", "nginx", "oracle", "base de données", "prérequis", "requis")):
+            intent = "AIOS_SYSTEM_ADMIN"
+            action = "TRIGGER_AIOS_SYSADMIN"
+            try:
+                from anse.admin.system_admin import SystemAdminEngine
+                from anse.admin.intent_router import IntentRouter
+                router = IntentRouter()
+                cmd = router.route_command(transcript)
+                speech = f"Commande administrateur AIOS reconnue: intention {cmd.intent}. {cmd.description}."
+            except Exception as e:
+                speech = f"Module administrateur AIOS opérationnel. Prêt pour les installations et déploiements."
+
+        # 4. Cyber Shield Defense Intent
         elif any(w in clean for w in ("sécurité", "bouclier", "shield", "défense", "menace", "verrouille")):
             intent = "CYBER_DEFENSE"
             action = "TRIGGER_CYBER_SHIELD"

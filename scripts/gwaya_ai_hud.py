@@ -40,6 +40,8 @@ from anse.cyber.shield import KalCyberShield, SecurityTelemetry
 from anse.voice.engine import KalVoiceEngine
 from anse.memory.redis_ltm import RedisLongTermMemoryManager
 from anse.runtime.runux_optimizer import RunuXOptimizer
+from anse.admin.system_admin import SystemAdminEngine
+from anse.admin.intent_router import IntentRouter
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] [GWAYA-HUD] %(message)s")
 logger = logging.getLogger("gwaya_hud")
@@ -188,6 +190,8 @@ class GwayaAIHUD(Gtk.Window):
         self.voice_engine = KalVoiceEngine()
         self.redis_ltm = RedisLongTermMemoryManager()
         self.runux_opt = RunuXOptimizer(platform="xavuntu_tpu_vma")
+        self.admin_engine = SystemAdminEngine()
+        self.intent_router = IntentRouter(admin_engine=self.admin_engine)
         self.selected_model = "gwaya-qwen:14b-t4"
 
         # Load Cyberpunk Neon CSS
@@ -425,7 +429,42 @@ class GwayaAIHUD(Gtk.Window):
         voice_card.pack_start(voice_ctrl_box, False, False, 0)
         main_box.pack_start(voice_card, False, False, 0)
 
-        # 7. Quick Action Prompts
+        # 9. AIOS System Administrator Card (LinuxOS-AI Integration)
+        aios_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        aios_card.get_style_context().add_class("hud-card")
+        aios_hdr = Gtk.Label(label="[ 9. ADMIN SYSTÈME AIOS (LINUXOS-AI) ]")
+        aios_hdr.set_xalign(0.0)
+        aios_hdr.get_style_context().add_class("hud-section-header")
+        aios_card.pack_start(aios_hdr, False, False, 0)
+
+        self.lbl_aios_admin_status = Gtk.Label(label="Admin AIOS: ACTIF // Gestionnaire: auto // Web/DB: Prêt")
+        self.lbl_aios_admin_status.set_xalign(0.0)
+        aios_card.pack_start(self.lbl_aios_admin_status, False, False, 0)
+
+        aios_grid = Gtk.Grid()
+        aios_grid.set_column_spacing(6)
+        aios_grid.set_row_spacing(6)
+
+        btn_aios_oracle = Gtk.Button(label="[ORACLE] Prérequis")
+        btn_aios_oracle.connect("clicked", lambda b: self.trigger_aios_check("oracle"))
+        aios_grid.attach(btn_aios_oracle, 0, 0, 1, 1)
+
+        btn_aios_web = Gtk.Button(label="[WEB] Stack Nginx")
+        btn_aios_web.connect("clicked", lambda b: self.trigger_aios_web())
+        aios_grid.attach(btn_aios_web, 1, 0, 1, 1)
+
+        btn_aios_diag = Gtk.Button(label="[DIAG] Goulots Perf")
+        btn_aios_diag.connect("clicked", lambda b: self.trigger_aios_diag())
+        aios_grid.attach(btn_aios_diag, 0, 1, 1, 1)
+
+        btn_aios_clean = Gtk.Button(label="[NETTOYAGE] Caches")
+        btn_aios_clean.connect("clicked", lambda b: self.trigger_aios_clean())
+        aios_grid.attach(btn_aios_clean, 1, 1, 1, 1)
+
+        aios_card.pack_start(aios_grid, False, False, 0)
+        main_box.pack_start(aios_card, False, False, 0)
+
+        # 10. Quick Action Prompts
         btn_hdr = Gtk.Label(label="[ RACCOURCIS DE RAISONNEMENT GWAYA ]")
         btn_hdr.set_xalign(0.0)
         btn_hdr.get_style_context().add_class("hud-section-header")
@@ -678,6 +717,16 @@ class GwayaAIHUD(Gtk.Window):
         except Exception as e:
             logger.debug(f"RunuX telemetry error: {e}")
 
+        # 8. AIOS System Administrator Telemetry (LinuxOS-AI Integration)
+        try:
+            h = self.admin_engine.get_system_health()
+            self.lbl_aios_admin_status.set_text(
+                f"Admin AIOS: ACTIF (Gestionnaire: {h.package_manager}) // "
+                f"Services: {h.services_running}/{h.services_total} // Sécurité: {h.security_status.upper()}"
+            )
+        except Exception as e:
+            logger.debug(f"AIOS telemetry error: {e}")
+
         return True
 
     def trigger_cyber_lockdown(self):
@@ -759,6 +808,49 @@ class GwayaAIHUD(Gtk.Window):
                 log_lines.append(f"Diagnostic complété: {ex}")
 
             GLib.idle_add(self.append_log, "\n".join(log_lines))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def trigger_aios_check(self, software: str):
+        self.append_log(f"\n[AIOS ADMIN] > 🔍 Vérification des prérequis pour '{software.upper()}'...")
+
+        def worker():
+            rep = self.admin_engine.check_requirements(software, detailed=True)
+            GLib.idle_add(self.append_log, f"[AIOS PRÉREQUIS]\n{rep.detailed_text}\n")
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def trigger_aios_web(self):
+        self.append_log("\n[AIOS ADMIN] > 🌐 Génération du plan de déploiement NGINX + SSL...")
+
+        def worker():
+            plan = self.admin_engine.plan_web_server(server_type="nginx", ssl_enabled=True, domain="localhost")
+            lines = [f"[AIOS WEB SERVER]\n{plan.summary_text}\nÉtapes:"]
+            for s in plan.steps:
+                lines.append(f"  {s}")
+            GLib.idle_add(self.append_log, "\n".join(lines) + "\n")
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def trigger_aios_diag(self):
+        self.append_log("\n[AIOS ADMIN] > ⚡ Diagnostic des performances et goulots d'étranglement...")
+
+        def worker():
+            diag = self.admin_engine.analyze_performance()
+            GLib.idle_add(self.append_log, f"[AIOS DIAGNOSTIC]\n{diag['summary']}\n")
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def trigger_aios_clean(self):
+        self.append_log("\n[AIOS ADMIN] > 🧹 Purge des caches et journaux système...")
+
+        def worker():
+            res = self.admin_engine.clean_system(aggressive=False)
+            lines = [f"[AIOS NETTOYAGE] ✓ {res['message']}"]
+            for a in res.get("actions", []):
+                lines.append(f"  • {a}")
+            GLib.idle_add(self.append_log, "\n".join(lines) + "\n")
+            GLib.idle_add(self.update_telemetry)
 
         threading.Thread(target=worker, daemon=True).start()
 
