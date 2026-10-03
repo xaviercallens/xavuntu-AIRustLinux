@@ -1,0 +1,6 @@
+.git
+.gitignore
+target/
+examples/demo_kernel/target/
+benchmarks/target/
+*.log

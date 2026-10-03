@@ -1,0 +1,9 @@
+[package]
+name = "runux_riscv64"
+version = "0.1.0"
+edition = "2021"
+description = "RunuX RISC-V 64-bit architecture support layer (SpacemiT K1 / QEMU virt)"
+license = "MIT"
+
+[dependencies]
+kernel_types = { path = "../../crates/kernel_types" }

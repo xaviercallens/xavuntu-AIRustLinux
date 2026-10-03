@@ -1,0 +1,208 @@
+{
+  "metrics": {
+    "total_modules": 8,
+    "c_success_count": 0,
+    "rust_success_count": 0,
+    "c_avg_compile_time_ms": 0,
+    "rust_avg_compile_time_ms": 0,
+    "c_avg_binary_size_bytes": 0,
+    "rust_avg_binary_size_bytes": 0,
+    "translation_accuracy": 0.0,
+    "performance_ratio": 0,
+    "size_ratio": 0,
+    "error_reduction": 100.0
+  },
+  "comparisons": [
+    {
+      "module": "netfilter",
+      "c": null,
+      "rust": {
+        "module_name": "netfilter",
+        "language": "Rust",
+        "success": false,
+        "error_count": 39,
+        "warning_count": 3,
+        "compilation_time_ms": 531.9433212280273,
+        "binary_size_bytes": 0,
+        "errors": [
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0423]: expected value, found struct `nf_ipv6_ops`",
+          "error[E0423]: expected value, found struct `nf_ipv6_ops`",
+          "error[E0308]: mismatched types",
+          "error[E0425]: cannot find function `ip6_dst_idev` in this scope",
+          "error[E0308]: mismatched types",
+          "error[E0609]: no field `flags` on type `*mut c_void`"
+        ]
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    },
+    {
+      "module": "af_inet",
+      "c": null,
+      "rust": {
+        "module_name": "af_inet",
+        "language": "Rust",
+        "success": false,
+        "error_count": 4,
+        "warning_count": 0,
+        "compilation_time_ms": 110.07213592529297,
+        "binary_size_bytes": 0,
+        "errors": [
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment"
+        ]
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    },
+    {
+      "module": "fib_trie",
+      "c": null,
+      "rust": {
+        "module_name": "fib_trie",
+        "language": "Rust",
+        "success": false,
+        "error_count": 13,
+        "warning_count": 16,
+        "compilation_time_ms": 183.96902084350586,
+        "binary_size_bytes": 0,
+        "errors": [
+          "error[E0710]: unknown tool name `clang` found in scoped lint: `clang::too_many_arguments`",
+          "error[E0308]: mismatched types",
+          "error[E0599]: no function or associated item named `kv` found for struct `tnode` in the current scope",
+          "error[E0599]: no function or associated item named `kv` found for struct `tnode` in the current scope",
+          "error[E0599]: no function or associated item named `kv` found for struct `tnode` in the current scope",
+          "error[E0599]: no function or associated item named `kv` found for struct `tnode` in the current scope",
+          "error[E0606]: casting `&u8` as `*mut key_vector` is invalid",
+          "error[E0599]: no function or associated item named `rcu` found for struct `tnode` in the current scope",
+          "error[E0599]: no function or associated item named `rcu` found for struct `tnode` in the current scope",
+          "error[E0433]: cannot find type `Box` in this scope"
+        ]
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    },
+    {
+      "module": "udp",
+      "c": null,
+      "rust": {
+        "module_name": "udp",
+        "language": "Rust",
+        "success": false,
+        "error_count": 0,
+        "warning_count": 0,
+        "compilation_time_ms": 92.87905693054199,
+        "binary_size_bytes": 0,
+        "errors": []
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    },
+    {
+      "module": "tcp",
+      "c": null,
+      "rust": {
+        "module_name": "tcp",
+        "language": "Rust",
+        "success": false,
+        "error_count": 0,
+        "warning_count": 0,
+        "compilation_time_ms": 54.39424514770508,
+        "binary_size_bytes": 0,
+        "errors": []
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    },
+    {
+      "module": "route",
+      "c": null,
+      "rust": {
+        "module_name": "route",
+        "language": "Rust",
+        "success": false,
+        "error_count": 10,
+        "warning_count": 7,
+        "compilation_time_ms": 105.72314262390137,
+        "binary_size_bytes": 0,
+        "errors": [
+          "error[E0710]: unknown tool name `clang` found in scoped lint: `clang::missing_docs_in_private_items`",
+          "error[E0425]: cannot find value `rt6_uncached_list` in this scope",
+          "error[E0425]: cannot find function, tuple struct or tuple variant `INIT_LIST_HEAD` in this scope",
+          "error[E0308]: mismatched types",
+          "error[E0308]: mismatched types",
+          "error[E0425]: cannot find function `per_cpu_ptr` in this scope",
+          "error[E0308]: mismatched types",
+          "error[E0308]: mismatched types",
+          "error[E0308]: mismatched types",
+          "error[E0609]: no field `ipv6` on type `c_void`"
+        ]
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    },
+    {
+      "module": "arp",
+      "c": null,
+      "rust": {
+        "module_name": "arp",
+        "language": "Rust",
+        "success": false,
+        "error_count": 4,
+        "warning_count": 0,
+        "compilation_time_ms": 96.40693664550781,
+        "binary_size_bytes": 0,
+        "errors": [
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment"
+        ]
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    },
+    {
+      "module": "core",
+      "c": null,
+      "rust": {
+        "module_name": "core",
+        "language": "Rust",
+        "success": false,
+        "error_count": 24,
+        "warning_count": 5,
+        "compilation_time_ms": 128.13806533813477,
+        "binary_size_bytes": 0,
+        "errors": [
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0753]: expected outer doc comment",
+          "error[E0432]: unresolved import `core::ffi::size_t`",
+          "error[E0425]: cannot find value `orig_ops` in this scope",
+          "error[E0425]: cannot find value `orig_ops` in this scope",
+          "error[E0425]: cannot find value `orig_ops` in this scope",
+          "error[E0425]: cannot find value `orig_ops` in this scope",
+          "error[E0423]: expected value, found struct `nf_hook_entries_rcu_head`"
+        ]
+      },
+      "translation_quality": "needs_fixes",
+      "speedup": null,
+      "size_change_percent": null
+    }
+  ],
+  "timestamp": "2026-05-17T12:05:39.059403"
+}

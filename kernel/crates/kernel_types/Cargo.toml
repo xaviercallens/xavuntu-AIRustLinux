@@ -1,0 +1,12 @@
+[package]
+name = "kernel_types"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+builtin = { path = "../builtin", optional = true }
+builtin_macros = { path = "../builtin_macros", optional = true }
+
+[features]
+default = []
+verus = ["dep:builtin", "dep:builtin_macros"] # Enables Verus symbolic execution parsing

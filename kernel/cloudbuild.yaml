@@ -1,0 +1,41 @@
+steps:
+# 1. Enforce Rust Zero-Cost & Pedantic Standards
+- name: 'rustlang/rust:nightly'
+  id: 'rust-clippy-check'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      rustup component add clippy
+      cargo check --workspace
+      cargo clippy --workspace -- -D clippy::all -D clippy::pedantic
+
+# 2. Build and Execute the baremetal QEMU Harness
+- name: 'ubuntu'
+  id: 'qemu-integration'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      apt-get update && apt-get install -y qemu-system-x86 curl
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      source $HOME/.cargo/env
+      rustup default nightly
+      bash scripts/run_qemu_harness.sh --ci
+
+# 3. Formally Verify Mathematical Axioms in Lean 4
+- name: 'ubuntu'
+  id: 'lean4-lake-build'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      apt-get update && apt-get install -y curl git
+      curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+      source $HOME/.elan/env
+      cd specs/lean4
+      lake build
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY

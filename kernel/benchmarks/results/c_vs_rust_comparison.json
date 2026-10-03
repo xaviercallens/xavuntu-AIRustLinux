@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-05-21 13:29:34",
+  "results": [
+    {
+      "language": "C",
+      "benchmark": "CRC32 (1M \u00d7 4KB)",
+      "compiler_flags": "-O3 -march=native",
+      "binary_size_bytes": 33792,
+      "iterations": 1000000,
+      "times_seconds": [
+        10.43001,
+        10.946778,
+        10.452077,
+        10.13481,
+        10.126659
+      ],
+      "median_seconds": 10.43001,
+      "min_seconds": 10.126659
+    },
+    {
+      "language": "Rust",
+      "benchmark": "CRC32 (1M \u00d7 4KB)",
+      "compiler_flags": "-C opt-level=3 -C lto=fat -C codegen-units=1",
+      "binary_size_bytes": 319264,
+      "iterations": 1000000,
+      "times_seconds": [
+        10.169557,
+        10.560374,
+        9.936886,
+        9.930794,
+        9.890206
+      ],
+      "median_seconds": 9.936886,
+      "min_seconds": 9.890206
+    }
+  ]
+}

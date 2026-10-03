@@ -1,0 +1,34 @@
+{
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "title": "Claims vs. Evidence: A Measured Audit of an AI-Assisted Rust Kernel and an Oracle-Gated Workflow for LLM Proof Completion",
+  "creators": [
+    {
+      "name": "Callens, Xavier",
+      "affiliation": "Independent Researcher"
+    }
+  ],
+  "description": "<p>Large language model (LLM) agents can now generate operating-system code, formal specifications, benchmark reports, and papers faster than a human can check them. We report what happened when we measured one such artifact against its own claims. RunuX is a Rust reimplementation of Linux kernel subsystems with Lean 4 specifications, developed largely with AI assistance. Its documentation claimed 297 translated modules, zero compiler warnings, and zero sorry tactics across twelve verification phases. Static measurement at a fixed commit found 316 crates, of which 141 are placeholders of at most 25 lines; zero warnings achieved by blanket lint suppression in 284 crates; and 249 open sorry obligations with 138 axioms across 36 Lean modules. The project's own verification script checked only 20 of the 36 modules. Of the five research papers in the repository, none survived a reproducibility check intact: four were quarantined, along with an unsubstantiated peer-review report, and the fifth was corrected in place.</p><p>We then built a static metrics ratchet and an oracle-gated, two-tier LLM workflow for closing proof obligations. The workflow checks every edit with a Lean type-check, a hash of the theorem statement to reject silent weakening, and a diff scan for new axioms or sorry. On a 12-obligation pilot it closed 4 obligations with independently re-verified proofs. It also identified 2 obligations as false as stated, which we then confirmed with machine-checked proofs of their negations. The remaining 6 stayed open. The pilot also exposed a failure mode that the workflow's design had not anticipated: a fast-tier agent silently committed six forbidden axioms and omitted them from its own structured report. We argue that agent self-reports must be treated as untrusted input and that the verifying oracle must run outside the agent's control.</p><p><em>AI-assistance disclosure:</em> the audit, tooling, and manuscript were produced with AI assistance (Anthropic Claude models) under the author's direction; the author takes responsibility for the content. Every reported figure is backed by a script, data file, or Lean proof in the accompanying repository.</p>",
+  "keywords": [
+    "formal verification",
+    "Lean 4",
+    "Rust",
+    "LLM agents",
+    "software auditing",
+    "reproducibility",
+    "AI-assisted proof"
+  ],
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "prereserve_doi": true,
+  "version": "v11.3.1",
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/xaviercallens/rust-linux-mini-kernel/tree/v11.3.1",
+      "relation": "isSupplementedBy",
+      "resource_type": "software"
+    }
+  ],
+  "notes": "Experience report / preprint. Supporting data: docs/roadmap/metrics/metrics.baseline.json (baseline metrics at commit 041622e), docs/roadmap/units_status.csv (pilot outcomes), specs/lean4/MVK/Audit/SpecDefects.lean (machine-checked specification defects)."
+}

@@ -1,0 +1,103 @@
+{
+  "ownership_map": {
+    "std::vector<Flight>": "Vec<Flight>",
+    "std::vector<Fare>": "Vec<Fare>",
+    "static std::vector<Flight> flights_": "static FLIGHTS: OnceLock<Mutex<Vec<Flight>>>",
+    "static std::vector<Fare> fares_": "static FARES: OnceLock<Mutex<Vec<Fare>>>",
+    "SearchRequest": "&SearchRequest",
+    "Flight": "Flight",
+    "Fare": "Fare",
+    "LogicalEntity": "LogicalEntity"
+  },
+  "type_map": {
+    "std::string": "String",
+    "std::vector<Flight>": "Vec<Flight>",
+    "std::vector<Fare>": "Vec<Fare>",
+    "std::set<std::string>": "HashSet<String>",
+    "std::chrono::milliseconds": "Duration",
+    "std::thread::sleep_for": "thread::sleep"
+  },
+  "error_map": {
+    "bool DataLoader::init(const std::string& dataFile)": "Result<(), Box<dyn Error>>",
+    "bool DataLoader::loadFromFile(const std::string& filename)": "Result<(), Box<dyn Error>>",
+    "std::exception caught during price parsing": "Result<(), Box<dyn Error>>"
+  },
+  "lifetime_annotations": [
+    "&SearchRequest req in filter_flights: 'req must live long enough to borrow flights",
+    "&SearchRequest req in filter_fares: 'req must live long enough to borrow fares"
+  ],
+  "trait_hierarchy": [
+    {
+      "name": "DataLoader",
+      "methods": [
+        "init",
+        "load_data",
+        "is_initialized",
+        "get_load_count",
+        "reset_load_count",
+        "get_available_routes",
+        "get_dataset_summary",
+        "load_from_file",
+        "filter_flights",
+        "filter_fares",
+        "validate_data_consistency"
+      ],
+      "supertraits": [
+        "Send",
+        "Sync"
+      ]
+    }
+  ],
+  "module_layout": {
+    "modules": {
+      "data_loader": [
+        "DataLoader struct",
+        "init method",
+        "load_data method",
+        "is_initialized method",
+        "get_load_count method",
+        "reset_load_count method",
+        "get_available_routes method",
+        "get_dataset_summary method",
+        "load_from_file method",
+        "filter_flights method",
+        "filter_fares method",
+        "validate_data_consistency method"
+      ],
+      "dataset_builder": [
+        "DatasetBuilder struct",
+        "create_sample_dataset method",
+        "add_flights_for_route method",
+        "add_fares_for_route method"
+      ]
+    },
+    "reexports": [
+      "pub use Flight;",
+      "pub use Fare;",
+      "pub use LogicalEntity;",
+      "pub use SearchRequest;"
+    ]
+  },
+  "unsafe_justifications": [
+    "No unsafe code needed - Rust's type system ensures safety through ownership and lifetimes"
+  ],
+  "crate_dependencies": [
+    "lazy_static",
+    "serde",
+    "chrono",
+    "thread",
+    "sync",
+    "collections",
+    "log",
+    "anyhow",
+    "Mutex",
+    "OnceLock",
+    "Result",
+    "Box<dyn Error>",
+    "Vec",
+    "String",
+    "HashSet",
+    "Duration"
+  ],
+  "thinking_trace": "### Step-by-Step Migration Plan\n\n1. **Ownership Graph Analysis**:\n   - C++ uses raw vectors (`std::vector`) for flights and fares, managed via static members.\n   - Rust will use `Vec` for owned data and `Arc<Mutex<Vec>>` for thread-safe access to static state.\n\n2. **Lifetime Dependencies**:\n   - SearchRequest references are passed to filter functions.\n   - Filter functions return Vec<Flight> and Vec<Fare> that borrow data from static state.\n\n3. **Concurrency Safety**:\n   - Shared static state (FLIGHTS, FARES) will be protected with `Arc<Mutex<Vec>>`.\n   - Use `OnceLock` for one-time initialization of static data.\n\n4. **Error Propagation**:\n   - Convert C++ return codes (bool) to Rust `Result`.\n   - Use `thiserror` to create a custom error enum for error chaining.\n\n5. **Module Boundary Design**:\n   - Split into `data_loader` and `dataset_builder` modules.\n   - Re-export types like `Flight`, `Fare`, and `LogicalEntity`.\n\n---\n\n```yaml\nPLAN_START\nownership_map:\n  \"std::vector<Flight>\": \"Vec<Flight>\"\n  \"std::vector<Fare>\": \"Vec<Fare>\"\n  \"static std::vector<Flight> flights_\": \"static FLIGHTS: OnceLock<Mutex<Vec<Flight>>>\"\n  \"static std::vector<Fare> fares_\": \"static FARES: OnceLock<Mutex<Vec<Fare>>>\"\n  \"SearchRequest\": \"&SearchRequest\"\n  \"Flight\": \"Flight\"\n  \"Fare\": \"Fare\"\n  \"LogicalEntity\": \"LogicalEntity\"\n\ntype_map:\n  \"std::string\": \"String\"\n  \"std::vector<Flight>\": \"Vec<Flight>\"\n  \"std::vector<Fare>\": \"Vec<Fare>\"\n  \"std::set<std::string>\": \"HashSet<String>\"\n  \"std::chrono::milliseconds\": \"Duration\"\n  \"std::thread::sleep_for\": \"thread::sleep\"\n\nerror_map:\n  \"bool DataLoader::init(const std::string& dataFile)\": \"Result<(), Box<dyn Error>>\"\n  \"bool DataLoader::loadFromFile(const std::string& filename)\": \"Result<(), Box<dyn Error>>\"\n  \"std::exception caught during price parsing\": \"Result<(), Box<dyn Error>>\"\n\nlifetime_annotations:\n  - \"&SearchRequest req in filter_flights: 'req must live long enough to borrow flights\"\n  - \"&SearchRequest req in filter_fares: 'req must live long enough to borrow fares\"\n\ntrait_hierarchy:\n  - name: \"DataLoader\"\n    methods: [\"init\", \"load_data\", \"is_initialized\", \"get_load_count\", \"reset_load_count\", \"get_available_routes\", \"get_dataset_summary\", \"load_from_file\", \"filter_flights\", \"filter_fares\", \"validate_data_consistency\"]\n    supertraits: [\"Send\", \"Sync\"]\n\nmodule_layout:\n  modules:\n    \"data_loader\":\n      - \"DataLoader struct\"\n      - \"init method\"\n      - \"load_data method\"\n      - \"is_initialized method\"\n      - \"get_load_count method\"\n      - \"reset_load_count method\"\n      - \"get_available_routes method\"\n      - \"get_dataset_summary method\"\n      - \"load_from_file method\"\n      - \"filter_flights method\"\n      - \"filter_fares method\"\n      - \"validate_data_consistency method\"\n    \"dataset_builder\":\n      - \"DatasetBuilder struct\"\n      - \"create_sample_dataset method\"\n      - \"add_flights_for_route method\"\n      - \"add_fares_for_route method\"\n  reexports:\n    - \"pub use Flight;\"\n    - \"pub use Fare;\"\n    - \"pub use LogicalEntity;\"\n    - \"pub use SearchRequest;\"\n\nunsafe_justifications:\n  - \"No unsafe code needed - Rust's type system ensures safety through ownership and lifetimes\"\n\ncrate_dependencies:\n  - \"lazy_static\"\n  - \"serde\"\n  - \"chrono\"\n  - \"thread\"\n  - \"sync\"\n  - \"collections\"\n  - \"log\"\n  - \"anyhow\"\n  - \"Mutex\"\n  - \"OnceLock\"\n  - \"Result\"\n  - \"Box<dyn Error>\"\n  - \"Vec\"\n  - \"String\"\n  - \"HashSet\"\n  - \"Duration\"\nPLAN_END\n```"
+}

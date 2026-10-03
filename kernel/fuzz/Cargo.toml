@@ -1,0 +1,26 @@
+[package]
+name = "rust-linux-mini-kernel-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+kernel_types = { path = "../crates/kernel_types" }
+
+[[bin]]
+name = "fuzz_packet"
+path = "fuzz_targets/fuzz_packet.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "fuzz_routing"
+path = "fuzz_targets/fuzz_routing.rs"
+test = false
+doc = false
+
+[workspace]

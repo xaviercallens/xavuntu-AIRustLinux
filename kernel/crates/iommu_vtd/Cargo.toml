@@ -1,0 +1,11 @@
+[package]
+name = "iommu_vtd"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+gpu_types = { path = "../gpu_types" }
+
+[lib]
+crate-type = ["rlib"]

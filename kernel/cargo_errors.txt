@@ -1,0 +1,1880 @@
+    Checking ip6mr v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/ip6mr)
+    Checking nf_conntrack_tftp v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/nf_conntrack_tftp)
+    Checking route v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/route)
+    Checking cipso_ipv4 v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/cipso_ipv4)
+    Checking fib6_notifier v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/fib6_notifier)
+    Checking inet6_connection_sock v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/inet6_connection_sock)
+    Checking esp4 v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/esp4)
+    Checking udp v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/udp)
+    Checking xfrm6_protocol v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/xfrm6_protocol)
+    Checking inet_connection_sock v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/inet_connection_sock)
+error[E0710]: unknown tool name `clang` found in scoped lint: `clang::too_many_arguments`
+ --> crates/xfrm6_protocol/src/lib.rs:9:10
+  |
+9 | #![allow(clang::too_many_arguments)]
+  |          ^^^^^
+
+error[E0428]: the name `net` is defined multiple times
+  --> crates/fib6_notifier/src/lib.rs:30:1
+   |
+22 | struct net;
+   | ----------- previous definition of the type `net` here
+...
+30 | struct net {
+   | ^^^^^^^^^^ `net` redefined here
+   |
+   = note: `net` must be defined only once in the type namespace of this module
+
+error: unknown start of token: `
+   --> crates/nf_conntrack_tftp/src/lib.rs:363:1
+    |
+363 | ```
+    | ^^^
+    |
+    = note: character appears 2 more times
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+363 - ```
+363 + '''
+    |
+
+error: unknown start of token: `
+   --> crates/nf_conntrack_tftp/src/lib.rs:367:55
+    |
+367 | 1. **FFI Compatibility**: All structs are marked with `#[repr(C)]` and use C-compatible types
+    |                                                       ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+367 - 1. **FFI Compatibility**: All structs are marked with `#[repr(C)]` and use C-compatible types
+367 + 1. **FFI Compatibility**: All structs are marked with '#[repr(C)]` and use C-compatible types
+    |
+
+error: unknown start of token: `
+   --> crates/nf_conntrack_tftp/src/lib.rs:367:66
+    |
+367 | 1. **FFI Compatibility**: All structs are marked with `#[repr(C)]` and use C-compatible types
+    |                                                                  ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+367 - 1. **FFI Compatibility**: All structs are marked with `#[repr(C)]` and use C-compatible types
+367 + 1. **FFI Compatibility**: All structs are marked with `#[repr(C)]' and use C-compatible types
+    |
+
+error: unknown start of token: `
+   --> crates/nf_conntrack_tftp/src/lib.rs:368:28
+    |
+368 | 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+    |                            ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+368 - 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+368 + 2. **Real Pointers**: Uses '*mut T` and `*const T` for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/nf_conntrack_tftp/src/lib.rs:368:35
+    |
+368 | 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+    |                                   ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+368 - 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+368 + 2. **Real Pointers**: Uses `*mut T' and `*const T` for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/nf_conntrack_tftp/src/lib.rs:368:41
+    |
+368 | 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+    |                                         ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+368 - 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+368 + 2. **Real Pointers**: Uses `*mut T` and '*const T` for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/nf_conntrack_tftp/src/lib.rs:368:50
+    |
+368 | 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+    |                                                  ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+368 - 2. **Real Pointers**: Uses `*mut T` and `*const T` for all pointer operations
+368 + 2. **Real Pointers**: Uses `*mut T` and `*const T' for all pointer operations
+    |
+
+error: expected one of `!` or `::`, found `implementation`
+   --> crates/nf_conntrack_tftp/src/lib.rs:365:6
+    |
+365 | This implementation maintains strict FFI compatibility with the original C code while following all the specified requirements:
+    |      ^^^^^^^^^^^^^^ expected one of `!` or `::`
+
+error: could not compile `nf_conntrack_tftp` (lib) due to 8 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:340:1
+    |
+340 | ```
+    | ^^^
+    |
+    = note: character appears 2 more times
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+340 - ```
+340 + '''
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:344:32
+    |
+344 | 1. All structs are marked with `#[repr(C)]` for C-compatible memory layout
+    |                                ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+344 - 1. All structs are marked with `#[repr(C)]` for C-compatible memory layout
+344 + 1. All structs are marked with '#[repr(C)]` for C-compatible memory layout
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:344:43
+    |
+344 | 1. All structs are marked with `#[repr(C)]` for C-compatible memory layout
+    |                                           ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+344 - 1. All structs are marked with `#[repr(C)]` for C-compatible memory layout
+344 + 1. All structs are marked with `#[repr(C)]' for C-compatible memory layout
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:345:31
+    |
+345 | 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+    |                               ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+345 - 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+345 + 2. All exported functions use '#[no_mangle]` and `extern "C"` calling convention
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:345:44
+    |
+345 | 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+    |                                            ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+345 - 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+345 + 2. All exported functions use `#[no_mangle]' and `extern "C"` calling convention
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:345:50
+    |
+345 | 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+    |                                                  ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+345 - 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+345 + 2. All exported functions use `#[no_mangle]` and 'extern "C"` calling convention
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:345:61
+    |
+345 | 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+    |                                                             ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+345 - 2. All exported functions use `#[no_mangle]` and `extern "C"` calling convention
+345 + 2. All exported functions use `#[no_mangle]` and `extern "C"' calling convention
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:346:18
+    |
+346 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                  ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+346 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+346 + 3. Raw pointers ('*mut T`, `*const T`) are used for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:346:25
+    |
+346 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                         ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+346 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+346 + 3. Raw pointers (`*mut T', `*const T`) are used for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:346:28
+    |
+346 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                            ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+346 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+346 + 3. Raw pointers (`*mut T`, '*const T`) are used for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/inet6_connection_sock/src/lib.rs:346:37
+    |
+346 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                                     ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+346 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+346 + 3. Raw pointers (`*mut T`, `*const T') are used for all pointer operations
+    |
+
+error: prefix `kernel` is unknown
+   --> crates/inet6_connection_sock/src/lib.rs:352:58
+    |
+352 | The code handles the complex interactions with the Linux kernel's networking stack while maintaining strict ABI compatibility. All ...
+    |                                                          ^^^^^^ unknown prefix
+    |
+    = note: prefixed identifiers and literals are reserved since Rust 2021
+help: consider inserting whitespace here
+    |
+352 | The code handles the complex interactions with the Linux kernel 's networking stack while maintaining strict ABI compatibility. All memory operations and pointer manipulations are done in an unsafe context with appropriate safety justifications.
+    |                                                                +
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:469:1
+    |
+469 | ```
+    | ^^^
+    |
+    = note: character appears 2 more times
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+469 - ```
+469 + '''
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:473:33
+    |
+473 | 1. All structs used in FFI have `#[repr(C)]` to maintain memory layout compatibility
+    |                                 ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+473 - 1. All structs used in FFI have `#[repr(C)]` to maintain memory layout compatibility
+473 + 1. All structs used in FFI have '#[repr(C)]` to maintain memory layout compatibility
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:473:44
+    |
+473 | 1. All structs used in FFI have `#[repr(C)]` to maintain memory layout compatibility
+    |                                            ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+473 - 1. All structs used in FFI have `#[repr(C)]` to maintain memory layout compatibility
+473 + 1. All structs used in FFI have `#[repr(C)]' to maintain memory layout compatibility
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:474:31
+    |
+474 | 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+    |                               ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+474 - 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+474 + 2. All exported functions use '#[no_mangle]` and `extern "C"` linkage
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:474:44
+    |
+474 | 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+    |                                            ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+474 - 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+474 + 2. All exported functions use `#[no_mangle]' and `extern "C"` linkage
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:474:50
+    |
+474 | 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+    |                                                  ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+474 - 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+474 + 2. All exported functions use `#[no_mangle]` and 'extern "C"` linkage
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:474:61
+    |
+474 | 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+    |                                                             ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+474 - 2. All exported functions use `#[no_mangle]` and `extern "C"` linkage
+474 + 2. All exported functions use `#[no_mangle]` and `extern "C"' linkage
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:475:18
+    |
+475 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                  ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+475 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+475 + 3. Raw pointers ('*mut T`, `*const T`) are used for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:475:25
+    |
+475 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                         ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+475 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+475 + 3. Raw pointers (`*mut T', `*const T`) are used for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:475:28
+    |
+475 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                            ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+475 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+475 + 3. Raw pointers (`*mut T`, '*const T`) are used for all pointer operations
+    |
+
+error: unknown start of token: `
+   --> crates/udp/src/lib.rs:475:37
+    |
+475 | 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+    |                                     ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+475 - 3. Raw pointers (`*mut T`, `*const T`) are used for all pointer operations
+475 + 3. Raw pointers (`*mut T`, `*const T') are used for all pointer operations
+    |
+
+error: prefix `kernel` is unknown
+   --> crates/udp/src/lib.rs:481:84
+    |
+481 | The code handles the complex interactions between the UDP/IPv6 stack and the Linux kernel's internal structures while maintaining s...
+    |                                                                                    ^^^^^^ unknown prefix
+    |
+    = note: prefixed identifiers and literals are reserved since Rust 2021
+help: consider inserting whitespace here
+    |
+481 | The code handles the complex interactions between the UDP/IPv6 stack and the Linux kernel 's internal structures while maintaining strict ABI compatibility.
+    |                                                                                          +
+
+error[E0710]: unknown tool name `clang` found in scoped lint: `clang::too_many_arguments`
+ --> crates/ip6mr/src/lib.rs:9:10
+  |
+9 | #![allow(clang::too_many_arguments)]
+  |          ^^^^^
+
+error: expected identifier, found `:`
+  --> crates/udp/src/lib.rs:91:33
+   |
+91 |     fn refcount_inc_not_zero(ref: *mut refcount_t) -> c_int;
+   |                                 ^ expected identifier
+
+error: expected one of `!` or `::`, found `implementation`
+   --> crates/inet6_connection_sock/src/lib.rs:342:6
+    |
+342 | This implementation follows the requirements for FFI compatibility with the Linux kernel:
+    |      ^^^^^^^^^^^^^^ expected one of `!` or `::`
+
+error: expected one of `!` or `::`, found `implementation`
+   --> crates/udp/src/lib.rs:471:6
+    |
+471 | This implementation follows all the requirements for FFI compatibility with the Linux kernel:
+    |      ^^^^^^^^^^^^^^ expected one of `!` or `::`
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:431:1
+    |
+431 | ```
+    | ^^^
+    |
+    = note: character appears 2 more times
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+431 - ```
+431 + '''
+    |
+
+warning: unused import: `core::ptr`
+  --> crates/fib6_notifier/src/lib.rs:13:5
+   |
+13 | use core::ptr;
+   |     ^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:434:10
+    |
+434 | 1. Using `#[repr(C)]` for all structs to ensure C-compatible memory layout
+    |          ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+434 - 1. Using `#[repr(C)]` for all structs to ensure C-compatible memory layout
+434 + 1. Using '#[repr(C)]` for all structs to ensure C-compatible memory layout
+    |
+
+error: `#[panic_handler]` function required, but not found
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:434:21
+    |
+434 | 1. Using `#[repr(C)]` for all structs to ensure C-compatible memory layout
+    |                     ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+434 - 1. Using `#[repr(C)]` for all structs to ensure C-compatible memory layout
+434 + 1. Using `#[repr(C)]' for all structs to ensure C-compatible memory layout
+    |
+
+error: unwinding panics are not supported without std
+  |
+  = help: using nightly cargo, use -Zbuild-std with panic="abort" to avoid unwinding
+  = note: since the core library is usually precompiled with panic="unwind", rebuilding your crate with panic="abort" may not be enough to fix the problem
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:435:24
+    |
+435 | 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+    |                        ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+435 - 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+435 + 2. Using raw pointers ('*mut T`, `*const T`) for FFI compatibility
+    |
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:435:31
+    |
+435 | 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+    |                               ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+435 - 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+435 + 2. Using raw pointers (`*mut T', `*const T`) for FFI compatibility
+    |
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:435:34
+    |
+435 | 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+    |                                  ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+435 - 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+435 + 2. Using raw pointers (`*mut T`, '*const T`) for FFI compatibility
+    |
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:435:43
+    |
+435 | 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+    |                                           ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+435 - 2. Using raw pointers (`*mut T`, `*const T`) for FFI compatibility
+435 + 2. Using raw pointers (`*mut T`, `*const T') for FFI compatibility
+    |
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:438:10
+    |
+438 | 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+    |          ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+438 - 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+438 + 5. Using '#[no_mangle]` and `extern "C"` for exported functions
+    |
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:438:23
+    |
+438 | 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+    |                       ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+438 - 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+438 + 5. Using `#[no_mangle]' and `extern "C"` for exported functions
+    |
+
+error: could not compile `inet6_connection_sock` (lib) due to 13 previous errors
+error: could not compile `udp` (lib) due to 14 previous errors
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:438:29
+    |
+438 | 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+    |                             ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+438 - 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+438 + 5. Using `#[no_mangle]` and 'extern "C"` for exported functions
+    |
+
+error: unknown start of token: `
+   --> crates/esp4/src/lib.rs:438:40
+    |
+438 | 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+    |                                        ^
+    |
+help: Unicode character '`' (Grave Accent) looks like ''' (Single Quote), but it is not
+    |
+438 - 5. Using `#[no_mangle]` and `extern "C"` for exported functions
+438 + 5. Using `#[no_mangle]` and `extern "C"' for exported functions
+    |
+
+error: expected one of `!` or `::`, found `implementation`
+   --> crates/esp4/src/lib.rs:433:6
+    |
+433 | This implementation follows the requirements by:
+    |      ^^^^^^^^^^^^^^ expected one of `!` or `::`
+
+error: could not compile `esp4` (lib) due to 12 previous errors
+error: expected one of `>`, a const expression, lifetime, or type, found keyword `struct`
+   --> crates/route/src/lib.rs:135:31
+    |
+135 |     let stats = (*net).cast::<struct {
+    |                               ^^^^^^ expected one of `>`, a const expression, lifetime, or type
+
+error: expected one of `>`, a const expression, lifetime, or type, found keyword `struct`
+   --> crates/route/src/lib.rs:226:33
+    |
+226 |     let metrics = (*dst).cast::<struct {
+    |                                 ^^^^^^ expected one of `>`, a const expression, lifetime, or type
+
+error[E0710]: unknown tool name `clang` found in scoped lint: `clang::missing_docs_in_private_items`
+ --> crates/route/src/lib.rs:9:10
+  |
+9 | #![allow(clang::missing_docs_in_private_items)]
+  |          ^^^^^
+
+warning: unused import: `core::ffi::c_uint`
+  --> crates/inet_connection_sock/src/lib.rs:11:5
+   |
+11 | use core::ffi::c_uint;
+   |     ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `core::mem`
+  --> crates/inet_connection_sock/src/lib.rs:13:5
+   |
+13 | use core::mem;
+   |     ^^^^^^^^^
+
+warning: unused import: `core::slice`
+  --> crates/inet_connection_sock/src/lib.rs:15:5
+   |
+15 | use core::slice;
+   |     ^^^^^^^^^^^
+
+warning: unnecessary parentheses around `if` condition
+   --> crates/inet_connection_sock/src/lib.rs:271:20
+    |
+271 |                 if (!relax
+    |                    ^
+...
+277 |                         && inet_rcv_saddr_equal(sk, sk2, true))
+    |                                                               ^
+    |
+    = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+    |
+271 ~                 if !relax
+272 |                     || (!reuseport_ok
+...
+276 |                         && ((*sk2).sk_state == TCP_TIME_WAIT || uid_eq(uid, sock_i_uid(sk2))))
+277 ~                         && inet_rcv_saddr_equal(sk, sk2, true)
+    |
+
+warning: unnecessary parentheses around `if` condition
+   --> crates/inet_connection_sock/src/lib.rs:281:23
+    |
+281 |             } else if (!reuseport_ok
+    |                       ^
+...
+285 |                 || ((*sk2).sk_state != TCP_TIME_WAIT && !uid_eq(uid, sock_i_uid(sk2))))
+    |                                                                                       ^
+    |
+help: remove these parentheses
+    |
+281 ~             } else if !reuseport_ok
+282 |                 || !reuseport
+283 |                 || (*sk2).sk_reuseport.is_null()
+284 |                 || rcu_access_pointer((*sk).sk_reuseport_cb).is_some()
+285 ~                 || ((*sk2).sk_state != TCP_TIME_WAIT && !uid_eq(uid, sock_i_uid(sk2)))
+    |
+
+error[E0124]: field `sk_rcv_saddr` is already declared
+  --> crates/inet_connection_sock/src/lib.rs:38:5
+   |
+34 |     sk_rcv_saddr: u32,
+   |     ----------------- `sk_rcv_saddr` first declared here
+...
+38 |     sk_rcv_saddr: u32,
+   |     ^^^^^^^^^^^^^^^^^ field already declared
+
+error[E0124]: field `sk_bound_dev_if` is already declared
+  --> crates/inet_connection_sock/src/lib.rs:39:5
+   |
+35 |     sk_bound_dev_if: c_int,
+   |     ---------------------- `sk_bound_dev_if` first declared here
+...
+39 |     sk_bound_dev_if: c_int,
+   |     ^^^^^^^^^^^^^^^^^^^^^^ field already declared
+
+error[E0124]: field `sk_reuseport` is already declared
+  --> crates/inet_connection_sock/src/lib.rs:40:5
+   |
+36 |     sk_reuseport: *mut c_void,
+   |     ------------------------- `sk_reuseport` first declared here
+...
+40 |     sk_reuseport: *mut c_void,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ field already declared
+
+error[E0425]: cannot find value `rt6_uncached_list` in this scope
+   --> crates/route/src/lib.rs:277:27
+    |
+277 |     let ul = per_cpu_ptr(&rt6_uncached_list, cpu);
+    |                           ^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0277]: `*mut c_void` cannot be shared between threads safely
+  --> crates/fib6_notifier/src/lib.rs:73:36
+   |
+73 | static FIB6_NOTIFIER_OPS_TEMPLATE: fib_notifier_ops = fib_notifier_ops {
+   |                                    ^^^^^^^^^^^^^^^^ `*mut c_void` cannot be shared between threads safely
+   |
+   = help: within `fib_notifier_ops`, the trait `Sync` is not implemented for `*mut c_void`
+note: required because it appears within the type `fib_notifier_ops`
+  --> crates/fib6_notifier/src/lib.rs:44:8
+   |
+44 | struct fib_notifier_ops {
+   |        ^^^^^^^^^^^^^^^^
+   = note: shared static variables must have a type that implements `Sync`
+
+warning: unused import: `c_uint`
+  --> crates/route/src/lib.rs:13:19
+   |
+13 | use libc::{c_int, c_uint, c_void, size_t};
+   |                   ^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unnecessary parentheses around assigned value
+   --> crates/route/src/lib.rs:223:14
+    |
+223 |     let rt = (dst as *mut rt6_info);
+    |              ^                    ^
+    |
+    = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+    |
+223 -     let rt = (dst as *mut rt6_info);
+223 +     let rt = dst as *mut rt6_info;
+    |
+
+error[E0425]: cannot find value `ip6mr_mr_table_ops` in this scope
+   --> crates/ip6mr/src/lib.rs:178:10
+    |
+178 |         &ip6mr_mr_table_ops,
+    |          ^^^^^^^^^^^^^^^^^^
+...
+235 | pub unsafe extern "C" fn ip6mr_mr_table_iter(net: *mut net, mrt: *mut mr_table) -> *mut mr_table {
+    | ------------------------------------------------------------------------------------------------ similarly named function `ip6mr_mr_table_iter` defined here
+    |
+note: found an item that was configured out
+   --> crates/ip6mr/src/lib.rs:127:12
+    |
+126 | #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+    |       ---------------------------------- the item is gated here
+127 | static mut ip6mr_mr_table_ops: mr_table_ops = mr_table_ops {
+    |            ^^^^^^^^^^^^^^^^^^
+help: a function with a similar name exists
+    |
+178 -         &ip6mr_mr_table_ops,
+178 +         &ip6mr_mr_table_iter,
+    |
+
+error[E0425]: cannot find type `fib_rule` in this scope
+   --> crates/ip6mr/src/lib.rs:254:58
+    |
+254 | pub unsafe extern "C" fn ip6mr_rule_default(rule: *const fib_rule) -> bool {
+    |                                                          ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `FR_ACT_TO_TBL` in this scope
+   --> crates/ip6mr/src/lib.rs:257:27
+    |
+257 |         && rule.action == FR_ACT_TO_TBL
+    |                           ^^^^^^^^^^^^^ not found in this scope
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:120:7
+    |
+120 | #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:126:7
+    |
+126 | #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:323:7
+    |
+323 | #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unused import: `c_uint`
+  --> crates/ip6mr/src/lib.rs:11:24
+   |
+11 | use core::ffi::{c_int, c_uint, c_void};
+   |                        ^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `transmute`
+  --> crates/ip6mr/src/lib.rs:12:32
+   |
+12 | use core::mem::{self, size_of, transmute};
+   |                                ^^^^^^^^^
+
+warning: unused import: `NonNull`
+  --> crates/ip6mr/src/lib.rs:13:23
+   |
+13 | use core::ptr::{self, NonNull};
+   |                       ^^^^^^^
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+  --> crates/ip6mr/src/lib.rs:41:11
+   |
+41 |     #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+  --> crates/ip6mr/src/lib.rs:43:15
+   |
+43 |     #[cfg(not(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES))]
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:207:11
+    |
+207 |     #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:228:15
+    |
+228 |     #[cfg(not(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES))]
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:236:11
+    |
+236 |     #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:244:15
+    |
+244 |     #[cfg(not(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES))]
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `CONFIG_IPV6_MROUTE_MULTIPLE_TABLES`
+   --> crates/ip6mr/src/lib.rs:334:11
+    |
+334 |     #[cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)]
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_IPV6_MROUTE_MULTIPLE_TABLES)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+error[E0308]: mismatched types
+  --> crates/fib6_notifier/src/lib.rs:94:5
+   |
+22 | struct net;
+   | ---------- unit struct defined here
+...
+94 |     net: *mut net,
+   |     ^^^  -------- expected due to this
+   |     |
+   |     expected `*mut net`, found `net`
+   |     `net` is interpreted as a unit struct, not a new binding
+   |     help: introduce a new binding instead: `other_net`
+   |
+   = note: expected raw pointer `*mut net`
+                   found struct `net`
+
+error[E0425]: cannot find function, tuple struct or tuple variant `INIT_LIST_HEAD` in this scope
+   --> crates/route/src/lib.rs:123:5
+    |
+123 |     INIT_LIST_HEAD(&(*rt).rt6i_uncached);
+    |     ^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:200:88
+    |
+200 |             pr_err(b"xfrm6_protocol_register: can't add protocol\n".as_ptr() as *const c_char);
+    |                                                                                        ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+200 -             pr_err(b"xfrm6_protocol_register: can't add protocol\n".as_ptr() as *const c_char);
+200 +             pr_err(b"xfrm6_protocol_register: can't add protocol\n".as_ptr() as *const char);
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_char;
+    |
+ 11 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:252:94
+    |
+252 |                     b"xfrm6_protocol_deregister: can't remove protocol\n".as_ptr() as *const c_char,
+    |                                                                                              ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+252 -                     b"xfrm6_protocol_deregister: can't remove protocol\n".as_ptr() as *const c_char,
+252 +                     b"xfrm6_protocol_deregister: can't remove protocol\n".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_char;
+    |
+ 11 + use libc::c_char;
+    |
+
+error[E0425]: cannot find value `xfrm6_esp_rcv` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:275:14
+    |
+275 |     handler: xfrm6_esp_rcv,
+    |              ^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `xfrm6_esp_err` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:276:18
+    |
+276 |     err_handler: xfrm6_esp_err,
+    |                  ^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `xfrm6_ah_rcv` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:282:14
+    |
+282 |     handler: xfrm6_ah_rcv,
+    |              ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `xfrm6_ah_err` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:283:18
+    |
+283 |     err_handler: xfrm6_ah_err,
+    |                  ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `xfrm6_ipcomp_rcv` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:289:14
+    |
+289 |     handler: xfrm6_ipcomp_rcv,
+    |              ^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `xfrm6_ipcomp_err` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:290:18
+    |
+290 |     err_handler: xfrm6_ipcomp_err,
+    |                  ^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `AF_INET6` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:296:13
+    |
+296 |     family: AF_INET6,
+    |             ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/xfrm6_protocol/src/lib.rs:322:45
+    |
+322 | pub unsafe extern "C" fn pr_err(fmt: *const c_char) {
+    |                                             ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+322 - pub unsafe extern "C" fn pr_err(fmt: *const c_char) {
+322 + pub unsafe extern "C" fn pr_err(fmt: *const char) {
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_char;
+    |
+ 11 + use libc::c_char;
+    |
+
+warning: unused import: `core::ffi::c_uint`
+  --> crates/xfrm6_protocol/src/lib.rs:12:5
+   |
+12 | use core::ffi::c_uint;
+   |     ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Ordering`
+  --> crates/xfrm6_protocol/src/lib.rs:15:37
+   |
+15 | use core::sync::atomic::{AtomicPtr, Ordering};
+   |                                     ^^^^^^^^
+
+warning: unnecessary parentheses around assigned value
+   --> crates/xfrm6_protocol/src/lib.rs:113:19
+    |
+113 |         let ret = ((*(*handler).cb_handler)(skb, err));
+    |                   ^                                  ^
+    |
+    = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+    |
+113 -         let ret = ((*(*handler).cb_handler)(skb, err));
+113 +         let ret = (*(*handler).cb_handler)(skb, err);
+    |
+
+warning: unnecessary parentheses around assigned value
+   --> crates/xfrm6_protocol/src/lib.rs:140:19
+    |
+140 |             ret = ((*(*handler).input_handler)(skb, nexthdr, spi, encap_type));
+    |                   ^                                                          ^
+    |
+help: remove these parentheses
+    |
+140 -             ret = ((*(*handler).input_handler)(skb, nexthdr, spi, encap_type));
+140 +             ret = (*(*handler).input_handler)(skb, nexthdr, spi, encap_type);
+    |
+
+error[E0517]: attribute should be applied to a struct, enum, or union
+   --> crates/xfrm6_protocol/src/lib.rs:273:8
+    |
+273 |   #[repr(C)]
+    |          ^
+274 | / static mut esp6_protocol: inet6_protocol = inet6_protocol {
+275 | |     handler: xfrm6_esp_rcv,
+276 | |     err_handler: xfrm6_esp_err,
+277 | |     flags: INET6_PROTO_NOPOLICY,
+278 | | };
+    | |__- not a struct, enum, or union
+
+error[E0517]: attribute should be applied to a struct, enum, or union
+   --> crates/xfrm6_protocol/src/lib.rs:280:8
+    |
+280 |   #[repr(C)]
+    |          ^
+281 | / static mut ah6_protocol: inet6_protocol = inet6_protocol {
+282 | |     handler: xfrm6_ah_rcv,
+283 | |     err_handler: xfrm6_ah_err,
+284 | |     flags: INET6_PROTO_NOPOLICY,
+285 | | };
+    | |__- not a struct, enum, or union
+
+error[E0517]: attribute should be applied to a struct, enum, or union
+   --> crates/xfrm6_protocol/src/lib.rs:287:8
+    |
+287 |   #[repr(C)]
+    |          ^
+288 | / static mut ipcomp6_protocol: inet6_protocol = inet6_protocol {
+289 | |     handler: xfrm6_ipcomp_rcv,
+290 | |     err_handler: xfrm6_ipcomp_err,
+291 | |     flags: INET6_PROTO_NOPOLICY,
+292 | | };
+    | |__- not a struct, enum, or union
+
+error[E0517]: attribute should be applied to a struct, enum, or union
+   --> crates/xfrm6_protocol/src/lib.rs:294:8
+    |
+294 |   #[repr(C)]
+    |          ^
+295 | / static mut xfrm6_input_afinfo: xfrm_input_afinfo = xfrm_input_afinfo {
+296 | |     family: AF_INET6,
+297 | |     callback: xfrm6_rcv_cb,
+298 | | };
+    | |__- not a struct, enum, or union
+
+error[E0308]: mismatched types
+   --> crates/route/src/lib.rs:130:23
+    |
+130 |     (*rt).dst.input = ip6_pkt_discard;
+    |                       ^^^^^^^^^^^^^^^ expected safe fn, found unsafe fn
+    |
+    = note: expected fn pointer `extern "C" fn(_) -> _`
+                  found fn item `unsafe extern "C" fn(_) -> _ {ip6_pkt_discard}`
+    = note: unsafe functions cannot be coerced into safe function pointers
+
+error[E0308]: `if` and `else` have incompatible types
+   --> crates/inet_connection_sock/src/lib.rs:115:9
+    |
+112 |       let mut addr_type2 = if sk2_rcv_saddr6.is_null() {
+    |  __________________________-
+113 | |         IPV6_ADDR_MAPPED
+    | |         ---------------- expected because of this
+114 | |     } else {
+115 | |         ipv6_addr_type(sk2_rcv_saddr6)
+    | |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u32`, found `i32`
+116 | |     };
+    | |_____- `if` and `else` have incompatible types
+    |
+help: you can convert an `i32` to a `u32` and panic if the converted value doesn't fit
+    |
+115 |         ipv6_addr_type(sk2_rcv_saddr6).try_into().unwrap()
+    |                                       ++++++++++++++++++++
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:100:24
+    |
+100 |     call_fib_notifiers(net, event_type, info)
+    |     ------------------ ^^^ expected `*mut net`, found `net`
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+note: function defined here
+   --> crates/fib6_notifier/src/lib.rs:58:8
+    |
+ 58 |     fn call_fib_notifiers(net: *mut net, event_type: c_int, info: *mut fib_notifier_info) -> c_int;
+    |        ^^^^^^^^^^^^^^^^^^ ---
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:104:40
+    |
+ 22 | struct net;
+    | ---------- unit struct defined here
+...
+104 | pub unsafe extern "C" fn fib6_seq_read(net: *mut net) -> c_uint {
+    |                                        ^^^  -------- expected due to this
+    |                                        |
+    |                                        expected `*mut net`, found `net`
+    |                                        `net` is interpreted as a unit struct, not a new binding
+    |                                        help: introduce a new binding instead: `other_net`
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+
+error[E0308]: mismatched types
+   --> crates/route/src/lib.rs:131:24
+    |
+131 |     (*rt).dst.output = ip6_pkt_discard_out;
+    |                        ^^^^^^^^^^^^^^^^^^^ expected safe fn, found unsafe fn
+    |
+    = note: expected fn pointer `extern "C" fn(_, _, _) -> _`
+                  found fn item `unsafe extern "C" fn(_, _, _) -> _ {ip6_pkt_discard_out}`
+    = note: unsafe functions cannot be coerced into safe function pointers
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:105:43
+    |
+105 |     let tables_seq = fib6_tables_seq_read(net);
+    |                      -------------------- ^^^ expected `*mut net`, found `net`
+    |                      |
+    |                      arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+note: function defined here
+   --> crates/fib6_notifier/src/lib.rs:64:8
+    |
+ 64 |     fn fib6_tables_seq_read(net: *mut net) -> c_uint;
+    |        ^^^^^^^^^^^^^^^^^^^^ ---
+
+error[E0425]: cannot find function `per_cpu_ptr` in this scope
+   --> crates/route/src/lib.rs:277:14
+    |
+277 |     let ul = per_cpu_ptr(&rt6_uncached_list, cpu);
+    |              ^^^^^^^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:106:41
+    |
+106 |     let rules_seq = fib6_rules_seq_read(net);
+    |                     ------------------- ^^^ expected `*mut net`, found `net`
+    |                     |
+    |                     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+note: function defined here
+   --> crates/fib6_notifier/src/lib.rs:65:8
+    |
+ 65 |     fn fib6_rules_seq_read(net: *mut net) -> c_uint;
+    |        ^^^^^^^^^^^^^^^^^^^ ---
+
+error[E0308]: mismatched types
+   --> crates/route/src/lib.rs:282:19
+    |
+282 |     list_add_tail(&(*rt).rt6i_uncached, &(*ul).head);
+    |     ------------- ^^^^^^^^^^^^^^^^^^^^ types differ in mutability
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut list_head`
+                 found reference `&list_head`
+note: function defined here
+   --> crates/route/src/lib.rs:305:11
+    |
+305 | unsafe fn list_add_tail(head: *mut list_head, new: *mut list_head) {
+    |           ^^^^^^^^^^^^^ --------------------
+
+error[E0308]: mismatched types
+   --> crates/route/src/lib.rs:289:35
+    |
+289 |     if rt.is_null() || list_empty(&(*rt).rt6i_uncached) {
+    |                        ---------- ^^^^^^^^^^^^^^^^^^^^ types differ in mutability
+    |                        |
+    |                        arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut list_head`
+                 found reference `&list_head`
+note: function defined here
+   --> crates/route/src/lib.rs:322:11
+    |
+322 | unsafe fn list_empty(head: *mut list_head) -> bool {
+    |           ^^^^^^^^^^ --------------------
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:112:5
+    |
+ 22 | struct net;
+    | ---------- unit struct defined here
+...
+112 |     net: *mut net,
+    |     ^^^  -------- expected due to this
+    |     |
+    |     expected `*mut net`, found `net`
+    |     `net` is interpreted as a unit struct, not a new binding
+    |     help: introduce a new binding instead: `other_net`
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+
+error[E0308]: mismatched types
+   --> crates/route/src/lib.rs:297:14
+    |
+297 |     list_del(&(*rt).rt6i_uncached);
+    |     -------- ^^^^^^^^^^^^^^^^^^^^ types differ in mutability
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut list_head`
+                 found reference `&list_head`
+note: function defined here
+   --> crates/route/src/lib.rs:313:11
+    |
+313 | unsafe fn list_del(entry: *mut list_head) {
+    |           ^^^^^^^^ ---------------------
+
+error[E0609]: no field `ipv6` on type `c_void`
+   --> crates/route/src/lib.rs:300:24
+    |
+300 |     atomic_dec(&(*net).ipv6.rt6_stats);
+    |                        ^^^^ unknown field
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:116:35
+    |
+116 |     let mut err = fib6_rules_dump(net, nb, extack);
+    |                   --------------- ^^^ expected `*mut net`, found `net`
+    |                   |
+    |                   arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+note: function defined here
+   --> crates/fib6_notifier/src/lib.rs:66:8
+    |
+ 66 |     fn fib6_rules_dump(net: *mut net, nb: *mut notifier_block, extack: *mut c_void) -> c_int;
+    |        ^^^^^^^^^^^^^^^ ---
+
+error[E0425]: cannot find function `kfree` in this scope
+  --> crates/cipso_ipv4/src/lib.rs:91:5
+   |
+91 |     kfree(entry as *mut c_void);
+   |     ^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:120:22
+    |
+120 |     fib6_tables_dump(net, nb, extack)
+    |     ---------------- ^^^ expected `*mut net`, found `net`
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+note: function defined here
+   --> crates/fib6_notifier/src/lib.rs:67:8
+    |
+ 67 |     fn fib6_tables_dump(net: *mut net, nb: *mut notifier_block, extack: *mut c_void) -> c_int;
+    |        ^^^^^^^^^^^^^^^^ ---
+
+warning: unused variable: `cookie`
+   --> crates/route/src/lib.rs:152:5
+    |
+152 |     cookie: u32,
+    |     ^^^^^^ help: if this is intentional, prefix it with an underscore: `_cookie`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:124:45
+    |
+ 22 | struct net;
+    | ---------- unit struct defined here
+...
+124 | pub unsafe extern "C" fn fib6_notifier_init(net: *mut net) -> c_int {
+    |                                             ^^^  -------- expected due to this
+    |                                             |
+    |                                             expected `*mut net`, found `net`
+    |                                             `net` is interpreted as a unit struct, not a new binding
+    |                                             help: introduce a new binding instead: `other_net`
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:125:70
+    |
+125 |     let ops = fib_notifier_ops_register(&FIB6_NOTIFIER_OPS_TEMPLATE, net);
+    |               -------------------------                              ^^^ expected `*mut net`, found `net`
+    |               |
+    |               arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+note: function defined here
+   --> crates/fib6_notifier/src/lib.rs:59:8
+    |
+ 59 |     fn fib_notifier_ops_register(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^
+ 60 |         ops: *const fib_notifier_ops,
+ 61 |         net: *mut net,
+    |         ---
+
+error[E0614]: type `net` cannot be dereferenced
+   --> crates/fib6_notifier/src/lib.rs:130:5
+    |
+130 |     (*net).ipv6.notifier_ops = ops;
+    |     ^^^^^^ can't be dereferenced
+
+error[E0308]: mismatched types
+   --> crates/fib6_notifier/src/lib.rs:135:45
+    |
+ 22 | struct net;
+    | ---------- unit struct defined here
+...
+135 | pub unsafe extern "C" fn fib6_notifier_exit(net: *mut net) {
+    |                                             ^^^  -------- expected due to this
+    |                                             |
+    |                                             expected `*mut net`, found `net`
+    |                                             `net` is interpreted as a unit struct, not a new binding
+    |                                             help: introduce a new binding instead: `other_net`
+    |
+    = note: expected raw pointer `*mut net`
+                    found struct `net`
+
+error[E0308]: mismatched types
+   --> crates/ip6mr/src/lib.rs:169:31
+    |
+169 |     let mrt = ip6mr_get_table(net, id);
+    |               --------------- ^^^ types differ in mutability
+    |               |
+    |               arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut net`
+                 found reference `&net`
+note: function defined here
+   --> crates/ip6mr/src/lib.rs:206:26
+    |
+206 | pub unsafe extern "C" fn ip6mr_get_table(net: *mut net, id: u32) -> *mut mr_table {
+    |                          ^^^^^^^^^^^^^^^ -------------
+
+error[E0614]: type `net` cannot be dereferenced
+   --> crates/fib6_notifier/src/lib.rs:136:15
+    |
+136 |     let ops = (*net).ipv6.notifier_ops;
+    |               ^^^^^^ can't be dereferenced
+
+error[E0308]: mismatched types
+   --> crates/ip6mr/src/lib.rs:176:9
+    |
+175 |     let mrt = mr_table_alloc(
+    |               -------------- arguments to this function are incorrect
+176 |         net,
+    |         ^^^ types differ in mutability
+    |
+    = note: expected raw pointer `*mut net`
+                 found reference `&net`
+note: function defined here
+   --> crates/ip6mr/src/lib.rs:264:26
+    |
+264 | pub unsafe extern "C" fn mr_table_alloc(
+    |                          ^^^^^^^^^^^^^^
+265 |     net: *mut net,
+    |     -------------
+
+warning: unused variable: `dev`
+   --> crates/route/src/lib.rs:332:19
+    |
+332 | unsafe fn dev_net(dev: *mut net_device) -> *mut c_void {
+    |                   ^^^ help: if this is intentional, prefix it with an underscore: `_dev`
+
+warning: unused variable: `idev`
+   --> crates/route/src/lib.rs:338:23
+    |
+338 | unsafe fn in6_dev_put(idev: *mut c_void) {
+    |                       ^^^^ help: if this is intentional, prefix it with an underscore: `_idev`
+
+warning: unused variable: `fib`
+   --> crates/route/src/lib.rs:343:29
+    |
+343 | unsafe fn fib6_info_release(fib: *mut fib6_info) {
+    |                             ^^^ help: if this is intentional, prefix it with an underscore: `_fib`
+
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:119:21
+    |
+119 |     if addr_type == IPV6_ADDR_MAPPED && addr_type2 == IPV6_ADDR_MAPPED {
+    |        ---------    ^^^^^^^^^^^^^^^^ expected `i32`, found `u32`
+    |        |
+    |        expected because this is `i32`
+    |
+help: you can convert a `u32` to an `i32` and panic if the converted value doesn't fit
+    |
+119 |     if addr_type == IPV6_ADDR_MAPPED.try_into().unwrap() && addr_type2 == IPV6_ADDR_MAPPED {
+    |                                     ++++++++++++++++++++
+
+error[E0425]: cannot find function `fib_rule_matchall` in this scope
+   --> crates/ip6mr/src/lib.rs:256:5
+    |
+256 |     fib_rule_matchall(rule)
+    |     ^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:131:21
+    |
+131 |     if addr_type == IPV6_ADDR_ANY && addr_type2 == IPV6_ADDR_ANY {
+    |        ---------    ^^^^^^^^^^^^^ expected `i32`, found `u32`
+    |        |
+    |        expected because this is `i32`
+    |
+help: you can convert a `u32` to an `i32` and panic if the converted value doesn't fit
+    |
+131 |     if addr_type == IPV6_ADDR_ANY.try_into().unwrap() && addr_type2 == IPV6_ADDR_ANY {
+    |                                  ++++++++++++++++++++
+
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:137:43
+    |
+137 |         && !(sk2_ipv6only && addr_type == IPV6_ADDR_MAPPED)
+    |                              ---------    ^^^^^^^^^^^^^^^^ expected `i32`, found `u32`
+    |                              |
+    |                              expected because this is `i32`
+    |
+help: you can convert a `u32` to an `i32` and panic if the converted value doesn't fit
+    |
+137 |         && !(sk2_ipv6only && addr_type == IPV6_ADDR_MAPPED.try_into().unwrap())
+    |                                                           ++++++++++++++++++++
+
+Some errors have detailed explanations: E0277, E0308, E0428, E0614.
+For more information about an error, try `rustc --explain E0277`.
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:142:21
+    |
+142 |     if addr_type == IPV6_ADDR_ANY
+    |        ---------    ^^^^^^^^^^^^^ expected `i32`, found `u32`
+    |        |
+    |        expected because this is `i32`
+    |
+help: you can convert a `u32` to an `i32` and panic if the converted value doesn't fit
+    |
+142 |     if addr_type == IPV6_ADDR_ANY.try_into().unwrap()
+    |                                  ++++++++++++++++++++
+
+Some errors have detailed explanations: E0308, E0425, E0609, E0710.
+For more information about an error, try `rustc --explain E0308`.
+warning: unused variable: `id`
+   --> crates/ip6mr/src/lib.rs:206:57
+    |
+206 | pub unsafe extern "C" fn ip6mr_get_table(net: *mut net, id: u32) -> *mut mr_table {
+    |                                                         ^^ help: if this is intentional, prefix it with an underscore: `_id`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `ops`
+   --> crates/ip6mr/src/lib.rs:267:5
+    |
+267 |     ops: *const mr_table_ops,
+    |     ^^^ help: if this is intentional, prefix it with an underscore: `_ops`
+
+warning: unused variable: `expire_process`
+   --> crates/ip6mr/src/lib.rs:268:5
+    |
+268 |     expire_process: Option<unsafe extern "C" fn(t: *mut timer_list)>,
+    |     ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_expire_process`
+
+warning: unused variable: `timer`
+   --> crates/ip6mr/src/lib.rs:289:41
+    |
+289 | pub unsafe extern "C" fn del_timer_sync(timer: *mut timer_list) {
+    |                                         ^^^^^ help: if this is intentional, prefix it with an underscore: `_timer`
+
+warning: unused variable: `mrt`
+   --> crates/ip6mr/src/lib.rs:294:46
+    |
+294 | pub unsafe extern "C" fn mroute_clean_tables(mrt: *mut mr_table, flags: c_int) {
+    |                                              ^^^ help: if this is intentional, prefix it with an underscore: `_mrt`
+
+warning: unused variable: `flags`
+   --> crates/ip6mr/src/lib.rs:294:66
+    |
+294 | pub unsafe extern "C" fn mroute_clean_tables(mrt: *mut mr_table, flags: c_int) {
+    |                                                                  ^^^^^ help: if this is intentional, prefix it with an underscore: `_flags`
+
+warning: unused variable: `table`
+   --> crates/ip6mr/src/lib.rs:299:43
+    |
+299 | pub unsafe extern "C" fn rhltable_destroy(table: *mut rhltable) {
+    |                                           ^^^^^ help: if this is intentional, prefix it with an underscore: `_table`
+
+warning: `fib6_notifier` (lib) generated 1 warning
+error: could not compile `fib6_notifier` (lib) due to 17 previous errors; 1 warning emitted
+warning: unused variable: `t`
+   --> crates/ip6mr/src/lib.rs:328:46
+    |
+328 | pub unsafe extern "C" fn ipmr_expire_process(t: *mut timer_list) {
+    |                                              ^ help: if this is intentional, prefix it with an underscore: `_t`
+
+warning: unused variable: `mrt`
+   --> crates/ip6mr/src/lib.rs:333:46
+    |
+333 | pub unsafe extern "C" fn ip6mr_new_table_set(mrt: *mut mr_table, net: *mut net) {
+    |                                              ^^^ help: if this is intentional, prefix it with an underscore: `_mrt`
+
+warning: unused variable: `net`
+   --> crates/ip6mr/src/lib.rs:333:66
+    |
+333 | pub unsafe extern "C" fn ip6mr_new_table_set(mrt: *mut mr_table, net: *mut net) {
+    |                                                                  ^^^ help: if this is intentional, prefix it with an underscore: `_net`
+
+error[E0606]: casting `&AtomicPtr<xfrm6_protocol>` as `*mut AtomicPtr<xfrm6_protocol>` is invalid
+  --> crates/xfrm6_protocol/src/lib.rs:90:24
+   |
+90 |         IPPROTO_ESP => &esp6_handlers as *mut AtomicPtr<xfrm6_protocol> as *mut *mut xfrm6_protocol,
+   |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0606]: casting `&AtomicPtr<xfrm6_protocol>` as `*mut AtomicPtr<xfrm6_protocol>` is invalid
+  --> crates/xfrm6_protocol/src/lib.rs:91:23
+   |
+91 |         IPPROTO_AH => &ah6_handlers as *mut AtomicPtr<xfrm6_protocol> as *mut *mut xfrm6_protocol,
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0606]: casting `&AtomicPtr<xfrm6_protocol>` as `*mut AtomicPtr<xfrm6_protocol>` is invalid
+  --> crates/xfrm6_protocol/src/lib.rs:93:13
+   |
+93 |             &ipcomp6_handlers as *mut AtomicPtr<xfrm6_protocol> as *mut *mut xfrm6_protocol
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `new`
+   --> crates/ip6mr/src/lib.rs:341:44
+    |
+341 | pub unsafe extern "C" fn list_add_tail_rcu(new: *mut list_head, head: *mut list_head) {
+    |                                            ^^^ help: if this is intentional, prefix it with an underscore: `_new`
+
+warning: unused variable: `head`
+   --> crates/ip6mr/src/lib.rs:341:65
+    |
+341 | pub unsafe extern "C" fn list_add_tail_rcu(new: *mut list_head, head: *mut list_head) {
+    |                                                                 ^^^^ help: if this is intentional, prefix it with an underscore: `_head`
+
+error[E0614]: type `extern "C" fn(*mut c_void, i32) -> i32` cannot be dereferenced
+   --> crates/xfrm6_protocol/src/lib.rs:113:20
+    |
+113 |         let ret = ((*(*handler).cb_handler)(skb, err));
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^ can't be dereferenced
+
+Some errors have detailed explanations: E0308, E0425, E0710.
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:236:29
+    |
+236 |         seq = read_seqbegin(&(*net).ipv4.ip_local_ports.lock);
+    |               ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ types differ in mutability
+    |               |
+    |               arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut seqlock`
+                 found reference `&spinlock`
+note: function defined here
+   --> crates/inet_connection_sock/src/lib.rs:89:8
+    |
+ 89 |     fn read_seqbegin(seq: *mut seqlock) -> c_int;
+    |        ^^^^^^^^^^^^^ ---
+
+error[E0614]: type `extern "C" fn(*mut c_void, i32, u32, i32) -> i32` cannot be dereferenced
+   --> crates/xfrm6_protocol/src/lib.rs:140:20
+    |
+140 |             ret = ((*(*handler).input_handler)(skb, nexthdr, spi, encap_type));
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^ can't be dereferenced
+
+error[E0609]: no field `range` on type `seqlock`
+   --> crates/inet_connection_sock/src/lib.rs:237:43
+    |
+237 |         *low = (*net).ipv4.ip_local_ports.range[0];
+    |                                           ^^^^^ unknown field
+    |
+    = note: available field is: `lock`
+
+error[E0609]: no field `range` on type `seqlock`
+   --> crates/inet_connection_sock/src/lib.rs:238:44
+    |
+238 |         *high = (*net).ipv4.ip_local_ports.range[1];
+    |                                            ^^^^^ unknown field
+    |
+    = note: available field is: `lock`
+
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:239:27
+    |
+239 |         if !read_seqretry(&(*net).ipv4.ip_local_ports.lock, seq) {
+    |             ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ types differ in mutability
+    |             |
+    |             arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut seqlock`
+                 found reference `&spinlock`
+note: function defined here
+   --> crates/inet_connection_sock/src/lib.rs:90:8
+    |
+ 90 |     fn read_seqretry(seq: *mut seqlock, start: c_int) -> bool;
+    |        ^^^^^^^^^^^^^ ---
+
+error[E0308]: mismatched types
+   --> crates/cipso_ipv4/src/lib.rs:278:22
+    |
+244 |     let mut prev_entry: *mut cipso_v4_map_cache_entry = ptr::null_mut();
+    |                         ----------------------------- expected due to this type
+...
+278 |         prev_entry = entry;
+    |                      ^^^^^ expected `*mut cipso_v4_map_cache_entry`, found `*mut c_void`
+    |
+    = note: expected raw pointer `*mut cipso_v4_map_cache_entry`
+               found raw pointer `*mut c_void`
+
+warning: `route` (lib) generated 6 warnings
+error: could not compile `route` (lib) due to 14 previous errors; 6 warnings emitted
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:266:17
+    |
+266 |             && (!(*sk).sk_bound_dev_if
+    |                 ^^^^^^^^^^^^^^^^^^^^^^ expected `bool`, found `i32`
+
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:267:20
+    |
+267 |                 || !(*sk2).sk_bound_dev_if
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^ expected `bool`, found `i32`
+
+error[E0425]: cannot find function `kfree` in this scope
+   --> crates/cipso_ipv4/src/lib.rs:333:9
+    |
+333 |         kfree(entry as *mut c_void);
+    |         ^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/inet_connection_sock/src/lib.rs:274:51
+    |
+274 |                         && (*sk2).sk_reuseport != ptr::null()
+    |                                                   ^^^^^^^^^^^ types differ in mutability
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*const _`
+
+error[E0609]: no field `sk_reuseport_cb` on type `sock`
+   --> crates/inet_connection_sock/src/lib.rs:275:53
+    |
+275 |                         && rcu_access_pointer((*sk).sk_reuseport_cb).is_null()
+    |                                                     ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+275 -                         && rcu_access_pointer((*sk).sk_reuseport_cb).is_null()
+275 +                         && rcu_access_pointer((*sk).sk_reuseport).is_null()
+    |
+
+warning: `ip6mr` (lib) generated 25 warnings
+error: could not compile `ip6mr` (lib) due to 9 previous errors; 25 warnings emitted
+error[E0599]: no method named `is_null` found for enum `Option<T>` in the current scope
+   --> crates/inet_connection_sock/src/lib.rs:275:70
+    |
+275 |                         && rcu_access_pointer((*sk).sk_reuseport_cb).is_null()
+    |                                                                      ^^^^^^^ method not found in `Option<*mut _>`
+
+error[E0609]: no field `sk_reuseport_cb` on type `sock`
+   --> crates/inet_connection_sock/src/lib.rs:284:45
+    |
+284 |                 || rcu_access_pointer((*sk).sk_reuseport_cb).is_some()
+    |                                             ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+284 -                 || rcu_access_pointer((*sk).sk_reuseport_cb).is_some()
+284 +                 || rcu_access_pointer((*sk).sk_reuseport).is_some()
+    |
+
+Some errors have detailed explanations: E0308, E0425.
+error[E0308]: mismatched types
+   --> crates/xfrm6_protocol/src/lib.rs:297:15
+    |
+297 |     callback: xfrm6_rcv_cb,
+    |               ^^^^^^^^^^^^ expected safe fn, found unsafe fn
+    |
+    = note: expected fn pointer `extern "C" fn(_, _, _) -> _`
+                  found fn item `unsafe extern "C" fn(_, _, _) -> _ {xfrm6_rcv_cb}`
+    = note: unsafe functions cannot be coerced into safe function pointers
+
+warning: unused variable: `sk`
+   --> crates/inet_connection_sock/src/lib.rs:218:26
+    |
+218 | unsafe fn ipv6_only_sock(sk: *const sock) -> bool {
+    |                          ^^ help: if this is intentional, prefix it with an underscore: `_sk`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `sk`
+   --> crates/inet_connection_sock/src/lib.rs:298:22
+    |
+298 | unsafe fn sock_i_uid(sk: *const sock) -> u32 {
+    |                      ^^ help: if this is intentional, prefix it with an underscore: `_sk`
+
+error[E0308]: mismatched types
+   --> crates/xfrm6_protocol/src/lib.rs:302:32
+    |
+302 |     xfrm_input_register_afinfo(&xfrm6_input_afinfo)
+    |     -------------------------- ^^^^^^^^^^^^^^^^^^^ types differ in mutability
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut xfrm_input_afinfo`
+                 found reference `&xfrm_input_afinfo`
+note: function defined here
+   --> crates/xfrm6_protocol/src/lib.rs:344:26
+    |
+344 | pub unsafe extern "C" fn xfrm_input_register_afinfo(afinfo: *mut xfrm_input_afinfo) -> c_int {
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^ ------------------------------
+
+error[E0308]: mismatched types
+   --> crates/xfrm6_protocol/src/lib.rs:307:34
+    |
+307 |     xfrm_input_unregister_afinfo(&xfrm6_input_afinfo)
+    |     ---------------------------- ^^^^^^^^^^^^^^^^^^^ types differ in mutability
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut xfrm_input_afinfo`
+                 found reference `&xfrm_input_afinfo`
+note: function defined here
+   --> crates/xfrm6_protocol/src/lib.rs:350:26
+    |
+350 | pub unsafe extern "C" fn xfrm_input_unregister_afinfo(afinfo: *mut xfrm_input_afinfo) {
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ------------------------------
+
+warning: unused variable: `skb`
+   --> crates/xfrm6_protocol/src/lib.rs:312:38
+    |
+312 | pub unsafe extern "C" fn icmpv6_send(skb: *mut c_void, _type: c_int, code: c_int, info: c_int) {
+    |                                      ^^^ help: if this is intentional, prefix it with an underscore: `_skb`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `code`
+   --> crates/xfrm6_protocol/src/lib.rs:312:70
+    |
+312 | pub unsafe extern "C" fn icmpv6_send(skb: *mut c_void, _type: c_int, code: c_int, info: c_int) {
+    |                                                                      ^^^^ help: if this is intentional, prefix it with an underscore: `_code`
+
+warning: unused variable: `info`
+   --> crates/xfrm6_protocol/src/lib.rs:312:83
+    |
+312 | pub unsafe extern "C" fn icmpv6_send(skb: *mut c_void, _type: c_int, code: c_int, info: c_int) {
+    |                                                                                   ^^^^ help: if this is intentional, prefix it with an underscore: `_info`
+
+warning: unused variable: `skb`
+   --> crates/xfrm6_protocol/src/lib.rs:317:36
+    |
+317 | pub unsafe extern "C" fn kfree_skb(skb: *mut c_void) {
+    |                                    ^^^ help: if this is intentional, prefix it with an underscore: `_skb`
+
+warning: unused variable: `proto`
+   --> crates/xfrm6_protocol/src/lib.rs:332:45
+    |
+332 | pub unsafe extern "C" fn inet6_add_protocol(proto: *mut inet6_protocol, protocol: u8) -> c_int {
+    |                                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_proto`
+
+Some errors have detailed explanations: E0124, E0308, E0599, E0609.
+warning: unused variable: `protocol`
+   --> crates/xfrm6_protocol/src/lib.rs:332:73
+    |
+332 | pub unsafe extern "C" fn inet6_add_protocol(proto: *mut inet6_protocol, protocol: u8) -> c_int {
+    |                                                                         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_protocol`
+
+For more information about an error, try `rustc --explain E0124`.
+warning: unused variable: `proto`
+   --> crates/xfrm6_protocol/src/lib.rs:338:45
+    |
+338 | pub unsafe extern "C" fn inet6_del_protocol(proto: *mut inet6_protocol, protocol: u8) -> c_int {
+    |                                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_proto`
+
+warning: unused variable: `protocol`
+   --> crates/xfrm6_protocol/src/lib.rs:338:73
+    |
+338 | pub unsafe extern "C" fn inet6_del_protocol(proto: *mut inet6_protocol, protocol: u8) -> c_int {
+    |                                                                         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_protocol`
+
+warning: unused variable: `afinfo`
+   --> crates/xfrm6_protocol/src/lib.rs:344:53
+    |
+344 | pub unsafe extern "C" fn xfrm_input_register_afinfo(afinfo: *mut xfrm_input_afinfo) -> c_int {
+    |                                                     ^^^^^^ help: if this is intentional, prefix it with an underscore: `_afinfo`
+
+warning: unused variable: `afinfo`
+   --> crates/xfrm6_protocol/src/lib.rs:350:55
+    |
+350 | pub unsafe extern "C" fn xfrm_input_unregister_afinfo(afinfo: *mut xfrm_input_afinfo) {
+    |                                                       ^^^^^^ help: if this is intentional, prefix it with an underscore: `_afinfo`
+
+error: could not compile `cipso_ipv4` (lib) due to 5 previous errors
+Some errors have detailed explanations: E0308, E0425, E0517, E0606, E0614, E0710.
+warning: `inet_connection_sock` (lib) generated 7 warnings
+error: could not compile `inet_connection_sock` (lib) due to 20 previous errors; 7 warnings emitted
+warning: `xfrm6_protocol` (lib) generated 14 warnings
+error: could not compile `xfrm6_protocol` (lib) due to 25 previous errors; 14 warnings emitted

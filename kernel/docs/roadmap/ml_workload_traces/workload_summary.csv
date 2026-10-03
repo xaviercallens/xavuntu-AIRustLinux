@@ -1,0 +1,3 @@
+workload,n,mean_syscalls,stdev_syscalls,min_syscalls,max_syscalls,mean_unique_syscalls,stable_syscall_count,variable_syscall_count,mean_wall_seconds,stdev_wall_seconds
+device_enum,10,35174.2,309.045052451005,34703,35594,84.5,84,1,6.0016568596,0.5463565254253961
+matmul_512x512,10,59022.7,534.8117114150238,58268,60153,84.8,84,2,7.8802754839,0.404280332783353

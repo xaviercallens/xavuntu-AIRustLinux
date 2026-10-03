@@ -1,0 +1,142 @@
+crate,loc,decision,merge_target,rationale
+anon_inodes,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_apic,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_boot_compressed,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_boot_header,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_cpu,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_fault,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_ioremap,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_process,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_signal,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+binfmt_elf,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+bitmap,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+block_dev,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+buffer,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+builtin,7,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+builtin_macros,2,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+char_dev,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+cmdline,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+compaction,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+crc32,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+ctype,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+devtmpfs,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+eventfd,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+exec_domain,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+fifo,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+init_calibrate,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+init_do_mounts,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+init_initramfs,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+init_mm,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+init_version,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+irq_chip,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+irq_handle,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+irq_manage,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+kasan,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+kfifo,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+klist,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+kobject,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+locks,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+memblock,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+mempool,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+migrate,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+mlock,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+module_core,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+mprotect,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+mremap,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+nf_log_syslog,8,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+notifier,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+oom_kill,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+page_io,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+page_owner,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+params,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+pipe,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+proc_base,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+proc_generic,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+radix_tree,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+rmap,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+security_commoncap,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+seq_file,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+signalfd,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+sysfs_dir,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+sysfs_file,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+time_alarmtimer,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+time_clocksource,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+time_hrtimer,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+time_ntp,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+time_posix_timers,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+time_timekeeping,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+time_timer,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+timerfd,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+util,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vfs_dcache,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vfs_file,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vfs_inode,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vfs_namei,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vfs_open,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vfs_read_write,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vfs_super,22,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+vmscan,23,REVIEW,,not covered by an explicit plan rule; needs human/T3 decision
+arch_entry,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+arch_irq,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+arch_pgtable,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+arch_tlb,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+arch_traps,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+driver_base_bus,24,MERGE,driver_base,plan rule: driver_base_* -> driver_base
+driver_base_class,24,MERGE,driver_base,plan rule: driver_base_* -> driver_base
+driver_base_driver,24,MERGE,driver_base,plan rule: driver_base_* -> driver_base
+driver_base_platform,24,MERGE,driver_base,plan rule: driver_base_* -> driver_base
+driver_block_core,22,MERGE,driver_block,plan rule: driver_block_* -> driver_block
+driver_block_genhd,22,MERGE,driver_block,plan rule: driver_block_* -> driver_block
+driver_block_partition,22,MERGE,driver_block,plan rule: driver_block_* -> driver_block
+driver_char_mem,22,MERGE,driver_char,plan rule: driver_char_* -> driver_char
+driver_char_random,22,MERGE,driver_char,plan rule: driver_char_* -> driver_char
+driver_tty_console,22,MERGE,driver_tty,plan rule: driver_tty_* -> driver_tty
+driver_tty_core,22,MERGE,driver_tty,plan rule: driver_tty_* -> driver_tty
+driver_tty_vt,22,MERGE,driver_tty,plan rule: driver_tty_* -> driver_tty
+ext4_balloc,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+ext4_extents,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+ext4_file,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+ext4_inode,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+ext4_super,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+idr,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+ipc_mqueue,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+ipc_msg,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+ipc_sem,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+ipc_shm,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+kref,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+munmap,23,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+panic,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+percpu,23,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+rbtree,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+security_keyring,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+security_keys,22,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+softirq,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list
+swap,23,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+swapfile,23,REMOVE,,named in plan section 3.2.4 out-of-scope list (ext4_*/ipc_*/swap*/security_key*)
+sys_access,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_brk,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_chdir,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_close,22,IMPLEMENT,syscall_table,named in plan section 3.2.4 boot-critical list
+sys_dup,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_exit,22,IMPLEMENT,syscall_table,named in plan section 3.2.4 boot-critical list
+sys_fcntl,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_fs,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_getpid,22,IMPLEMENT,syscall_table,named in plan section 3.2.4 boot-critical list
+sys_getuid,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_ioctl,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_ipc,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_kill,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_memory,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_munmap,22,IMPLEMENT,syscall_table,named in plan section 3.2.4 boot-critical list
+sys_open,22,IMPLEMENT,syscall_table,named in plan section 3.2.4 boot-critical list
+sys_pipe,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_process,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_read,22,IMPLEMENT,syscall_table,named in plan section 3.2.4 boot-critical list
+sys_signal,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_socket,24,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_stat,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_time,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_umask,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_wait,22,MERGE,syscall_table,plan rule: sys_* -> syscall_table
+sys_write,22,IMPLEMENT,syscall_table,named in plan section 3.2.4 boot-critical list
+time_tick,22,IMPLEMENT,,named in plan section 3.2.4 boot-critical list

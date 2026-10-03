@@ -1,0 +1,47 @@
+MIT License with Citation Requirement
+
+Copyright (c) 2024-2025 Xavier Callens
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+CITATION REQUIREMENT:
+Any academic publication, research paper, technical documentation, or
+derivative work that incorporates, references, or builds upon this Software
+must include a citation to:
+
+    Xavier Callens. "Rust Linux Mini Kernel - FFI-Compatible Rust Translation
+    of Linux Kernel Networking Stack." GitHub repository, 2024-2025.
+    https://github.com/xaviercallens/rust-linux-mini-kernel
+
+Publications should use an appropriate citation format for the relevant field
+(e.g., BibTeX, APA, IEEE).
+
+ATTRIBUTION REQUIREMENT:
+Derivative works must retain attribution to Xavier Callens as the original
+author in their README, documentation, or other prominent location.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+This project is a Rust translation of portions of the Linux kernel networking
+stack. The original Linux kernel is licensed under GPLv2. This Rust translation
+maintains compatibility with the original kernel's architecture while being
+provided under the MIT license for the Rust implementation code.
+
+Linux kernel copyright notices and GPL requirements apply to the original
+C implementations that this project translates from.

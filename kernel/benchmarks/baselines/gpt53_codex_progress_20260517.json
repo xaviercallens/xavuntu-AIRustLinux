@@ -1,0 +1,20 @@
+{
+  "model": "Azure OpenAI GPT-5.3-codex",
+  "deployment": "codex-compiler-20260517-084058",
+  "timestamp": "2026-05-17T07:20:00Z",
+  "status": "in_progress",
+  "elapsed_minutes": 36,
+  "total_modules": 121,
+  "modules_processed": 102,
+  "modules_remaining": 19,
+  "successful_modules": 30,
+  "failed_modules": 72,
+  "current_success_rate": 29.4,
+  "estimated_completion_time": "2026-05-17T14:44:00Z",
+  "notes": [
+    "Container running in Azure Container Instance",
+    "Processing with up to 3 retry attempts per module",
+    "Expected final success rate: 75-85% (90-109 modules)",
+    "Will create final baseline after completion"
+  ]
+}

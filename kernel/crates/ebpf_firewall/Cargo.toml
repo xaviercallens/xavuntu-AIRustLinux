@@ -1,0 +1,11 @@
+[package]
+name = "ebpf_firewall"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+ai_bridge = { path = "../ai_bridge" }
+
+[lib]
+crate-type = ["rlib"]

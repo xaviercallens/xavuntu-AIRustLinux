@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, its data, or its verification tooling, please cite the paper below."
+type: software
+title: "RunuX: Rust reimplementation of Linux kernel subsystems with Lean 4 specifications and AI-agent verification tooling"
+abstract: "A research testbed: Rust crates reimplementing Linux kernel subsystems, a Lean 4 specification tree, and open tooling (metrics ratchet, proof oracle, PR guard) that makes human and AI-agent contributions verifiable. Measured status is reported in the README; no production claims are made."
+authors:
+  - family-names: "Callens"
+    given-names: "Xavier"
+    affiliation: "Independent Researcher"
+repository-code: "https://github.com/xaviercallens/rust-linux-mini-kernel"
+url: "https://github.com/xaviercallens/rust-linux-mini-kernel"
+license: MIT
+version: "11.3.9"
+date-released: "2026-09-27"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22985926"
+    description: "Preprint and supporting data (Zenodo)"
+keywords:
+  - rust
+  - linux-kernel
+  - formal-verification
+  - lean-4
+  - memory-safety
+  - llm-agents
+  - reproducibility
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Callens"
+      given-names: "Xavier"
+      affiliation: "Independent Researcher"
+  title: "Claims vs. Evidence: A Measured Audit of an AI-Assisted Rust Kernel and an Oracle-Gated Workflow for LLM Proof Completion"
+  doi: "10.5281/zenodo.22985926"
+  year: 2026
+  publisher:
+    name: "Zenodo"

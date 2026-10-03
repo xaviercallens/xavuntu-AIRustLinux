@@ -1,0 +1,21 @@
+{
+  "id": "lean_sorry::MVK/Phase1/ArchSetup.lean::interrupts_disabled_after_init",
+  "type": "lean_sorry",
+  "file": "specs/lean4/MVK/Phase1/ArchSetup.lean",
+  "target": "theorem interrupts_disabled_after_init",
+  "line": 46,
+  "statement_hash": "3234ca3fbf2a981e",
+  "allowed_edits": [
+    "specs/lean4/MVK/Phase1/ArchSetup.lean"
+  ],
+  "hints": [
+    "try: simp [*]",
+    "try: omega",
+    "try: decide",
+    "try: aesop",
+    "try: induction on the relevant argument, then simp_all"
+  ],
+  "oracle": "scripts/check_unit.py --type lean_sorry --file specs/lean4/MVK/Phase1/ArchSetup.lean --theorem interrupts_disabled_after_init",
+  "max_attempts": 3,
+  "escalate_to": "T2"
+}

@@ -1,0 +1,20 @@
+[package]
+name = "riscv_qemu_harness"
+version = "0.1.0"
+edition = "2021"
+description = "RunuX RISC-V bare-metal boot harness for QEMU emulation testing"
+license = "MIT"
+
+[dependencies]
+kernel_types = { path = "../../crates/kernel_types" }
+runux_riscv64 = { path = "../../arch/riscv64" }
+
+[profile.dev]
+panic = "abort"
+opt-level = 0
+
+[profile.release]
+panic = "abort"
+opt-level = 3
+lto = "fat"
+codegen-units = 1

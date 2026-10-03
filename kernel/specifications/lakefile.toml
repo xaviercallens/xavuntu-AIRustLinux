@@ -1,0 +1,6 @@
+name = "specs"
+version = "0.1.0"
+defaultTargets = ["Specs"]
+
+[[lean_lib]]
+name = "Specs"

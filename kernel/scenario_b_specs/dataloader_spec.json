@@ -1,0 +1,296 @@
+{
+  "types": [
+    {
+      "cpp": "std::string",
+      "rust": "String",
+      "ownership": "owned",
+      "notes": "Rust strings are heap-allocated and owned."
+    },
+    {
+      "cpp": "std::vector<Flight>",
+      "rust": "Vec<Flight>",
+      "ownership": "owned",
+      "notes": "Rust vectors are heap-allocated and owned."
+    },
+    {
+      "cpp": "std::vector<Fare>",
+      "rust": "Vec<Fare>",
+      "ownership": "owned",
+      "notes": "Rust vectors are heap-allocated and owned."
+    },
+    {
+      "cpp": "std::set<std::string>",
+      "rust": "HashSet<String>",
+      "ownership": "owned",
+      "notes": "Rust hash sets are heap-allocated and owned."
+    },
+    {
+      "cpp": "std::chrono::milliseconds",
+      "rust": "Duration",
+      "ownership": "owned",
+      "notes": "Rust duration types are used for time intervals."
+    },
+    {
+      "cpp": "std::thread::sleep_for",
+      "rust": "thread::sleep",
+      "ownership": "static",
+      "notes": "Rust thread sleep is a static function."
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "static std::vector<Flight> flights_;",
+      "rust_pattern": "static FLIGHTS: OnceLock<Mutex<Vec<Flight>>> = OnceLock::new();",
+      "rationale": "Rust requires explicit initialization and thread safety for static data."
+    },
+    {
+      "cpp_pattern": "std::vector<Flight> filterFlights(const SearchRequest& req)",
+      "rust_pattern": "fn filter_flights(req: &SearchRequest) -> Vec<Flight>",
+      "rationale": "Rust references are used for immutable borrowing."
+    },
+    {
+      "cpp_pattern": "std::vector<Fare> filterFares(const SearchRequest& req)",
+      "rust_pattern": "fn filter_fares(req: &SearchRequest) -> Vec<Fare>",
+      "rationale": "Rust references are used for immutable borrowing."
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "bool DataLoader::init(const std::string& dataFile)",
+      "recovery": "returns false on failure",
+      "rust": "Result<(), Box<dyn Error>>"
+    },
+    {
+      "source": "bool DataLoader::loadFromFile(const std::string& filename)",
+      "recovery": "returns false on failure",
+      "rust": "Result<(), Box<dyn Error>>"
+    },
+    {
+      "source": "std::exception caught during price parsing",
+      "recovery": "LOG_WARNING and continue",
+      "rust": "Result<(), Box<dyn Error>>"
+    }
+  ],
+  "functions": [
+    {
+      "name": "init",
+      "pre": [
+        "DataLoader must not be initialized"
+      ],
+      "post": [
+        "DataLoader is initialized or returns false"
+      ],
+      "side_effects": [
+        "Static data initialization"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "load_data",
+      "pre": [
+        "DataLoader must be initialized"
+      ],
+      "post": [
+        "Returns LogicalEntity with relevant flights and fares"
+      ],
+      "side_effects": [
+        "Increments load count"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "is_initialized",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns initialization status"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "get_load_count",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns load count"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "reset_load_count",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Resets load count to 0"
+      ],
+      "side_effects": [
+        "Modifies static state"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "get_available_routes",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns list of available routes"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "get_dataset_summary",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns dataset summary as string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "load_from_file",
+      "pre": [
+        "File must exist"
+      ],
+      "post": [
+        "Loads data from file or returns false"
+      ],
+      "side_effects": [
+        "Modifies static state"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "filter_flights",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns filtered flights based on request"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "filter_fares",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns filtered fares based on request"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "validate_data_consistency",
+      "pre": [
+        "DataLoader must be initialized"
+      ],
+      "post": [
+        "Returns true if data is consistent, false otherwise"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n^2)"
+    },
+    {
+      "name": "create_sample_dataset",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Creates sample dataset"
+      ],
+      "side_effects": [
+        "Modifies static state"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "add_flights_for_route",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Adds flights for given route"
+      ],
+      "side_effects": [
+        "Modifies static state"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "add_fares_for_route",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Adds fares for given route"
+      ],
+      "side_effects": [
+        "Modifies static state"
+      ],
+      "complexity": "O(1)"
+    }
+  ],
+  "invariants": [
+    "Every flight has at least one matching fare (by carrier and route)",
+    "Same SearchRequest always returns the same LogicalEntity",
+    "LogicalEntity contains only flights/fares that match the request",
+    "All configured routes have at least one flight+fare combination",
+    "Deterministic output from load_data() based on input",
+    "No empty LogicalEntity is returned if a route is configured",
+    "Data consistency is enforced via validate_data_consistency()",
+    "Dataset is built deterministically via create_sample_dataset()"
+  ],
+  "concurrency": {
+    "thread_safety": "DataLoader's static state must be accessed in a thread-safe manner using Rust's Mutex and OnceLock.",
+    "shared_state": [
+      "FLIGHTS",
+      "FARES",
+      "INITIALIZED",
+      "LOAD_COUNT"
+    ]
+  },
+  "dependencies": [
+    "lazy_static",
+    "serde",
+    "chrono",
+    "thread",
+    "sync",
+    "collections",
+    "log",
+    "anyhow",
+    "Mutex",
+    "OnceLock",
+    "Result",
+    "Box<dyn Error>",
+    "Vec",
+    "String",
+    "HashSet",
+    "Duration"
+  ],
+  "raw_spec": "types:\n  - cpp: \"std::string\"\n    rust: \"String\"\n    ownership: \"owned\"\n    notes: \"Rust strings are heap-allocated and owned.\"\n  - cpp: \"std::vector<Flight>\"\n    rust: \"Vec<Flight>\"\n    ownership: \"owned\"\n    notes: \"Rust vectors are heap-allocated and owned.\"\n  - cpp: \"std::vector<Fare>\"\n    rust: \"Vec<Fare>\"\n    ownership: \"owned\"\n    notes: \"Rust vectors are heap-allocated and owned.\"\n  - cpp: \"std::set<std::string>\"\n    rust: \"HashSet<String>\"\n    ownership: \"owned\"\n    notes: \"Rust hash sets are heap-allocated and owned.\"\n  - cpp: \"std::chrono::milliseconds\"\n    rust: \"Duration\"\n    ownership: \"owned\"\n    notes: \"Rust duration types are used for time intervals.\"\n  - cpp: \"std::thread::sleep_for\"\n    rust: \"thread::sleep\"\n    ownership: \"static\"\n    notes: \"Rust thread sleep is a static function.\"\n\nownership:\n  - cpp_pattern: \"static std::vector<Flight> flights_;\"\n    rust_pattern: \"static FLIGHTS: OnceLock<Mutex<Vec<Flight>>> = OnceLock::new();\"\n    rationale: \"Rust requires explicit initialization and thread safety for static data.\"\n  - cpp_pattern: \"std::vector<Flight> filterFlights(const SearchRequest& req)\"\n    rust_pattern: \"fn filter_flights(req: &SearchRequest) -> Vec<Flight>\"\n    rationale: \"Rust references are used for immutable borrowing.\"\n  - cpp_pattern: \"std::vector<Fare> filterFares(const SearchRequest& req)\"\n    rust_pattern: \"fn filter_fares(req: &SearchRequest) -> Vec<Fare>\"\n    rationale: \"Rust references are used for immutable borrowing.\"\n\nerror_paths:\n  - source: \"bool DataLoader::init(const std::string& dataFile)\"\n    recovery: \"returns false on failure\"\n    rust: \"Result<(), Box<dyn Error>>\"\n  - source: \"bool DataLoader::loadFromFile(const std::string& filename)\"\n    recovery: \"returns false on failure\"\n    rust: \"Result<(), Box<dyn Error>>\"\n  - source: \"std::exception caught during price parsing\"\n    recovery: \"LOG_WARNING and continue\"\n    rust: \"Result<(), Box<dyn Error>>\"\n\nfunctions:\n  - name: \"init\"\n    pre: [\"DataLoader must not be initialized\"]\n    post: [\"DataLoader is initialized or returns false\"]\n    side_effects: [\"Static data initialization\"]\n    complexity: \"O(n)\"\n  - name: \"load_data\"\n    pre: [\"DataLoader must be initialized\"]\n    post: [\"Returns LogicalEntity with relevant flights and fares\"]\n    side_effects: [\"Increments load count\"]\n    complexity: \"O(n)\"\n  - name: \"is_initialized\"\n    pre: [\"None\"]\n    post: [\"Returns initialization status\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n  - name: \"get_load_count\"\n    pre: [\"None\"]\n    post: [\"Returns load count\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n  - name: \"reset_load_count\"\n    pre: [\"None\"]\n    post: [\"Resets load count to 0\"]\n    side_effects: [\"Modifies static state\"]\n    complexity: \"O(1)\"\n  - name: \"get_available_routes\"\n    pre: [\"None\"]\n    post: [\"Returns list of available routes\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n)\"\n  - name: \"get_dataset_summary\"\n    pre: [\"None\"]\n    post: [\"Returns dataset summary as string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n)\"\n  - name: \"load_from_file\"\n    pre: [\"File must exist\"]\n    post: [\"Loads data from file or returns false\"]\n    side_effects: [\"Modifies static state\"]\n    complexity: \"O(n)\"\n  - name: \"filter_flights\"\n    pre: [\"None\"]\n    post: [\"Returns filtered flights based on request\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n)\"\n  - name: \"filter_fares\"\n    pre: [\"None\"]\n    post: [\"Returns filtered fares based on request\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n)\"\n  - name: \"validate_data_consistency\"\n    pre: [\"DataLoader must be initialized\"]\n    post: [\"Returns true if data is consistent, false otherwise\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n^2)\"\n  - name: \"create_sample_dataset\"\n    pre: [\"None\"]\n    post: [\"Creates sample dataset\"]\n    side_effects: [\"Modifies static state\"]\n    complexity: \"O(1)\"\n  - name: \"add_flights_for_route\"\n    pre: [\"None\"]\n    post: [\"Adds flights for given route\"]\n    side_effects: [\"Modifies static state\"]\n    complexity: \"O(1)\"\n  - name: \"add_fares_for_route\"\n    pre: [\"None\"]\n    post: [\"Adds fares for given route\"]\n    side_effects: [\"Modifies static state\"]\n    complexity: \"O(1)\"\n\ninvariants:\n  - \"Every flight has at least one matching fare (by carrier and route)\"\n  - \"Same SearchRequest always returns the same LogicalEntity\"\n  - \"LogicalEntity contains only flights/fares that match the request\"\n  - \"All configured routes have at least one flight+fare combination\"\n  - \"Deterministic output from load_data() based on input\"\n  - \"No empty LogicalEntity is returned if a route is configured\"\n  - \"Data consistency is enforced via validate_data_consistency()\"\n  - \"Dataset is built deterministically via create_sample_dataset()\"\n\nconcurrency:\n  thread_safety: \"DataLoader's static state must be accessed in a thread-safe manner using Rust's Mutex and OnceLock.\"\n  shared_state: [\"FLIGHTS\", \"FARES\", \"INITIALIZED\", \"LOAD_COUNT\"]\n\ndependencies:\n  - \"lazy_static\"\n  - \"serde\"\n  - \"chrono\"\n  - \"thread\"\n  - \"sync\"\n  - \"collections\"\n  - \"log\"\n  - \"anyhow\"\n  - \"Mutex\"\n  - \"OnceLock\"\n  - \"Result\"\n  - \"Box<dyn Error>\"\n  - \"Vec\"\n  - \"String\"\n  - \"HashSet\"\n  - \"Duration\""
+}

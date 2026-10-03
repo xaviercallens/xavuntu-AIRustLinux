@@ -1,0 +1,10 @@
+{
+  "git.commit": "7bd05bcc52c4eae132a5e613c20d3ecd8b3753a8",
+  "total": 741,
+  "by_type": {
+    "lean_sorry": 145,
+    "unsafe_safety": 563,
+    "static_mut": 0,
+    "placeholder_triage": 33
+  }
+}

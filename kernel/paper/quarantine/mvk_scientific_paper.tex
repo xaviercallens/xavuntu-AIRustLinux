@@ -1,0 +1,176 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\begin{document}
+
+\title{Beyond Legacy Abstractions: A Formally Verified, High-Performance Bare-Metal Rust Architecture (MVK)}
+
+\author{Xavier Callens}
+\affiliation{%
+  \institution{Independent Researcher}
+  \institution{SocrateAI Lab non profit organization (French loi 1901)}
+  \city{Mountain View}
+  \state{CA}
+  \country{USA}
+}
+\email{xavier@research.local}
+
+\begin{abstract}
+The transition from C-based monolithic operating systems to memory-safe languages has historically been hindered by the assumption of a mandatory performance penalty. This paper introduces the Minimum Viable Kernel (MVK) v9.1.0, a 64-bit bare-metal operating system architecture implemented entirely in Rust and mathematically proven via Lean 4 formal verification. We present empirical, hardware-level telemetry demonstrating that strict memory-safety guarantees do not sacrifice computational efficiency. In reality, the absence of pointer aliasing and the enforcement of deterministic lifetimes allow the LLVM backend to perform vectorization and layout optimizations that legacy C compilers cannot defensively attempt. On dedicated Google Cloud C2 bare-metal hardware, the MVK architecture reduced \texttt{mmap} allocation latency by 25.3\%, accelerated Page Fault handling by 12.2\%, and exhibited zero latency drift under sustained 2-hour loads, effectively shattering the established "safety-tax" paradigm.
+\end{abstract}
+
+\keywords{Operating Systems, Kernel Architecture, Rust, Lean 4, Formal Verification, Bare-Metal, Performance Evaluation}
+
+\maketitle
+
+% ============================================================================
+% QUARANTINE NOTICE -- added 2026-09-26, see docs/roadmap/PAPER_VERIFICATION_TODO.md
+% ============================================================================
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\small
+\textbf{QUARANTINED DRAFT --- Unverified Claims.} This document was withdrawn
+from active publication on 2026-09-26 pending independent verification. No
+reproducible benchmark artifact, dataset, or hardware access log was found in
+this repository to substantiate the specific empirical figures cited below
+(e.g.\ cycle counts, TFLOPS, acceleration factors, VRAM reductions). Some
+figures may originate from simulation modes
+(\texttt{scripts/run\_benchmarks.sh --simulate-*}) rather than the physical
+hardware named in the text. \textbf{Do not cite this document as a validated
+result.} See \texttt{docs/roadmap/PAPER\_VERIFICATION\_TODO.md} for the
+specific claims and what is needed to verify or retract each one.}}
+\end{center}
+\bigskip
+
+
+\section{Introduction}
+For over fifty years, the operating system kernel has been the exclusive domain of C and Assembly. The intrinsic lack of memory safety in these languages is responsible for over 70\% of all severe security vulnerabilities in modern computing. While memory-safe languages like Rust have gained traction in user-space, the core kernel---where raw hardware interactions and interrupt contexts dominate---has remained largely untouched due to fears of runtime overhead and garbage collection penalties.
+
+The Minimum Viable Kernel (MVK) project challenges this limitation. By leveraging Rust's zero-cost abstractions, deterministic Drop semantics (RAII), and integrating Lean 4 formal theorem proving, we have architected a kernel that mathematically guarantees memory safety. This paper documents the architecture, the formal verification process, and an empirical performance comparison against a baseline Linux C-Kernel.
+
+\section{Methodology \& Reproducibility}
+To ensure absolute reproducibility and adherence to scientific peer-review standards, all benchmarks were conducted natively on Google Cloud Platform Compute-Optimized hardware (\texttt{c2-standard-4}, 4 vCPUs, 16GB RAM) rather than in hypervisor emulation.
+
+\subsection{The Baseline Equivalency}
+The benchmark compared the MVK native Rust APIs against the host Debian Linux Kernel (v6.1.0) acting as the C-kernel baseline. To guarantee a 1-to-1 execution comparison, the Rust benchmarking harness was written strictly using \texttt{\#![no\_std]} and inline assembly (\texttt{core::arch::asm!("syscall")}), purposefully avoiding the Rust \texttt{std} library or \texttt{libc} wrappers which would introduce user-space distortion.
+
+\subsection{Telemetry Collection}
+Performance metrics were captured utilizing the raw hardware Time Stamp Counter via the \texttt{rdtsc} \texttt{x86\_64} instruction. Each benchmark subsystem was subjected to between 100,000 and 1,000,000 iterations to ensure a stable CPU cache state and minimize noise.
+
+\section{Formal Verification via Lean 4}
+The foundation of the MVK is its cryptographic certainty. While the Rust borrow checker prevents unsafe aliasing, the logic underpinning our lock-free Atomic Reference Counting (\texttt{Arc}), ring buffers, and Page Table allocations was modeled and verified using the Lean 4 Theorem Prover.
+
+\begin{lstlisting}[language=Haskell]
+-- Example Lean 4 Theorem: Guaranteeing Page Table Positivity
+theorem page_alloc_safe (n : Nat) (h : n > 0) : allocate_pages n ~= null := by
+  -- Proof implementation ensuring memory allocator cannot return 
+  -- an invalid/null boundary during active constraints.
+  exact valid_heap_bound n h
+\end{lstlisting}
+
+This mathematical foundation ensures that the architectural optimizations discussed in Section 4 are sound and do not introduce race conditions. Under our 12-hour sustained fuzzing stress test, the C baseline exhibited \textbf{1.2 panics/hour} (due to memory compaction use-after-free bugs), while the formally verified MVK sustained a flawless \textbf{0.0 fault rate}.
+
+\section{Empirical Performance Results}
+
+\subsection{System Call and Context Boundaries}
+\begin{table}[h]
+\caption{System Call \& Boundary Latency (Cycles)}
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+Subsystem & C-Baseline & MVK Rust & Delta \\ \midrule
+Syscall Latency & 829 & \textbf{755} & Rust +8.9\% \\
+VFS Write & \textbf{954} & 994 & Stat. Tie \\
+IPC (Pipe R/W) & \textbf{2401} & 2428 & Stat. Tie \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Analysis:} Rust's pure \texttt{no\_std} inline assembly approach outpaced legacy POSIX C syscall structures. The strict data encapsulation allows efficient register packing during context swaps.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{mvk_optimization_graph.png}
+  \caption{MVK Architectural Optimization Gains (Before/After implementation of 5 optimizations)}
+\end{figure}
+
+
+\subsection{Memory Allocation and Fault Handling}
+\begin{table}[h]
+\caption{Memory Operations Latency (Cycles)}
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+Subsystem & C-Baseline & MVK Rust & Delta \\ \midrule
+Mem Alloc (mmap) & 10,240 & \textbf{7,652} & Rust +25.3\% \\
+Page Fault Latency & 20,093 & \textbf{17,648} & Rust +12.2\% \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Analysis:} Because the Rust compiler mathematically guarantees that mutable pointers do not alias, the LLVM optimizer is free to safely unroll allocation loops and aggressively vectorize memory-clearing routines (via AVX-512). A C compiler must assume pointers \textit{might} overlap, forcing defensive, sequential assembly sequences.
+
+\subsection{Long-Term Sustained Stability}
+During a 2-hour 100\% CPU load test, the C-kernel baseline suffered latency drift (48$\mu$s to 52$\mu$s) caused by SLAB allocator fragmentation. The MVK Rust kernel exhibited \textbf{perfect flatline stability (45$\mu$s)} over the entire 120-minute window. Rust's Resource Acquisition Is Initialization (RAII) and deterministic \texttt{Drop} semantics categorically prevent fragmentation entropy.
+
+\section{Architectural Improvements for V9.1}
+While Rust exceeded the baseline in memory and syscall throughput, it recorded a 26\% overhead penalty during standard thread swapping (109,116 cycles vs C's 80,548 cycles). This was isolated to the atomic overhead (\texttt{lock cmpxchg}) inherent to Rust's \texttt{Arc}.
+To secure complete superiority, the forthcoming V9.1 architecture is implementing:
+\begin{enumerate}
+    \item \textbf{Read-Copy-Update (RCU) Schedulers:} Replacing \texttt{Arc} with lock-free RCU primitives.
+    \item \textbf{io\_uring Equivalents:} Asynchronous ring-buffer submission queues to bypass IPC trap overheads.
+    \item \textbf{Kernel-Space AVX-512:} Utilizing 256-bit SIMD registers for zero-copy networking streams.
+\end{enumerate}
+
+\section{Conclusion}
+The Minimum Viable Kernel (MVK) provides incontrovertible empirical evidence: Formal memory safety is not an adversary to performance. By shifting validation from the runtime to the compiler via strong aliasing guarantees and Lean 4 theorem proving, the MVK unlocks hardware-level optimizations fundamentally unsafe to attempt in C architectures. The Rust kernel is demonstrably faster, more scalable, and entirely immune to fragmentation degradation.
+
+\begin{thebibliography}{10}
+
+\bibitem{CallensSecurity2026}
+X.~Callens. \emph{The Death of the Kernel Zero-Day: Mathematically Eliminating Spatial and Temporal Memory Vulnerabilities in Bare-Metal Architectures}. IEEE S\&P (Draft), 2026.
+
+\bibitem{CallensRunux2027}
+X.~Callens. \emph{RunuX: A Formally Verified, FFI-Compatible Rust Translation of the Linux Kernel Networking Stack}. ACM EuroSys '27, 2027.
+
+\bibitem{CallensRunuxAi2027}
+X.~Callens. \emph{RunuX-AI: A Unified, Memory-Safe Rust Runtime for High-Efficiency Federated LLM Execution across Edge RISC-V and Cloud Systolic TPUs}. MLSys '27, 2027.
+
+\bibitem{CallensSundials2026}
+X.~Callens. \emph{rusty-SUNDIALS: A Memory-Safe Rust Implementation of CVODE with Formally Verified Newton Convergence}. ACM TOMS, 2026.
+
+\bibitem{Matsakis2014}
+N.~D. Matsakis and F.~S. Klock~II. \emph{The Rust Language}. ACM SIGAda Ada Letters, 34(3), 2014.
+
+\bibitem{demoura2021}
+L.~de~Moura and S.~Ullrich. \emph{The Lean 4 Theorem Prover and Programming Language}. In \emph{CADE-28}, 2021.
+
+\bibitem{seL4_2009}
+G.~Klein et~al. \emph{seL4: Formal Verification of an OS Kernel}. SOSP '09, 2009.
+
+\end{thebibliography}
+
+\end{document}

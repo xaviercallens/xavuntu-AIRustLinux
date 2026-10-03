@@ -1,0 +1,172 @@
+{
+  "types": [
+    {
+      "cpp": "SearchRequest",
+      "rust": "struct SearchRequest",
+      "ownership": "owned",
+      "notes": "Contains search criteria like origin, destination, date"
+    },
+    {
+      "cpp": "SearchResults",
+      "rust": "struct SearchResults",
+      "ownership": "owned",
+      "notes": "Contains search results including itineraries and status"
+    },
+    {
+      "cpp": "Itinerary",
+      "rust": "struct Itinerary",
+      "ownership": "owned",
+      "notes": "Represents a flight itinerary with legs and pricing details"
+    },
+    {
+      "cpp": "Flight",
+      "rust": "struct Flight",
+      "ownership": "owned",
+      "notes": "Represents a single flight with origin, destination, time"
+    },
+    {
+      "cpp": "LogicalEntity",
+      "rust": "struct LogicalEntity",
+      "ownership": "owned",
+      "notes": "Contains collection of flights for a search"
+    },
+    {
+      "cpp": "CacheKey",
+      "rust": "struct CacheKey",
+      "ownership": "owned",
+      "notes": "Unique identifier for cache entries"
+    },
+    {
+      "cpp": "CacheManager",
+      "rust": "struct CacheManager",
+      "ownership": "Arc<CacheManager>",
+      "notes": "Singleton cache implementation"
+    },
+    {
+      "cpp": "Timer",
+      "rust": "struct Timer",
+      "ownership": "owned",
+      "notes": "Measures elapsed time"
+    },
+    {
+      "cpp": "SearchStatus",
+      "rust": "enum SearchStatus",
+      "ownership": "owned",
+      "notes": "Enumeration of possible search outcomes"
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "Static variables (searchCount_, cacheHitCount_, etc)",
+      "rust_pattern": "Arc<Mutex<Statistics>>",
+      "rationale": "Thread-safe access to shared counters"
+    },
+    {
+      "cpp_pattern": "References to SearchResults",
+      "rust_pattern": "Result<SearchStatus, Error>",
+      "rationale": "Return result instead of modifying by reference"
+    },
+    {
+      "cpp_pattern": "DataLoader and YamlDataLoader",
+      "rust_pattern": "Box<dyn DataLoader>",
+      "rationale": "Abstract over different data loading implementations"
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "std::exception",
+      "recovery": "Return Result with error",
+      "rust": "Result<SearchStatus, Error>"
+    },
+    {
+      "source": "PricingException",
+      "recovery": "Return Result with error",
+      "rust": "Result<SearchStatus, Error>"
+    }
+  ],
+  "functions": [
+    {
+      "name": "MP_Search",
+      "pre": [
+        "SearchRequest must be valid"
+      ],
+      "post": [
+        "SearchResults contains valid data or error"
+      ],
+      "side_effects": [
+        "Increments searchCount_",
+        "Updates cache statistics"
+      ],
+      "complexity": "O(n) where n is number of flights"
+    },
+    {
+      "name": "buildItineraries",
+      "pre": [
+        "LogicalEntity contains valid flights"
+      ],
+      "post": [
+        "Returns valid list of Itineraries"
+      ],
+      "side_effects": [
+        "Logs debug information"
+      ],
+      "complexity": "O(n) where n is number of flights"
+    },
+    {
+      "name": "priceItineraries",
+      "pre": [
+        "Valid Itinerary list"
+      ],
+      "post": [
+        "Itineraries contain pricing information"
+      ],
+      "side_effects": [
+        "Logs debug/error information"
+      ],
+      "complexity": "O(n) where n is number of itineraries"
+    },
+    {
+      "name": "sortByPrice",
+      "pre": [
+        "Valid Itinerary list"
+      ],
+      "post": [
+        "Itineraries sorted by price"
+      ],
+      "side_effects": [
+        "Logs debug information"
+      ],
+      "complexity": "O(n log n)"
+    },
+    {
+      "name": "limitResults",
+      "pre": [
+        "Valid Itinerary list"
+      ],
+      "post": [
+        "Itinerary list limited to maxItineraries_"
+      ],
+      "side_effects": [
+        "Logs debug information"
+      ],
+      "complexity": "O(1)"
+    }
+  ],
+  "invariants": [
+    "maxItineraries_ must be > 0",
+    "cacheHitCount_ + cacheMissCount_ == searchCount_"
+  ],
+  "concurrency": {
+    "thread_safety": "Functions are not thread-safe",
+    "shared_state": [
+      "searchCount_",
+      "cacheHitCount_",
+      "cacheMissCount_"
+    ]
+  },
+  "dependencies": [
+    "yaml-cpp (for YamlDataLoader)",
+    "boost (for Timer)"
+  ],
+  "raw_spec": "types:\n  - cpp: \"SearchRequest\"\n    rust: \"struct SearchRequest\"\n    ownership: \"owned\"\n    notes: \"Contains search criteria like origin, destination, date\"\n\n  - cpp: \"SearchResults\"\n    rust: \"struct SearchResults\"\n    ownership: \"owned\"\n    notes: \"Contains search results including itineraries and status\"\n\n  - cpp: \"Itinerary\"\n    rust: \"struct Itinerary\"\n    ownership: \"owned\"\n    notes: \"Represents a flight itinerary with legs and pricing details\"\n\n  - cpp: \"Flight\"\n    rust: \"struct Flight\"\n    ownership: \"owned\"\n    notes: \"Represents a single flight with origin, destination, time\"\n\n  - cpp: \"LogicalEntity\"\n    rust: \"struct LogicalEntity\"\n    ownership: \"owned\"\n    notes: \"Contains collection of flights for a search\"\n\n  - cpp: \"CacheKey\"\n    rust: \"struct CacheKey\"\n    ownership: \"owned\"\n    notes: \"Unique identifier for cache entries\"\n\n  - cpp: \"CacheManager\"\n    rust: \"struct CacheManager\"\n    ownership: \"Arc<CacheManager>\"\n    notes: \"Singleton cache implementation\"\n\n  - cpp: \"Timer\"\n    rust: \"struct Timer\"\n    ownership: \"owned\"\n    notes: \"Measures elapsed time\"\n\n  - cpp: \"SearchStatus\"\n    rust: \"enum SearchStatus\"\n    ownership: \"owned\"\n    notes: \"Enumeration of possible search outcomes\"\n\nownership:\n  - cpp_pattern: \"Static variables (searchCount_, cacheHitCount_, etc)\"\n    rust_pattern: \"Arc<Mutex<Statistics>>\"\n    rationale: \"Thread-safe access to shared counters\"\n\n  - cpp_pattern: \"References to SearchResults\"\n    rust_pattern: \"Result<SearchStatus, Error>\"\n    rationale: \"Return result instead of modifying by reference\"\n\n  - cpp_pattern: \"DataLoader and YamlDataLoader\"\n    rust_pattern: \"Box<dyn DataLoader>\"\n    rationale: \"Abstract over different data loading implementations\"\n\nerror_paths:\n  - source: \"std::exception\"\n    recovery: \"Return Result with error\"\n    rust: \"Result<SearchStatus, Error>\"\n\n  - source: \"PricingException\"\n    recovery: \"Return Result with error\"\n    rust: \"Result<SearchStatus, Error>\"\n\nfunctions:\n  - name: \"MP_Search\"\n    pre: [\"SearchRequest must be valid\"]\n    post: [\"SearchResults contains valid data or error\"]\n    side_effects: [\"Increments searchCount_\", \"Updates cache statistics\"]\n    complexity: \"O(n) where n is number of flights\"\n\n  - name: \"buildItineraries\"\n    pre: [\"LogicalEntity contains valid flights\"]\n    post: [\"Returns valid list of Itineraries\"]\n    side_effects: [\"Logs debug information\"]\n    complexity: \"O(n) where n is number of flights\"\n\n  - name: \"priceItineraries\"\n    pre: [\"Valid Itinerary list\"]\n    post: [\"Itineraries contain pricing information\"]\n    side_effects: [\"Logs debug/error information\"]\n    complexity: \"O(n) where n is number of itineraries\"\n\n  - name: \"sortByPrice\"\n    pre: [\"Valid Itinerary list\"]\n    post: [\"Itineraries sorted by price\"]\n    side_effects: [\"Logs debug information\"]\n    complexity: \"O(n log n)\"\n\n  - name: \"limitResults\"\n    pre: [\"Valid Itinerary list\"]\n    post: [\"Itinerary list limited to maxItineraries_\"]\n    side_effects: [\"Logs debug information\"]\n    complexity: \"O(1)\"\n\ninvariants:\n  - \"maxItineraries_ must be > 0\"\n  - \"cacheHitCount_ + cacheMissCount_ == searchCount_\"\n\nconcurrency:\n  thread_safety: \"Functions are not thread-safe\"\n  shared_state: [\"searchCount_\", \"cacheHitCount_\", \"cacheMissCount_\"]\n\ndependencies:\n  - \"yaml-cpp (for YamlDataLoader)\"\n  - \"boost (for Timer)\""
+}

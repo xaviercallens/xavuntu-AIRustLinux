@@ -1,0 +1,14 @@
+apiVersion: v2
+name: mvk-benchmark
+description: Multi-pod MVK Rust Kernel performance and chaos testing suite
+type: application
+version: 1.0.0
+appVersion: "9.4.0"
+keywords:
+  - rust-kernel
+  - benchmark
+  - chaos-engineering
+  - qemu
+maintainers:
+  - name: Xavier Callens
+    url: https://github.com/xaviercallens

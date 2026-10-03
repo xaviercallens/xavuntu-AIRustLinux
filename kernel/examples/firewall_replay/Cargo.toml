@@ -1,0 +1,9 @@
+[package]
+name = "firewall_replay"
+version = "0.1.0"
+edition = "2021"
+description = "Replays real captured ML-workload syscall traces through the real (unmodified) ebpf_firewall::evaluate_syscall and ai_detector::evaluate_pid_event, offline, to measure false-positive behavior on known-benign traffic."
+
+[dependencies]
+ebpf_firewall = { path = "../../crates/ebpf_firewall" }
+ai_detector = { path = "../../crates/ai_detector" }

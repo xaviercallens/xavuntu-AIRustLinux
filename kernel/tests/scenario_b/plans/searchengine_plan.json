@@ -1,0 +1,14 @@
+{
+  "ownership_map": {},
+  "type_map": {},
+  "error_map": {},
+  "lifetime_annotations": [],
+  "trait_hierarchy": [],
+  "module_layout": {
+    "modules": {},
+    "reexports": []
+  },
+  "unsafe_justifications": [],
+  "crate_dependencies": [],
+  "thinking_trace": "```yaml\nownership_map:\n  SearchRequest: owned\n  SearchResults: Result<SearchStatus, Error>\n  Itinerary: owned\n  Flight: owned\n  LogicalEntity: owned\n  CacheKey: owned\n  CacheManager: Arc<CacheManager>\n  Timer: owned\n  SearchStatus: owned\n  Statistics: Arc<Mutex<Statistics>>\n  DataLoader: Box<dyn DataLoader>\n\ntype_map:\n  SearchEngine:\n    fields:\n      maxItineraries_: int\n      searchCount_: Arc<Mutex<int>>\n      cacheHitCount_: Arc<Mutex<int>>\n      cacheMissCount_: Arc<Mutex<int>>\n    methods:\n      MP_Search: Result<SearchStatus, Error>\n      buildItineraries: Vec<Itinerary>\n      priceItineraries: Result<(), Error>\n      sortByPrice: ()\n      limitResults: ()\n\nerror_map:\n  std::exception: Error\n  PricingException: Error\n\nlifetime_annotations:\n  buildItineraries:\n    params:\n      entity: 'a\n      req: 'b\n    return: Vec<Itinerary>\n  priceItineraries:\n    params:\n      itineraries: 'a\n      entity: 'b\n      req: 'c\n    return: Result<(), Error>\n\ntrait_hierarchy:\n  DataLoader:\n    methods:\n      loadData: Result<LogicalEntity, Error>\n      isInitialized: bool\n\nmodule_layout:\n  search_engine:\n    core:\n      search_engine.rs\n    data_loading:\n      data_loader.rs\n      yaml_data_loader.rs\n    caching:\n      cache_manager.rs\n    pricing:\n      pricing_engine.rs\n\nunsafe_justifications:\n  - \"Unsafe block used for initializing CacheManager singleton with proper synchronization\"\n\ncrate_dependencies:\n  yaml-cpp: 0.1\n  chrono: 0.4\n  thiserror: 1.0\n  parking_lot: 0.11\n```"
+}

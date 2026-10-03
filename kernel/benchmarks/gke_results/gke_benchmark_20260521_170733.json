@@ -1,0 +1,89 @@
+{
+  "timestamp": "2026-05-21T17:07:35.520229+00:00",
+  "platform": "GKE Standard (n2d-standard-8, Dataplane V2)",
+  "phases": {
+    "baseline": {
+      "boot_times_ms": {
+        "mvk-kernel-client-79f6fcd9c8-t96bw": 5003,
+        "mvk-kernel-server-7fbc598d97-mmlgv": 5004
+      },
+      "phase": "baseline",
+      "timestamp": "2026-05-21T17:00:35.814648+00:00"
+    },
+    "stress": {
+      "tcp_under_stress_gbps": 15.533709845845753,
+      "phase": "stress",
+      "timestamp": "2026-05-21T17:00:37.325956+00:00"
+    },
+    "chaos": {
+      "experiments": [
+        {
+          "name": "mvk-network-partition",
+          "duration_s": 45,
+          "panics": 0,
+          "pod_count": 2
+        },
+        {
+          "name": "mvk-network-delay",
+          "duration_s": 75,
+          "panics": 0,
+          "pod_count": 2
+        },
+        {
+          "name": "mvk-packet-loss",
+          "duration_s": 75,
+          "panics": 0,
+          "pod_count": 2
+        },
+        {
+          "name": "mvk-cpu-stress",
+          "duration_s": 75,
+          "panics": 0,
+          "pod_count": 2
+        },
+        {
+          "name": "mvk-memory-pressure",
+          "duration_s": 75,
+          "panics": 0,
+          "pod_count": 2
+        },
+        {
+          "name": "mvk-pod-kill",
+          "duration_s": 30,
+          "panics": 0,
+          "pod_count": 2
+        }
+      ],
+      "panics": 0,
+      "oops": 0,
+      "phase": "chaos",
+      "timestamp": "2026-05-21T17:07:33.832177+00:00"
+    }
+  },
+  "comparison": {
+    "boot_time_ms": {
+      "rust": 5004,
+      "c": 5003,
+      "delta_pct": 0.0,
+      "target": "\u2264105%",
+      "pass": true
+    },
+    "tcp_throughput_gbps": {
+      "rust": -1,
+      "c": -1,
+      "target": "\u226595% of C"
+    },
+    "chaos_panics": {
+      "rust": 0,
+      "c": -1,
+      "target": "0 panics",
+      "pass": true
+    },
+    "chaos_oops": {
+      "rust": 0,
+      "target": "0 oops",
+      "pass": true
+    }
+  },
+  "verdict": "PASS"
+}

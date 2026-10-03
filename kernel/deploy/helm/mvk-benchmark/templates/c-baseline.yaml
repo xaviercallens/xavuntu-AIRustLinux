@@ -1,0 +1,80 @@
+# ============================================================
+# C Baseline Kernel - For Rust vs C Comparison
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: c-baseline-server
+  labels:
+    app: c-baseline
+    role: server
+spec:
+  selector:
+    app: c-baseline
+    role: server
+  ports:
+    - name: iperf3
+      port: 5201
+      targetPort: 5201
+      protocol: TCP
+    - name: netperf
+      port: 12865
+      targetPort: 12865
+      protocol: TCP
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: c-baseline-server
+  labels:
+    app: c-baseline
+    role: server
+spec:
+  replicas: {{ .Values.benchmark.baselineReplicas }}
+  selector:
+    matchLabels:
+      app: c-baseline
+      role: server
+  template:
+    metadata:
+      labels:
+        app: c-baseline
+        role: server
+        kernel-type: c-linux
+    spec:
+      containers:
+        - name: c-baseline
+          image: "{{ .Values.baselineImage.repository }}:{{ .Values.baselineImage.tag }}"
+          imagePullPolicy: {{ .Values.baselineImage.pullPolicy }}
+          args: ["server"]
+          ports:
+            - containerPort: 5201
+              name: iperf3
+            - containerPort: 12865
+              name: netperf
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu | quote }}
+              memory: {{ .Values.resources.requests.memory | quote }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu | quote }}
+              memory: {{ .Values.resources.limits.memory | quote }}
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: results
+              mountPath: /mvk/results
+            - name: dev-kvm
+              mountPath: /dev/kvm
+      volumes:
+        - name: results
+          emptyDir: {}
+        - name: dev-kvm
+          hostPath:
+            path: /dev/kvm
+            type: CharDevice
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}

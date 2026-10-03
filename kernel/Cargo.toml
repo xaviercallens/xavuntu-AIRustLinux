@@ -1,0 +1,254 @@
+[workspace]
+resolver = "2"
+members = [
+    # Generated modules for v8.0.0
+    "crates/driver_nvme", 
+    "crates/driver_idpf",
+    "crates/vfs_inode",
+    "crates/vfs_dcache",
+    "crates/vfs_file",
+    "crates/vfs_namei",
+    "crates/vfs_open",
+    "crates/vfs_read_write",
+    "crates/vfs_super",
+    "crates/ext4_super",
+    "crates/ext4_inode",
+    "crates/ext4_file",
+    "crates/ext4_balloc",
+    "crates/ext4_extents",
+    "crates/proc_base",
+    "crates/proc_generic",
+    "crates/sysfs_dir",
+    "crates/sysfs_file",
+    "crates/devtmpfs",
+    "crates/buffer",
+    "crates/block_dev",
+    "crates/char_dev",
+    "crates/pipe",
+    "crates/fifo",
+    "crates/eventfd",
+    "crates/signalfd",
+    "crates/timerfd",
+    "crates/anon_inodes",
+    "crates/seq_file",
+    "crates/binfmt_elf",
+    "crates/exec_domain",
+    "crates/locks",
+    "crates/init_main",
+    "crates/init_calibrate",
+    "crates/init_initramfs",
+    "crates/init_do_mounts",
+    "crates/init_version",
+    "crates/arch_setup",
+    "crates/arch_cpu",
+    "crates/arch_apic",
+    "crates/arch_process",
+    "crates/arch_signal",
+    "crates/arch_traps",
+    "crates/arch_irq",
+    "crates/arch_fault",
+    "crates/arch_ioremap",
+    "crates/arch_pgtable",
+    "crates/arch_tlb",
+    "crates/arch_boot_compressed",
+    "crates/arch_boot_header",
+    "crates/arch_entry",
+    "crates/arch_syscall",
+    "crates/syscall_table",
+    "crates/sys_fs",
+    "crates/sys_process",
+    "crates/sys_memory",
+    "crates/sys_signal",
+    "crates/sys_time",
+    "crates/sys_ipc",
+    "crates/sys_socket",
+    "crates/sys_ioctl",
+    "crates/sys_fcntl",
+    "crates/sys_read",
+    "crates/sys_write",
+    "crates/sys_open",
+    "crates/sys_close",
+    "crates/sys_fork",
+    "crates/sys_exec",
+    "crates/sys_exit",
+    "crates/sys_wait",
+    "crates/sys_mmap",
+    "crates/sys_munmap",
+    "crates/sys_brk",
+    "crates/sys_getpid",
+    "crates/sys_getuid",
+    "crates/sys_kill",
+    "crates/sys_pipe",
+    "crates/sys_dup",
+    "crates/sys_chdir",
+    "crates/sys_stat",
+    "crates/sys_access",
+    "crates/sys_umask",
+    "crates/time_timekeeping",
+    "crates/time_timer",
+    "crates/time_hrtimer",
+    "crates/time_posix_timers",
+    "crates/time_clocksource",
+    "crates/time_tick",
+    "crates/time_alarmtimer",
+    "crates/time_ntp",
+    "crates/ipc_msg",
+    "crates/ipc_sem",
+    "crates/ipc_shm",
+    "crates/ipc_mqueue",
+    "crates/irq_handle",
+    "crates/irq_chip",
+    "crates/irq_manage",
+    "crates/softirq",
+    "crates/security_commoncap",
+    "crates/security_keys",
+    "crates/security_keyring",
+    "crates/printk",
+    "crates/panic",
+    "crates/module_core",
+    "crates/params",
+    "crates/driver_base_core",
+    "crates/driver_base_bus",
+    "crates/driver_base_class",
+    "crates/driver_base_driver",
+    "crates/driver_base_platform",
+    "crates/driver_block_core",
+    "crates/driver_block_genhd",
+    "crates/driver_block_partition",
+    "crates/driver_char_mem",
+    "crates/driver_char_random",
+    "crates/driver_tty_core",
+    "crates/driver_tty_console",
+    "crates/driver_tty_vt",
+    "crates/driver_pci_core",
+    "crates/driver_pci_access",
+    "crates/driver_pci_probe",
+    "crates/kobject",
+    "crates/kref",
+    "crates/klist",
+    "crates/idr",
+    "crates/radix_tree",
+    "crates/rbtree",
+    "crates/bitmap",
+    "crates/string",
+    "crates/ctype",
+    "crates/vsprintf",
+    "crates/cmdline",
+    "crates/crc32",
+    "crates/notifier",
+    "crates/kfifo",
+    "crates/*",
+    "examples/micro_kernel_demo",
+    "examples/qemu_harness",
+    "examples/riscv_qemu_harness",
+    "examples/aarch64_qemu_harness",
+    "examples/pci_probe_userspace",
+    "examples/firewall_replay",
+    "examples/edge_inference_demo",
+    # Memory Management modules
+    "crates/page_alloc",
+    "crates/slab",
+    "crates/vmalloc",
+    "crates/page_table",
+    "crates/slub",
+    "crates/mmap",
+    "crates/mprotect",
+    "crates/mremap",
+    "crates/mlock",
+    "crates/munmap",
+    "crates/memblock",
+    "crates/mempool",
+    "crates/percpu",
+    "crates/init_mm",
+    "crates/util",
+    "crates/swap",
+    "crates/swapfile",
+    "crates/page_io",
+    "crates/oom_kill",
+    "crates/kasan",
+    "crates/rmap",
+    "crates/vmscan",
+    "crates/migrate",
+    "crates/compaction",
+    "crates/page_owner",
+    # Process Management modules
+    "crates/fork",
+    "crates/sched_core",
+    "crates/sched_fair",
+    "crates/sched_idle",
+    "crates/sched_wait",
+    "crates/exit",
+    "crates/signal",
+    "crates/ptrace",
+    "crates/capability",
+    "crates/exec",
+    "crates/kthread",
+    "crates/workqueue",
+    "crates/taskstats",
+    "crates/cpuset",
+    "crates/cgroup",
+    "crates/kernel_tests",
+    "arch/riscv64",
+    "arch/aarch64",
+    # RISC-V AI/ML runtime crates (Phase 5A)
+    "crates/ai_runtime",
+    "crates/rvv_simd",
+    "crates/turbo_quant",
+    "crates/ai_bridge",
+    "crates/federated",
+    "crates/ebpf_firewall",
+    "crates/ai_detector",
+    "crates/immutable_logs",
+    "crates/gpu_types",
+    "crates/iommu_vtd",
+    "crates/gpu_memory",
+    "crates/drm_core",
+    "crates/gpu_ioctl",
+    "crates/gpu_scheduler",
+    "crates/gpu_gds",
+    "crates/quantum_ltn",
+    "crates/laya_firewall",
+    "crates/energy_scheduler",
+]
+
+[workspace.package]
+version = "10.7.0"
+edition = "2021"
+authors = ["Linux Kernel Contributors", "Socrate AI"]
+license = "GPL-2.0"
+
+[workspace.dependencies]
+libc = "0.2"
+
+[profile.dev]
+opt-level = 0
+panic = "abort"
+
+[profile.test]
+opt-level = 0
+panic = "abort"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[workspace.lints.rust]
+non_upper_case_globals = "allow"
+non_camel_case_types = "allow"
+non_snake_case = "allow"
+dead_code = "allow"
+unused_imports = "allow"
+unused_variables = "allow"
+unused_unsafe = "allow"
+unused_assignments = "allow"
+static_mut_refs = "allow"
+improper_ctypes = "allow"
+unused_must_use = "allow"
+
+[workspace.lints.clippy]
+missing_safety_doc = "allow"
+too_many_arguments = "allow"
+

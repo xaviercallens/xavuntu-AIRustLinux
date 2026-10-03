@@ -1,0 +1,92 @@
+# Azure Build Container for Rust Kernel Modules (With Code Baked In)
+# Includes Rust toolchain, Linux headers, benchmarking tools, AND workspace code
+
+FROM rust:1.82-slim-bookworm
+
+LABEL maintainer="rust-linux-mini-kernel"
+LABEL description="Build and test environment for Rust Linux kernel FFI modules with code included"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    g++ \
+    make \
+    pkg-config \
+    linux-headers-generic \
+    libclang-dev \
+    clang \
+    llvm \
+    git \
+    curl \
+    jq \
+    python3 \
+    python3-pip \
+    time \
+    perf-tools-unstable \
+    valgrind \
+    strace \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rust components
+RUN rustup component add rustfmt clippy rust-src
+RUN rustup target add x86_64-unknown-linux-gnu
+
+# Skip cargo tools due to edition2024 requirements in dependencies
+# hyperfine can be replaced with 'time' command for benchmarking
+
+# Install Python dependencies for analysis
+RUN pip3 install --no-cache-dir --break-system-packages \
+    pandas \
+    matplotlib \
+    seaborn \
+    numpy \
+    pytest
+
+# Set up workspace directory
+WORKDIR /workspace
+
+# Copy workspace code INTO the image
+# Note: Build context is the repository root, so paths are relative to that
+# Copy root workspace manifest
+COPY Cargo.toml ./Cargo.toml
+
+# Copy all crates
+COPY crates ./crates/
+
+# Copy helper scripts
+COPY clean_thinking_tags.sh ./clean_thinking_tags.sh
+COPY generate_cargo_tomls.sh ./generate_cargo_tomls.sh
+COPY remove_narrative_text.py ./remove_narrative_text.py
+COPY remove_think_tags.py ./remove_think_tags.py
+
+# Copy build scripts to /usr/local/bin
+COPY azure_build/build_all.sh /usr/local/bin/
+COPY azure_build/test_all.sh /usr/local/bin/
+COPY azure_build/benchmark_suite.sh /usr/local/bin/
+COPY azure_build/fix_common_issues.py /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/build_all.sh \
+    /usr/local/bin/test_all.sh \
+    /usr/local/bin/benchmark_suite.sh \
+    /usr/local/bin/fix_common_issues.py
+
+# Pre-fetch cargo dependencies (speeds up first build)
+# Allow this to fail gracefully if there are compilation issues
+RUN cargo fetch --manifest-path /workspace/Cargo.toml || true
+
+# Create results directory
+RUN mkdir -p /workspace/results
+
+# Environment variables
+ENV RUST_BACKTRACE=1
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+ENV RUSTFLAGS="-C target-cpu=native -C opt-level=3"
+ENV WORKSPACE_ROOT=/workspace
+ENV PARALLEL_JOBS=4
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD rustc --version || exit 1
+
+CMD ["/bin/bash"]

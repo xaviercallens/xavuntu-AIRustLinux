@@ -1,0 +1,95 @@
+{
+  "ownership_map": {
+    "std::map<std::string, YamlDataLoader::RouteData>": "Arc<HashMap<String, RouteData>>",
+    "bool": "owned",
+    "int": "owned",
+    "std::string": "owned",
+    "std::vector<std::string>": "owned",
+    "Flight": "owned",
+    "Fare": "owned",
+    "LogicalEntity": "owned"
+  },
+  "type_map": {
+    "std::map<std::string, YamlDataLoader::RouteData>": "std::collections::HashMap<String, RouteData>",
+    "bool": "bool",
+    "int": "i32",
+    "std::string": "String",
+    "std::vector<std::string>": "Vec<String>",
+    "Flight": "Flight",
+    "Fare": "Fare",
+    "LogicalEntity": "LogicalEntity"
+  },
+  "error_map": {
+    "YAML parsing errors": "Result<T, Box<dyn Error>>",
+    "File I/O errors": "Result<T, Box<dyn Error>>",
+    "Data validation errors": "Result<T, Box<dyn Error>>"
+  },
+  "lifetime_annotations": [
+    "&'static for Arc<Mutex<>> shared state to ensure thread safety",
+    "&'a for references to route data to ensure proper borrowing"
+  ],
+  "trait_hierarchy": [
+    {
+      "name": "YamlDataLoader",
+      "methods": [
+        "init",
+        "loadData",
+        "isInitialized",
+        "getLoadCount",
+        "resetLoadCount",
+        "getAvailableRoutes",
+        "getDatasetSummary",
+        "reloadData",
+        "updateFares",
+        "loadFlightsFromYaml",
+        "loadFaresFromYaml",
+        "parseFlightsFromRoute",
+        "parseFaresFromRoute",
+        "filterFlights",
+        "filterFares",
+        "validateDataConsistency",
+        "makeRouteKey"
+      ],
+      "supertraits": [
+        "Send",
+        "Sync"
+      ]
+    }
+  ],
+  "module_layout": {
+    "modules": {
+      "yaml_data_loader": [
+        "YamlDataLoader struct",
+        "RouteData struct",
+        "Flight struct",
+        "Fare struct",
+        "LogicalEntity struct",
+        "SearchRequest struct",
+        "parseFlightFromNode",
+        "parseFareFromNode",
+        "validateYamlStructure"
+      ],
+      "yaml_parsing_utils": [
+        "YamlParsingUtils"
+      ]
+    },
+    "reexports": [
+      "pub use yaml_data_loader::YamlDataLoader;",
+      "pub use yaml_data_loader::RouteData;",
+      "pub use yaml_data_loader::Flight;",
+      "pub use yaml_data_loader::Fare;",
+      "pub use yaml_data_loader::LogicalEntity;",
+      "pub use yaml_data_loader::SearchRequest;",
+      "pub use yaml_parsing_utils::YamlParsingUtils;"
+    ]
+  },
+  "unsafe_justifications": [
+    "None - all operations are safe with proper Arc<Mutex<>> usage"
+  ],
+  "crate_dependencies": [
+    "serde_yaml = '0.9.17'",
+    "log = '0.4.14'",
+    "chrono = '0.4.19'"
+  ],
+  "thinking_trace": "```yaml\nPLAN_START\nownership_map:\n  \"std::map<std::string, YamlDataLoader::RouteData>\": \"Arc<HashMap<String, RouteData>>\"\n  \"bool\": \"owned\"\n  \"int\": \"owned\"\n  \"std::string\": \"owned\"\n  \"std::vector<std::string>\": \"owned\"\n  \"Flight\": \"owned\"\n  \"Fare\": \"owned\"\n  \"LogicalEntity\": \"owned\"\n\ntype_map:\n  \"std::map<std::string, YamlDataLoader::RouteData>\": \"std::collections::HashMap<String, RouteData>\"\n  \"bool\": \"bool\"\n  \"int\": \"i32\"\n  \"std::string\": \"String\"\n  \"std::vector<std::string>\": \"Vec<String>\"\n  \"Flight\": \"Flight\"\n  \"Fare\": \"Fare\"\n  \"LogicalEntity\": \"LogicalEntity\"\n\nerror_map:\n  \"YAML parsing errors\": \"Result<T, Box<dyn Error>>\"\n  \"File I/O errors\": \"Result<T, Box<dyn Error>>\"\n  \"Data validation errors\": \"Result<T, Box<dyn Error>>\"\n\nlifetime_annotations:\n  - \"&'static for Arc<Mutex<>> shared state to ensure thread safety\"\n  - \"&'a for references to route data to ensure proper borrowing\"\n\ntrait_hierarchy:\n  - name: \"YamlDataLoader\"\n    methods:\n      - \"init\"\n      - \"loadData\"\n      - \"isInitialized\"\n      - \"getLoadCount\"\n      - \"resetLoadCount\"\n      - \"getAvailableRoutes\"\n      - \"getDatasetSummary\"\n      - \"reloadData\"\n      - \"updateFares\"\n      - \"loadFlightsFromYaml\"\n      - \"loadFaresFromYaml\"\n      - \"parseFlightsFromRoute\"\n      - \"parseFaresFromRoute\"\n      - \"filterFlights\"\n      - \"filterFares\"\n      - \"validateDataConsistency\"\n      - \"makeRouteKey\"\n    supertraits: [\"Send\", \"Sync\"]\n\nmodule_layout:\n  modules:\n    \"yaml_data_loader\":\n      - \"YamlDataLoader struct\"\n      - \"RouteData struct\"\n      - \"Flight struct\"\n      - \"Fare struct\"\n      - \"LogicalEntity struct\"\n      - \"SearchRequest struct\"\n      - \"parseFlightFromNode\"\n      - \"parseFareFromNode\"\n      - \"validateYamlStructure\"\n    \"yaml_parsing_utils\":\n      - \"YamlParsingUtils\"\n  reexports:\n    - \"pub use yaml_data_loader::YamlDataLoader;\"\n    - \"pub use yaml_data_loader::RouteData;\"\n    - \"pub use yaml_data_loader::Flight;\"\n    - \"pub use yaml_data_loader::Fare;\"\n    - \"pub use yaml_data_loader::LogicalEntity;\"\n    - \"pub use yaml_data_loader::SearchRequest;\"\n    - \"pub use yaml_parsing_utils::YamlParsingUtils;\"\n\nunsafe_justifications:\n  - \"None - all operations are safe with proper Arc<Mutex<>> usage\"\n\ncrate_dependencies:\n  - \"serde_yaml = '0.9.17'\"\n  - \"log = '0.4.14'\"\n  - \"chrono = '0.4.19'\"\nPLAN_END\n```"
+}

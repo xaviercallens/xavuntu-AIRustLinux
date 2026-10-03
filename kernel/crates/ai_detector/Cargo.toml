@@ -1,0 +1,15 @@
+[package]
+name = "ai_detector"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+ai_runtime = { path = "../ai_runtime" }
+rvv_simd = { path = "../rvv_simd" }
+ai_bridge = { path = "../ai_bridge" }
+ebpf_firewall = { path = "../ebpf_firewall" }
+immutable_logs = { path = "../immutable_logs" }
+
+[lib]
+crate-type = ["rlib"]

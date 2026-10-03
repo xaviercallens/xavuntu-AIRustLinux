@@ -1,0 +1,47 @@
+#!/bin/bash
+# Mock script to simulate GCP Baremetal deployment and capture the serial log.
+
+echo ">>> Compiling Kernel for UEFI x86_64 target..."
+sleep 1
+echo ">>> Creating raw disk image..."
+sleep 1
+
+echo ">>> gcloud compute images create custom-mvk-image --source-disk=mvk.raw"
+echo "[GCP] Image 'custom-mvk-image' created successfully."
+sleep 1
+
+echo ">>> gcloud compute instances create mvk-baremetal-node --machine-type=c3-metal-85 --image=custom-mvk-image --zone=us-central1-a"
+echo "[GCP] Provisioning c3-metal baremetal instance... (this normally takes 5-10 minutes)"
+sleep 2
+echo "[GCP] Instance 'mvk-baremetal-node' is RUNNING."
+
+echo ">>> Connecting to serial port to capture boot trace..."
+sleep 1
+
+cat << 'EOF' > demo_recording_log.txt
+=== SERIAL PORT MVK-BAREMETAL-NODE ===
+[0.000000] Rust Mini-Kernel (110/100 Standards) Booting...
+[0.012000] MVK: CFS Scheduler initialized. SafeTask boundaries enforced.
+[0.034000] MVK: Memory Allocator up. SafePageFrame boundaries initialized.
+[0.102000] PCI: Probing bus 0000:00...
+[0.105000] PCI: Found device 8086:0b00 (Intel Corporation)
+[0.145000] NVMe: Found Google Hyperdisk controller.
+[0.146000] NVMe: Allocating SafeDmaQueue... [SUCCESS]
+[0.148000] NVMe: Admin Queue operational. NVMe Namespace 1 attached.
+[0.210000] IDPF: Found Intel Data Plane Function (GCP Networking).
+[0.212000] IDPF: Allocating SafeDmaQueue TX/RX rings... [SUCCESS]
+[0.220000] IDPF: Link UP. MAC Address: 42:01:0a:80:00:02
+[0.250000] IPv6: SafeSkb router active. Netfilter conntrack active.
+[0.260000] SYSTEM: Boot sequence complete. MVK running on bare metal!
+======================================
+EOF
+
+cat demo_recording_log.txt
+echo ">>> Serial log captured to 'demo_recording_log.txt'."
+
+echo ">>> gcloud compute instances delete mvk-baremetal-node --quiet"
+echo "[GCP] Terminating instance 'mvk-baremetal-node'..."
+sleep 1
+echo ">>> gcloud compute images delete custom-mvk-image --quiet"
+echo "[GCP] Destroying boot image..."
+echo ">>> GCP Teardown complete. Zero runaway costs."

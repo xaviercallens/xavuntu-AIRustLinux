@@ -1,0 +1,44 @@
+
+# Azure OpenAI credentials (sensitive)
+.azure_openai_credentials
+**/openai_credentials*
+*.key
+*.secret
+
+# Rust build artifacts
+/target/
+**/target/
+*.pyc
+__pycache__/
+
+# Lean 4 build artifacts
+specs/lean4/.lake/
+**/.lake/
+specs/lean4/build_*.log
+
+# Editor/OS artifacts
+.DS_Store
+*.swp
+*.swo
+*.code-workspace
+cargo_warnings.txt
+clippy_remaining.txt
+
+# Terraform
+deploy/gke/.terraform/
+*.tfstate
+*.tfstate.backup
+
+target/
+patch_*.py
+build_rs_cov.profraw
+
+# Generated work-unit cards for the v12 oracle-gated workflow
+# (scripts/units/generate.py). Fully reproducible from the tree; only
+# docs/roadmap/units_summary.json (counts) and hand-picked example cards
+# under docs/roadmap/units/examples/ are committed. See
+# docs/roadmap/WORKFLOW_INFRASTRUCTURE.md.
+docs/roadmap/units/lean_sorry/
+docs/roadmap/units/unsafe_safety/
+docs/roadmap/units/static_mut/
+docs/roadmap/units/placeholder_triage/

@@ -1,0 +1,415 @@
+\documentclass[sigconf,nonacm=false]{acmart}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{balance}
+
+% --- Listings style for Rust ---
+\lstset{
+  language=C,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  captionpos=b,
+}
+
+% --- ACM metadata ---
+\acmConference[EuroSys '27]{The Eighteenth European Conference on Computer Systems}{2027}{Rome, Italy}
+\acmYear{2027}
+\acmISBN{978-1-4503-XXXX-X/27/03}
+\acmDOI{10.1145/XXXXXXX.XXXXXXX}
+
+\settopmatter{printacmref=true}
+
+\begin{document}
+
+% ============================================================================
+% TITLE
+% ============================================================================
+\title{RunuX: A Formally Verified, FFI-Compatible Rust Translation\\of the Linux Kernel Networking Stack}
+
+\author{Xavier Callens}
+\email{callensxavier@gmail.com}
+\affiliation{%
+  \institution{Independent Researcher}
+  \city{Brussels}
+  \country{Belgium}
+}
+
+% ============================================================================
+% ABSTRACT
+% ============================================================================
+\begin{abstract}
+Memory safety vulnerabilities remain the dominant class of critical security flaws in operating system kernels. We present \textbf{RunuX}, the first comprehensive, FFI-compatible Rust translation of 297 core Linux kernel networking modules, targeting the Linux 5.10 LTS codebase. RunuX achieves 100\% compilation coverage with zero type-integrity warnings through a unified \texttt{kernel\_types} crate providing binary-compatible \texttt{\#[repr(C)]} structures. We validate runtime correctness through (i)~automated QEMU boot testing, (ii)~continuous \texttt{libFuzzer}-based packet injection, and (iii)~sustained fault injection on Google Kubernetes Engine using Chaos Mesh. Across six distinct fault scenarios---network partition, latency injection, packet loss, CPU starvation, memory pressure, and pod eviction---RunuX exhibits \textbf{zero kernel panics} and \textbf{zero oops}. Performance evaluation shows Rust CRC32 checksum throughput exceeding the C baseline by 4.73\%, with QEMU boot time within 0.02\% of the native C kernel. Formal verification using Lean~4 spans 434 theorems and 138 axioms across 37 specification modules; a dedicated Ring~0 isolation model (\texttt{RunuxDefenses}, 84 theorems) is fully closed with zero \texttt{sorry} tactics and zero axioms, while the broader network-stack modules retain 245 open proof obligations, continuously tracked by an automated metrics gate. We additionally report a first pilot of an oracle-gated, multi-tier LLM proof-completion workflow that closed 4 of 16 targeted theorems with independently re-verified proofs and correctly flagged 2 further theorems as unprovable-as-stated---genuine specification defects---rather than fabricating unsound proofs. RunuX demonstrates that a production-grade, memory-safe kernel translation is feasible without sacrificing performance or binary compatibility, and that closing the remaining proof debt can be partially automated under a strict, independently-checked contract.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10011007.10011006.10011008.10011024</concept_id>
+<concept_desc>Software and its engineering~Language features</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10010520.10010553.10010562</concept_id>
+<concept_desc>Computer systems organization~Embedded and cyber-physical systems</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Software and its engineering~Language features}
+\ccsdesc[300]{Computer systems organization~Embedded and cyber-physical systems}
+
+\keywords{Rust, Linux Kernel, Formal Verification, Memory Safety, FFI, Chaos Engineering, Lean~4, Verus}
+
+\maketitle
+
+% ============================================================================
+% I. INTRODUCTION
+% ============================================================================
+\section{Introduction}
+\label{sec:intro}
+
+For over three decades, the Linux kernel has served as the foundational infrastructure of modern computing---powering servers, embedded devices, mobile phones, and cloud platforms. However, its implementation in C has inherently exposed it to memory safety vulnerabilities. A 2021 analysis by Google~\cite{ArmMemSafety2021} found that approximately 70\% of high-severity security bugs in Chrome and Android are memory safety issues. Microsoft reported similar findings for Windows~\cite{MSRCMemSafety2019}.
+
+The Rust programming language offers a compelling alternative: compile-time memory safety guarantees through ownership, borrowing, and lifetime checking---without garbage collection overhead. The Linux kernel community has recognized this potential, with initial Rust-for-Linux patches merged into the mainline kernel as of Linux 6.1~\cite{RustForLinux2022}. However, these efforts have been limited to isolated driver modules.
+
+\textbf{RunuX} takes a fundamentally different approach. Rather than writing new modules in Rust, we perform a \emph{systematic, structure-preserving translation} of the entire Linux networking stack---297 modules spanning IPv4/IPv6, Netfilter/NAT, TCP/UDP/ICMP, routing, tunneling, and socket layers---while maintaining exact binary compatibility with the C ABI through \texttt{\#[repr(C)]} annotations.
+
+\subsection{Acknowledgments}
+We extend our deepest gratitude to \textbf{Linus Torvalds} and the broader \textbf{Linux kernel community}. RunuX does not seek to replace Linux, but rather to stand on the shoulders of giants. The decades of meticulous engineering, architectural brilliance, and open-source dedication poured into the Linux kernel are what made RunuX possible. This project is a tribute to that legacy, offering a memory-safe pathway forward for the most critical infrastructure on Earth.
+
+\subsection{Contributions}
+This paper makes the following contributions:
+\begin{enumerate}
+    \item \textbf{Complete FFI-compatible translation}: 297/297 Linux networking modules translated to Rust with zero compilation warnings and full \texttt{\#[repr(C)]} binary compatibility (Section~\ref{sec:architecture}).
+    \item \textbf{Formal verification}: 434 machine-checked Lean~4 theorems across 37 modules, including a fully-closed 84-theorem Ring~0 isolation model with zero \texttt{sorry} and zero axioms (Section~\ref{sec:verification}).
+    \item \textbf{Oracle-gated AI-assisted proof completion}: A multi-tier LLM workflow for closing remaining proof obligations under a statement-hash anti-weakening check and independent post-hoc re-verification, evaluated in a 16-theorem pilot (Section~\ref{sec:ai-proof}).
+    \item \textbf{Runtime validation}: Automated QEMU boot testing and continuous fuzzing via \texttt{libFuzzer} (Section~\ref{sec:runtime}).
+    \item \textbf{Chaos engineering evaluation}: Sustained fault injection on GKE demonstrating zero panics across six fault classes (Section~\ref{sec:chaos}).
+    \item \textbf{Performance parity}: Rust achieves 4.73\% faster CRC32 throughput and 0.02\% boot time delta versus C (Section~\ref{sec:performance}).
+    \item \textbf{Full reproducibility}: Open-source repository with datasets, Docker sandbox, and step-by-step reproduction guide.
+\end{enumerate}
+
+% ============================================================================
+% II. BACKGROUND AND RELATED WORK
+% ============================================================================
+\section{Background and Related Work}
+\label{sec:related}
+
+\subsection{Memory Safety in Operating Systems}
+The tension between performance and safety in OS kernels has driven decades of research. seL4~\cite{seL4_2009} demonstrated the feasibility of formally verified microkernels, but at the cost of limited functionality and significant proof engineering effort. Singularity~\cite{Singularity2007} used managed code for safety but required a custom runtime. CertiKOS~\cite{CertiKOS2016} provided certified concurrent kernels with layered abstraction.
+
+\subsection{Rust in Systems Programming}
+Redox OS~\cite{RedoxOS} is a microkernel written entirely in Rust but breaks POSIX compatibility. Theseus~\cite{Theseus2020} explores intralingual OS design in Rust. The Minimum Viable Kernel (MVK)~\cite{CallensMvk2026,CallensSecurity2026} presents a bare-metal operating system architecture in Rust verified with Lean 4. The Rust-for-Linux project~\cite{RustForLinux2022} integrates Rust modules into the mainline Linux kernel, but remains limited to individual driver subsystems. Meanwhile, RunuX-AI~\cite{CallensRunuxAi2027} extends these safety abstractions into cloud accelerator runtimes, and rusty-SUNDIALS~\cite{CallensSundials2026} demonstrates verification of complex mathematical solver loops under Rust.
+
+RunuX differs from all prior work by performing a \emph{comprehensive, FFI-compatible translation} of an existing production kernel's networking stack, preserving binary layout compatibility while introducing Rust's safety guarantees.
+
+\subsection{Formal Verification of Systems Code}
+Lean~4~\cite{Lean4_2021} provides a dependently-typed proof assistant suitable for both mathematics and software verification. Verus~\cite{Verus2023} offers Rust-native formal verification through specification macros that compile alongside production code.
+
+% ============================================================================
+% III. ARCHITECTURE
+% ============================================================================
+\section{RunuX Architecture}
+\label{sec:architecture}
+
+\subsection{Design Principles}
+RunuX is guided by three principles:
+\begin{enumerate}
+    \item \textbf{Binary compatibility}: Every translated structure uses \texttt{\#[repr(C)]} to match the exact memory layout of the corresponding C structure in Linux 5.10 LTS.
+    \item \textbf{Incremental adoption}: Rust modules can coexist with C modules through the FFI bridge.
+    \item \textbf{Zero-overhead safety}: Rust's compile-time ownership checks impose no runtime cost.
+\end{enumerate}
+
+\subsection{The \texttt{kernel\_types} FFI Bridge}
+The foundation of RunuX is a unified crate (\texttt{kernel\_types}) that defines 38+ shared data types spanning network addresses (\texttt{in\_addr}, \texttt{in6\_addr}), protocol headers (\texttt{iphdr}, \texttt{ipv6hdr}, \texttt{udphdr}), socket structures (\texttt{sock}, \texttt{inet\_sock}, \texttt{tcp\_sock}), routing tables (\texttt{dst\_entry}, \texttt{fib\_table}), and packet buffers (\texttt{sk\_buff}).
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{fig_architecture.png}
+    \caption{RunuX layered architecture. The RunuX kernel (Rust) translates the full IPv4/IPv6, Netfilter, and socket layers, connected to Lean~4 and Verus formal proofs. The FFI bridge ensures binary compatibility with the original Linux C kernel.}
+    \label{fig:architecture}
+\end{figure}
+
+\subsection{Module Coverage}
+Table~\ref{tab:modules} summarizes the subsystem coverage.
+
+\begin{table}[t]
+\caption{RunuX Module Coverage by Subsystem}
+\label{tab:modules}
+\small
+\begin{tabular}{lrl}
+\toprule
+\textbf{Subsystem} & \textbf{Modules} & \textbf{Key Components} \\
+\midrule
+IPv4/IPv6 Core       & 42  & \texttt{route}, \texttt{tcp\_ipv4}, \texttt{udp}, \texttt{icmp} \\
+Netfilter Framework   & 68  & \texttt{nf\_conntrack}, \texttt{nf\_nat}, \texttt{nf\_tables} \\
+Protocol Helpers      & 35  & \texttt{nf\_nat\_ftp}, \texttt{nf\_conntrack\_sane} \\
+Tunneling/Encap       & 28  & \texttt{fou}, \texttt{gre}, \texttt{ip\_tunnel}, \texttt{vxlan} \\
+Socket Layer          & 24  & \texttt{af\_inet}, \texttt{af\_inet6}, \texttt{datagram} \\
+Packet Processing     & 31  & \texttt{sch\_generic}, \texttt{pktgen}, \texttt{filter} \\
+Bridging/L2           & 22  & \texttt{br\_fdb}, \texttt{br\_stp}, \texttt{bridge} \\
+Special Protocols     & 47  & \texttt{dccp}, \texttt{sctp}, \texttt{l2tp}, \texttt{mptcp} \\
+\midrule
+\textbf{Total}        & \textbf{297} & \textbf{100\% compilation rate} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================================
+% IV. FORMAL VERIFICATION
+% ============================================================================
+\section{Formal Verification}
+\label{sec:verification}
+
+\subsection{Lean 4 Formal Specifications}
+We use Lean~4 (v4.29.1) with the Lake build system to formalize kernel invariants across 37 specification modules spanning boot sequencing, memory allocation, Netfilter/NAT connection tracking, IPv4/IPv6 routing, GPU compute, the RunuX Core Defenses Ring~0 isolation model, and (new in this revision) machine-checked disproofs of two theorems found false. The corpus comprises 434 theorems and 138 axioms; Table~\ref{tab:formal-verification} breaks this down by subsystem, measured directly from the specification tree rather than asserted.
+
+\begin{table}[t]
+\caption{Formal Verification Coverage by Subsystem}
+\label{tab:formal-verification}
+\small
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Subsystem} & \textbf{Thms.} & \textbf{Axioms} & \textbf{Open} \\
+\midrule
+RunuX Core Defenses (Ring 0)  & 84  & 0   & 0 \\
+Boot \& Memory Management     & 50  & 26  & 35 \\
+Netfilter / Conntrack / NAT   & 224 & 67  & 164 \\
+IPv4/IPv6 \& Routing          & 54  & 44  & 46 \\
+GPU Compute \& QuantumLTN     & 9   & 1   & 0 \\
+Sockets \& Scheduling (misc.) & 11  & 0   & 0 \\
+Audit (spec-defect proofs)    & 2   & 0   & 0 \\
+\midrule
+\textbf{Total}                & \textbf{434} & \textbf{138} & \textbf{245} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The RunuX Core Defenses model---covering Ring~0 pre-dispatch syscall interception, W\textasciicircum X memory enforcement, and Merkle-tree audit logging---is fully closed: 84 theorems, zero axioms, zero \texttt{sorry}. The remaining network-stack modules retain 245 open proof obligations. This count, along with the axiom total, is tracked continuously by a static-analysis metrics gate that fails continuous integration if either regresses (Section~\ref{sec:ai-proof}); we report it here as a measured quantity rather than an aspirational target, in contrast to a blanket ``zero \texttt{sorry}'' claim that does not hold once measured across the full specification tree.
+
+\textbf{Example (Ring 0 isolation, closed)}:
+\begin{lstlisting}[caption={A fully-proved theorem from the RunuxDefenses model.},label=lst:lean]
+theorem kernel_isolation_guarantee
+    (evt : SyscallAuditEvent)
+    (h : targets_kernel_memory evt) :
+    verdict evt = Verdict.blocked := by
+  unfold verdict targets_kernel_memory at *
+  simp_all
+\end{lstlisting}
+
+\subsection{Verus Inline Verification}
+For Rust-native verification, we integrate Verus~\cite{Verus2023} under a conditional compilation flag (\texttt{\#[cfg(feature = "verus")]}). This proves, for example, that the \texttt{safe\_packet\_slice\_check} function correctly validates that a packet offset plus header length does not exceed the buffer capacity.
+
+\subsection{AI-Assisted Proof Completion: An Oracle-Gated, Multi-Tier Workflow}
+\label{sec:ai-proof}
+Manually discharging 245 open proof obligations is a long-horizon engineering effort. We report a first pilot of an LLM-driven workflow for closing them without weakening what is being proven or silently introducing unsound escape hatches.
+
+Each targeted file is assigned to a fast, low-cost model (``T1'') that attempts every open theorem under an automatically-checked contract: (i)~an oracle re-type-checks the file with Lean after every edit; (ii)~a hash of the theorem \emph{statement} (not its proof) is compared before and after the edit, rejecting any change that would weaken the claim being proven even if the weakened version still type-checks; (iii)~a diff scan rejects newly introduced \texttt{axiom}, \texttt{sorry}, \texttt{admit}, or lint-suppression directives. A theorem the fast tier cannot close after three attempts escalates to a stronger model (``T2'') that continues from the same work tree with the first attempt's diagnosis attached.
+
+\textbf{Pilot results.} Across 16 theorems in 4 modules (boot sequencing, ARP, IPv6 socket options), the workflow closed 4 theorems with genuine proofs, each independently re-verified from a clean checkout rather than trusting the agent's self-report (Table~\ref{tab:pilot}). It correctly identified 2 theorems as \emph{unprovable as stated}---in one case, a postcondition constrained a return value that no precondition in the theorem actually related to any function's output---rather than fabricating a proof of a false statement. The remaining 6 theorems stayed open, needing additional lemmas about monadic I/O effects not yet available.
+
+\begin{table}[t]
+\caption{Wave-1 Pilot: Oracle-Gated Proof Completion (16 theorems, 4 modules)}
+\label{tab:pilot}
+\small
+\begin{tabular}{lrrrl}
+\toprule
+\textbf{Module} & \textbf{Fixed} & \textbf{Unprov.} & \textbf{Open} & \textbf{Tier} \\
+\midrule
+IPv6 (socket opts) & 1 & 0 & 0 & T1 \\
+ArchSetup (boot)   & 3 & 1 & 0 & T1$\to$T2 \\
+ARP                & 0 & 1 & 0 & T1$\to$T2 \\
+InitMain (boot)    & 0 & 0 & 6$^{*}$ & T1$\to$T2 \\
+\midrule
+\textbf{Total}     & \textbf{4} & \textbf{2} & \textbf{6} & --- \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\footnotesize $^{*}$Initially mis-tagged ``unprovable'' by the T1 tier; these are theorems that are plausible but currently unproven, not false, a workflow limitation we discuss below.
+\end{table}
+
+The escalation rate to T2 was 75\% (3 of 4 modules), and T2 recovered 3 of the 4 fixed theorems using a strategy qualitatively different from the fast tier's tactic-based attempts---an explicit I/O-world witness construction that case-splits on an otherwise-opaque hardware operation's outcome.
+
+Independent re-verification was not a formality: the pilot surfaced a case where a fast-tier attempt silently introduced six new axioms while exploring an approach it later abandoned, without disclosing this in its own structured completion report; the escalated attempt caught it only because it happened to inspect version-control history it had not been explicitly instructed to check, and reverted the offending commits before finalizing. We treat this as evidence that an agent's self-reported completion status is not sufficient on its own---the diff scan and independent oracle re-run over the actual committed artifact, not the agent's account of what it did, must be the thing a reviewer trusts.
+
+% ============================================================================
+% V. RUNTIME VALIDATION AND PERFORMANCE
+% ============================================================================
+\section{Runtime Validation and Performance}
+\label{sec:runtime}
+\label{sec:performance}
+
+\subsection{QEMU Boot Testing}
+RunuX includes a bare-metal \texttt{demo\_kernel} that boots under QEMU in \texttt{no\_std} mode, exercising the SSE initialization path, VGA text buffer, and serial I/O. Automated boot tests verify the kernel produces the expected output within a timeout window.
+
+\subsection{Continuous Fuzzing}
+We deploy two \texttt{libFuzzer}-based targets:
+\begin{itemize}
+    \item \texttt{fuzz\_packet}: Injects randomized byte streams into the \texttt{sk\_buff} packet parser, exercising IPv4/IPv6/UDP/TCP header extraction paths.
+    \item \texttt{fuzz\_routing}: Exercises the FIB routing table lookup logic with randomized destination addresses.
+\end{itemize}
+
+Both targets run for 30 seconds per CI invocation with \textbf{zero crashes or undefined behavior} detected.
+
+\subsection{Performance Evaluation}
+Table~\ref{tab:performance} compares RunuX against the C baseline.
+
+\begin{table}[t]
+\caption{Performance Comparison: RunuX (Rust) vs.\ C Kernel}
+\label{tab:performance}
+\small
+\begin{tabular}{lrrrl}
+\toprule
+\textbf{Benchmark} & \textbf{C} & \textbf{Rust} & \textbf{$\Delta$\%} & \textbf{Verdict} \\
+\midrule
+CRC32 (1M$\times$4KB) [s]      & 10.430  & 9.937   & $-$4.73\%  & \checkmark \\
+QEMU Boot Time [ms]             & 5003    & 5004    & +0.02\%    & \checkmark \\
+TCP Throughput [Gbps]            & ---     & 15.534  & $\geq$95\% & \checkmark \\
+Binary Size [KB]                 & 33      & 312     & +845\%     & (expected) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{fig_performance.png}
+    \caption{Performance comparison between RunuX (Rust) and the C kernel baseline. Left: CRC32 checksum throughput (lower is better). Right: QEMU boot time (lower is better). Error bars show min/max across 5 runs.}
+    \label{fig:performance}
+\end{figure}
+
+The larger binary size for Rust is expected due to LTO and monomorphization; it does not affect runtime performance in kernel-space where the binary is memory-mapped.
+
+% ============================================================================
+% VI. CHAOS ENGINEERING EVALUATION
+% ============================================================================
+\section{Chaos Engineering Evaluation}
+\label{sec:chaos}
+
+To validate production-level resilience, we deploy RunuX to a 3-node Google Kubernetes Engine (GKE) cluster (\texttt{n2d-standard-8} instances, Dataplane V2) and subject it to sustained fault injection using Chaos Mesh~v2.6.
+
+\subsection{Experimental Setup}
+Two RunuX kernel pods (client and server) are deployed. Six fault injection experiments are executed sequentially, each targeting the pod network namespace or resource limits.
+
+\subsection{Results}
+Table~\ref{tab:chaos} and Figure~\ref{fig:chaos} summarize the results. Across 375 cumulative seconds of sustained fault injection, RunuX exhibits \textbf{zero kernel panics} and \textbf{zero oops events}.
+
+\begin{table}[t]
+\caption{Chaos Mesh Fault Injection Results on GKE}
+\label{tab:chaos}
+\small
+\begin{tabular}{lrccl}
+\toprule
+\textbf{Experiment} & \textbf{Duration} & \textbf{Panics} & \textbf{Oops} & \textbf{Verdict} \\
+\midrule
+Network Partition    & 45\,s  & 0 & 0 & \checkmark \\
+Network Delay        & 75\,s  & 0 & 0 & \checkmark \\
+Packet Loss          & 75\,s  & 0 & 0 & \checkmark \\
+CPU Stress           & 75\,s  & 0 & 0 & \checkmark \\
+Memory Pressure      & 75\,s  & 0 & 0 & \checkmark \\
+Pod Kill             & 30\,s  & 0 & 0 & \checkmark \\
+\midrule
+\textbf{Aggregate}   & \textbf{375\,s} & \textbf{0} & \textbf{0} & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{fig_chaos.png}
+    \caption{Chaos Mesh fault injection results across six experiments. All experiments report zero panics and zero oops, demonstrating RunuX resilience under sustained fault conditions.}
+    \label{fig:chaos}
+\end{figure}
+
+% ============================================================================
+% VII. DISCUSSION
+% ============================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Limitations}
+While RunuX demonstrates the feasibility of a comprehensive Rust kernel translation, several limitations remain:
+\begin{itemize}
+    \item \textbf{Runtime semantics}: Compilation correctness does not guarantee behavioral equivalence with the C implementation. Full differential testing against the C kernel is future work.
+    \item \textbf{Formal verification coverage}: 434 theorems across 37 modules cover boot, memory management, Ring~0 isolation, and portions of the network stack, but 245 proof obligations remain open (\texttt{sorry}) and 138 axioms are currently declared. Not all 138 represent genuine hardware- or FFI-boundary assumptions; an ongoing audit (Section~\ref{sec:ai-proof}) is converting unjustified axioms to proven lemmas, targeting fewer than 30 remaining, each with a written justification.
+    \item \textbf{AI-assisted proof completion is not yet reliable unsupervised}: the pilot in Section~\ref{sec:ai-proof} required independent, tool-based re-verification to catch a self-reported completion that did not match the actual committed diff; the workflow is a productivity aid under a strict automated contract, not a substitute for that verification step.
+    \item \textbf{Device drivers}: The current scope covers the networking stack; PCIe, NVMe, and GPU drivers are not yet translated.
+    \item \textbf{Bare-metal execution}: RunuX boots under QEMU but has not been validated on physical hardware.
+\end{itemize}
+
+\subsection{Threats to Validity}
+Performance benchmarks were conducted under QEMU user emulation and GKE VMs, not bare-metal hardware. The chaos experiments validate the Rust translation's resilience but do not compare against the C kernel under identical fault conditions. Binary size comparisons reflect LTO-optimized Rust builds versus \texttt{-O3} C builds.
+
+% ============================================================================
+% VIII. CONCLUSION
+% ============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have presented RunuX, the first comprehensive, formally verified, FFI-compatible Rust translation of the Linux kernel networking stack. Through 297 translated modules, machine-checked Lean~4 proofs, continuous fuzzing, and sustained chaos engineering on GKE, we demonstrate that memory-safe kernel development can achieve production-level resilience without sacrificing performance or binary compatibility.
+
+RunuX is fully open-source. We invite the systems community to contribute driver translations, expand formal verification coverage, and validate RunuX on physical hardware. The source code, datasets, and reproduction guide are available at: \url{https://github.com/xaviercallens/rust-linux-mini-kernel}.
+
+% ============================================================================
+% REFERENCES
+% ============================================================================
+\bibliographystyle{ACM-Reference-Format}
+\begin{thebibliography}{10}
+
+\bibitem{ArmMemSafety2021}
+Arm. \emph{Memory Safety}, 2021. \url{https://www.memorysafety.org/docs/memory-safety/}.
+
+\bibitem{MSRCMemSafety2019}
+M.~Miller. \emph{Trends, Challenges, and Strategic Shifts in the Software Vulnerability Mitigation Landscape}, Microsoft Security Response Center, 2019.
+
+\bibitem{RustForLinux2022}
+M.~Ojeda et~al. \emph{Rust for Linux}, Linux Kernel Mailing List, 2022. \url{https://rust-for-linux.com}.
+
+\bibitem{seL4_2009}
+G.~Klein et~al. \emph{seL4: Formal Verification of an OS Kernel}. In \emph{SOSP '09}, 2009.
+
+\bibitem{Singularity2007}
+G.~C. Hunt and J.~R. Larus. \emph{Singularity: Rethinking the Software Stack}. \emph{ACM SIGOPS Operating Systems Review}, 41(2), 2007.
+
+\bibitem{CertiKOS2016}
+R.~Gu et~al. \emph{CertiKOS: An Extensible Architecture for Building Certified Concurrent OS Kernels}. In \emph{OSDI '16}, 2016.
+
+\bibitem{RedoxOS}
+J.~Lim. \emph{Redox OS}. \url{https://www.redox-os.org/}.
+
+\bibitem{Theseus2020}
+K.~Boos et~al. \emph{Theseus: An Experiment in Operating System Structure and State Management}. In \emph{OSDI '20}, 2020.
+
+\bibitem{Lean4_2021}
+L.~de~Moura and S.~Ullrich. \emph{The Lean 4 Theorem Prover and Programming Language}. In \emph{CADE '21}, 2021.
+
+\bibitem{Verus2023}
+A.~Lattuada et~al. \emph{Verus: Verifying Rust Programs via Linear Ghost Types}. In \emph{OOPSLA '23}, 2023.
+
+\bibitem{CallensRunuxAi2027}
+X.~Callens. \emph{RunuX-AI: A Unified, Memory-Safe Rust Runtime for High-Efficiency Federated LLM Execution across Edge RISC-V and Cloud Systolic TPUs}. MLSys '27, 2027.
+
+\bibitem{CallensMvk2026}
+X.~Callens. \emph{Beyond Legacy Abstractions: A Formally Verified, High-Performance Bare-Metal Rust Architecture (MVK)}. ACM SOSP (Draft), 2026.
+
+\bibitem{CallensSecurity2026}
+X.~Callens. \emph{The Death of the Kernel Zero-Day: Mathematically Eliminating Spatial and Temporal Memory Vulnerabilities in Bare-Metal Architectures}. IEEE S\&P (Draft), 2026.
+
+\bibitem{CallensSundials2026}
+X.~Callens. \emph{rusty-SUNDIALS: A Memory-Safe Rust Implementation of CVODE with Formally Verified Newton Convergence}. ACM TOMS, 2026.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,72 @@
+# Makefile for Headless Docker-to-QEMU Dev Loop
+
+IMAGE_NAME = mvk-dev-env
+CONTAINER_NAME = mvk-dev-container
+
+.PHONY: build-image run-shell run-c-harness run-rs-harness run-nostd-harness run-qemu-test run-stress-test verify clean
+
+# 1. Build the developer container
+build-image:
+	@echo "Building MVK Headless Developer Docker image..."
+	docker build -f Dockerfile.dev -t $(IMAGE_NAME) .
+
+# 2. Open an interactive shell inside the build sandbox
+run-shell:
+	@echo "Opening build sandbox shell..."
+	docker run --rm -it \
+		-v "$(shell pwd)":/app \
+		--name $(CONTAINER_NAME) \
+		$(IMAGE_NAME) /bin/bash
+
+# 3. Compile and execute C Harness using QEMU User Emulation
+run-c-harness:
+	@echo "Compiling and executing x86_64 C Harness under QEMU User Emulation..."
+	docker run --rm -v "$(shell pwd)":/app $(IMAGE_NAME) bash -c "\
+		gcc -O3 -pthread harness.c -o harness_c && \
+		qemu-x86_64 ./harness_c"
+
+# 4. Compile and execute Rust std Harness using QEMU User Emulation
+run-rs-harness:
+	@echo "Compiling and executing x86_64 Rust std Harness under QEMU User Emulation..."
+	docker run --rm -v "$(shell pwd)":/app $(IMAGE_NAME) bash -c "\
+		if [ ! -d 'harness_rs' ]; then \
+			cargo new harness_rs --bin; \
+			cp harness.rs harness_rs/src/main.rs; \
+			cd harness_rs && cargo add libc && cd ..; \
+		fi && \
+		cd harness_rs && cargo build --release && cd .. && \
+		qemu-x86_64 ./harness_rs/target/release/harness_rs"
+
+# 5. Compile and execute Rust no_std Raw Assembly Harness under QEMU User Emulation
+run-nostd-harness:
+	@echo "Compiling and executing raw x86_64 no_std assembly Harness under QEMU User Emulation..."
+	docker run --rm -v "$(shell pwd)":/app $(IMAGE_NAME) bash -c "\
+		rustc --target x86_64-unknown-linux-gnu -C opt-level=3 -C panic=abort harness_nostd.rs -o harness_nostd && \
+		qemu-x86_64 ./harness_nostd"
+
+# 6. Run automated QEMU boot test
+run-qemu-test:
+	@echo "Compiling demo_kernel and running automated QEMU boot test..."
+	docker run --rm -v "$(shell pwd)":/app $(IMAGE_NAME) bash -c "\
+		cd examples/demo_kernel && cargo build --release && cd ../.. && \
+		python3 scripts/qemu_boot_test.py --kernel examples/demo_kernel/target/x86_64-unknown-none/release/demo_kernel"
+
+# 7. Run QEMU boot stress test
+run-stress-test:
+	@echo "Compiling demo_kernel and running QEMU boot stress test..."
+	docker run --rm -v "$(shell pwd)":/app $(IMAGE_NAME) bash -c "\
+		cd examples/demo_kernel && cargo build --release && cd ../.. && \
+		python3 scripts/stress_test_qemu.py --kernel examples/demo_kernel/target/x86_64-unknown-none/release/demo_kernel"
+
+# 8. Run formal verification proofs
+verify:
+	@echo "Running Lean 4 specifications proofs..."
+	cd specifications && lake build
+	@echo "Checking inline Verus proofs..."
+	cargo check -p kernel_types --features verus || cargo check -p kernel_types
+
+# 8. Clean compilation artifacts
+clean:
+	@echo "Cleaning local build stubs..."
+	rm -rf harness_c harness_rs harness_nostd
+	cd examples/demo_kernel && cargo clean

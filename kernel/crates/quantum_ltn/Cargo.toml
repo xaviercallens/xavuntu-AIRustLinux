@@ -1,0 +1,12 @@
+[package]
+name = "quantum_ltn"
+version = "0.1.0"
+edition = "2021"
+description = "WARS-Quantum-LTN: Fuzzy Logic Tensor Network Quantum Simulator"
+authors = ["Xavier Callens <xavier.callens@socrate.ai>"]
+
+[dependencies]
+turbo_quant = { path = "../turbo_quant" }
+kernel_types = { path = "../kernel_types" }
+sched_fair = { path = "../sched_fair" }
+ai_runtime = { path = "../ai_runtime" }

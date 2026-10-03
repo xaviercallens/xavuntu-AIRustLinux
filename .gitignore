@@ -1,0 +1,111 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Workflows (bypass PAT scope constraint)
+.github/
+*/.github/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking
+.mypy_cache/
+
+# ANSE runtime artifacts
+data/interactions.jsonl
+data/sleep_buffer.jsonl
+data/hidden_states/
+checkpoints/
+evolution_log.jsonl
+.scratchpad/
+adapters/
+training_runs/
+data/chroma*/
+mathlib_rag_db/
+test_mathlib_rag_db/
+
+# Secrets
+.env
+*.key
+
+# Docker
+*.tar
+
+# Jupyter (scratch)
+*.ipynb
+.ipynb_checkpoints/
+
+# Lean / Lake
+.lake/
+lake-packages/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Evolution Lab: duplicated or bulky run artifacts
+results/phase1_evolution_v2/
+results/phase1_evolution_run1_seed_ignored/traces_*.jsonl
+results/**/chroma/
+.claude/audit.log
+results/phase3_evolution/registry/run-20260921-080255/
+results/**/.lock
+
+# LaTeX build artifacts
+*.aux
+*.out
+*.log
+*.toc
+
+# Model weights & binaries
+*.safetensors
+*.bin
+*.pt
+# External clones
+external/
+
+# night_phase_runner exclusive lock (runtime artifact)
+.night_runner.lock
+
+# night runner per-run reports (artifacts, not state)
+docs/remediation/nightly_logs/
+
+# local-only security detail, never publish while the fix is open
+docs/remediation/SECURITY_PRIVATE.md
+
+# LaTeX build artifacts from scripts/phd_demo/build_paper.py
+papers/**/*.aux
+papers/**/*.log
+papers/**/*.out
+
+# Sage preparse output (regenerated on every `sage foo.sage` run)
+*.sage.py
+
+# v2 low-tier workflow environment (tools/setup_v2_env.sh)
+.venv-v2/
+
+# Data Lake Staging
+datalake_staging/
+
+# Local ANSE vector stores and runtime caches
+.anse/

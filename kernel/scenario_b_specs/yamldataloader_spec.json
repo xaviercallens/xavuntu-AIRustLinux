@@ -1,0 +1,330 @@
+{
+  "types": [
+    {
+      "cpp": "std::map<std::string, YamlDataLoader::RouteData>",
+      "rust": "std::sync::Arc<std::collections::HashMap<String, RouteData>>",
+      "ownership": "Arc",
+      "notes": "Concurrent access requires thread-safe reference counting"
+    },
+    {
+      "cpp": "bool",
+      "rust": "bool",
+      "ownership": "owned",
+      "notes": "Primitive type remains same"
+    },
+    {
+      "cpp": "int",
+      "rust": "i32",
+      "ownership": "owned",
+      "notes": "Primitive type remains same"
+    },
+    {
+      "cpp": "std::string",
+      "rust": "String",
+      "ownership": "owned",
+      "notes": "String type remains same"
+    },
+    {
+      "cpp": "std::vector<std::string>",
+      "rust": "Vec<String>",
+      "ownership": "owned",
+      "notes": "Vector type remains same"
+    },
+    {
+      "cpp": "Flight",
+      "rust": "Flight",
+      "ownership": "owned",
+      "notes": "Struct type remains same"
+    },
+    {
+      "cpp": "Fare",
+      "rust": "Fare",
+      "ownership": "owned",
+      "notes": "Struct type remains same"
+    },
+    {
+      "cpp": "LogicalEntity",
+      "rust": "LogicalEntity",
+      "ownership": "owned",
+      "notes": "Struct type remains same"
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "Static variables (routes_, initialized_, etc)",
+      "rust_pattern": "Arc<Mutex<>>",
+      "rationale": "Thread-safe access to shared state requires locking"
+    },
+    {
+      "cpp_pattern": "Heap allocated objects",
+      "rust_pattern": "Box<T>",
+      "rationale": "Rust uses Box for heap allocation"
+    },
+    {
+      "cpp_pattern": "References (&)",
+      "rust_pattern": "&",
+      "rationale": "Rust uses references for borrowing"
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "YAML parsing errors",
+      "recovery": "Return false",
+      "rust": "Result<T, E> where E = Box<dyn Error>>"
+    },
+    {
+      "source": "File I/O errors",
+      "recovery": "Return false",
+      "rust": "Result<T, E> where E = Box<dyn Error>>"
+    },
+    {
+      "source": "Data validation errors",
+      "recovery": "Return false",
+      "rust": "Result<T, E> where E = Box<dyn Error>>"
+    }
+  ],
+  "functions": [
+    {
+      "name": "init",
+      "pre": [
+        "flightsYaml and faresYaml are valid file paths"
+      ],
+      "post": [
+        "initialized_ is set to true if successful"
+      ],
+      "side_effects": [
+        "Modifies static variables"
+      ],
+      "complexity": "O(n) where n is number of routes"
+    },
+    {
+      "name": "loadData",
+      "pre": [
+        "initialized_ must be true"
+      ],
+      "post": [
+        "Returns LogicalEntity with filtered data"
+      ],
+      "side_effects": [
+        "Modifies loadCount_"
+      ],
+      "complexity": "O(n) where n is number of flights and fares"
+    },
+    {
+      "name": "isInitialized",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns current initialization state"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "getLoadCount",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns current load count"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "resetLoadCount",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Resets load count to 0"
+      ],
+      "side_effects": [
+        "Modifies loadCount_"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "getAvailableRoutes",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns vector of route keys"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of routes"
+    },
+    {
+      "name": "getDatasetSummary",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns string summary of dataset"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of routes"
+    },
+    {
+      "name": "reloadData",
+      "pre": [
+        "flightsFilePath_ and faresFilePath_ are set"
+      ],
+      "post": [
+        "Reloads data from YAML files"
+      ],
+      "side_effects": [
+        "Modifies static variables"
+      ],
+      "complexity": "O(n) where n is number of routes"
+    },
+    {
+      "name": "updateFares",
+      "pre": [
+        "initialized_ must be true"
+      ],
+      "post": [
+        "Updates fares for given route and date"
+      ],
+      "side_effects": [
+        "Modifies routes_"
+      ],
+      "complexity": "O(n) where n is number of fares"
+    },
+    {
+      "name": "loadFlightsFromYaml",
+      "pre": [
+        "filename is valid"
+      ],
+      "post": [
+        "Loads flights from YAML file"
+      ],
+      "side_effects": [
+        "Modifies routes_"
+      ],
+      "complexity": "O(n) where n is number of flights"
+    },
+    {
+      "name": "loadFaresFromYaml",
+      "pre": [
+        "filename is valid"
+      ],
+      "post": [
+        "Loads fares from YAML file"
+      ],
+      "side_effects": [
+        "Modifies routes_"
+      ],
+      "complexity": "O(n) where n is number of fares"
+    },
+    {
+      "name": "parseFlightsFromRoute",
+      "pre": [
+        "routeNode contains valid data"
+      ],
+      "post": [
+        "Parses flights from route node"
+      ],
+      "side_effects": [
+        "Modifies routes_"
+      ],
+      "complexity": "O(n) where n is number of flights"
+    },
+    {
+      "name": "parseFaresFromRoute",
+      "pre": [
+        "routeNode contains valid data"
+      ],
+      "post": [
+        "Parses fares from route node"
+      ],
+      "side_effects": [
+        "Modifies routes_"
+      ],
+      "complexity": "O(n) where n is number of fares"
+    },
+    {
+      "name": "filterFlights",
+      "pre": [
+        "SearchRequest is valid"
+      ],
+      "post": [
+        "Returns filtered flights"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of flights"
+    },
+    {
+      "name": "filterFares",
+      "pre": [
+        "SearchRequest is valid"
+      ],
+      "post": [
+        "Returns filtered fares"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of fares"
+    },
+    {
+      "name": "validateDataConsistency",
+      "pre": [
+        "routes_ contains loaded data"
+      ],
+      "post": [
+        "Validates dataset consistency"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n^2) where n is number of routes"
+    },
+    {
+      "name": "makeRouteKey",
+      "pre": [
+        "origin and destination are valid"
+      ],
+      "post": [
+        "Returns route key string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    }
+  ],
+  "invariants": [
+    "After initialization, routes_ must contain valid data",
+    "loadCount_ must be incremented on each loadData call",
+    "fares and flights must have matching carriers"
+  ],
+  "concurrency": {
+    "thread_safety": "Implementation uses Arc<Mutex<>> for thread-safe access to shared state",
+    "shared_state": [
+      "routes_",
+      "initialized_",
+      "loadCount_",
+      "flightsFilePath_",
+      "faresFilePath_"
+    ]
+  },
+  "dependencies": [
+    "serde_yaml for YAML parsing",
+    "log for logging",
+    "chrono for timing"
+  ],
+  "raw_spec": "types:\n  - cpp: \"std::map<std::string, YamlDataLoader::RouteData>\"\n    rust: \"std::sync::Arc<std::collections::HashMap<String, RouteData>>\"\n    ownership: \"Arc\"\n    notes: \"Concurrent access requires thread-safe reference counting\"\n\n  - cpp: \"bool\"\n    rust: \"bool\"\n    ownership: \"owned\"\n    notes: \"Primitive type remains same\"\n\n  - cpp: \"int\"\n    rust: \"i32\"\n    ownership: \"owned\"\n    notes: \"Primitive type remains same\"\n\n  - cpp: \"std::string\"\n    rust: \"String\"\n    ownership: \"owned\"\n    notes: \"String type remains same\"\n\n  - cpp: \"std::vector<std::string>\"\n    rust: \"Vec<String>\"\n    ownership: \"owned\"\n    notes: \"Vector type remains same\"\n\n  - cpp: \"Flight\"\n    rust: \"Flight\"\n    ownership: \"owned\"\n    notes: \"Struct type remains same\"\n\n  - cpp: \"Fare\"\n    rust: \"Fare\"\n    ownership: \"owned\"\n    notes: \"Struct type remains same\"\n\n  - cpp: \"LogicalEntity\"\n    rust: \"LogicalEntity\"\n    ownership: \"owned\"\n    notes: \"Struct type remains same\"\n\nownership:\n  - cpp_pattern: \"Static variables (routes_, initialized_, etc)\"\n    rust_pattern: \"Arc<Mutex<>>\"\n    rationale: \"Thread-safe access to shared state requires locking\"\n\n  - cpp_pattern: \"Heap allocated objects\"\n    rust_pattern: \"Box<T>\"\n    rationale: \"Rust uses Box for heap allocation\"\n\n  - cpp_pattern: \"References (&)\"\n    rust_pattern: \"&\"\n    rationale: \"Rust uses references for borrowing\"\n\nerror_paths:\n  - source: \"YAML parsing errors\"\n    recovery: \"Return false\"\n    rust: \"Result<T, E> where E = Box<dyn Error>>\"\n\n  - source: \"File I/O errors\"\n    recovery: \"Return false\"\n    rust: \"Result<T, E> where E = Box<dyn Error>>\"\n\n  - source: \"Data validation errors\"\n    recovery: \"Return false\"\n    rust: \"Result<T, E> where E = Box<dyn Error>>\"\n\nfunctions:\n  - name: \"init\"\n    pre: [\"flightsYaml and faresYaml are valid file paths\"]\n    post: [\"initialized_ is set to true if successful\"]\n    side_effects: [\"Modifies static variables\"]\n    complexity: \"O(n) where n is number of routes\"\n\n  - name: \"loadData\"\n    pre: [\"initialized_ must be true\"]\n    post: [\"Returns LogicalEntity with filtered data\"]\n    side_effects: [\"Modifies loadCount_\"]\n    complexity: \"O(n) where n is number of flights and fares\"\n\n  - name: \"isInitialized\"\n    pre: [\"None\"]\n    post: [\"Returns current initialization state\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"getLoadCount\"\n    pre: [\"None\"]\n    post: [\"Returns current load count\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"resetLoadCount\"\n    pre: [\"None\"]\n    post: [\"Resets load count to 0\"]\n    side_effects: [\"Modifies loadCount_\"]\n    complexity: \"O(1)\"\n\n  - name: \"getAvailableRoutes\"\n    pre: [\"None\"]\n    post: [\"Returns vector of route keys\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of routes\"\n\n  - name: \"getDatasetSummary\"\n    pre: [\"None\"]\n    post: [\"Returns string summary of dataset\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of routes\"\n\n  - name: \"reloadData\"\n    pre: [\"flightsFilePath_ and faresFilePath_ are set\"]\n    post: [\"Reloads data from YAML files\"]\n    side_effects: [\"Modifies static variables\"]\n    complexity: \"O(n) where n is number of routes\"\n\n  - name: \"updateFares\"\n    pre: [\"initialized_ must be true\"]\n    post: [\"Updates fares for given route and date\"]\n    side_effects: [\"Modifies routes_\"]\n    complexity: \"O(n) where n is number of fares\"\n\n  - name: \"loadFlightsFromYaml\"\n    pre: [\"filename is valid\"]\n    post: [\"Loads flights from YAML file\"]\n    side_effects: [\"Modifies routes_\"]\n    complexity: \"O(n) where n is number of flights\"\n\n  - name: \"loadFaresFromYaml\"\n    pre: [\"filename is valid\"]\n    post: [\"Loads fares from YAML file\"]\n    side_effects: [\"Modifies routes_\"]\n    complexity: \"O(n) where n is number of fares\"\n\n  - name: \"parseFlightsFromRoute\"\n    pre: [\"routeNode contains valid data\"]\n    post: [\"Parses flights from route node\"]\n    side_effects: [\"Modifies routes_\"]\n    complexity: \"O(n) where n is number of flights\"\n\n  - name: \"parseFaresFromRoute\"\n    pre: [\"routeNode contains valid data\"]\n    post: [\"Parses fares from route node\"]\n    side_effects: [\"Modifies routes_\"]\n    complexity: \"O(n) where n is number of fares\"\n\n  - name: \"filterFlights\"\n    pre: [\"SearchRequest is valid\"]\n    post: [\"Returns filtered flights\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of flights\"\n\n  - name: \"filterFares\"\n    pre: [\"SearchRequest is valid\"]\n    post: [\"Returns filtered fares\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of fares\"\n\n  - name: \"validateDataConsistency\"\n    pre: [\"routes_ contains loaded data\"]\n    post: [\"Validates dataset consistency\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n^2) where n is number of routes\"\n\n  - name: \"makeRouteKey\"\n    pre: [\"origin and destination are valid\"]\n    post: [\"Returns route key string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\ninvariants:\n  - \"After initialization, routes_ must contain valid data\"\n  - \"loadCount_ must be incremented on each loadData call\"\n  - \"fares and flights must have matching carriers\"\n\nconcurrency:\n  thread_safety: \"Implementation uses Arc<Mutex<>> for thread-safe access to shared state\"\n  shared_state: [\"routes_\", \"initialized_\", \"loadCount_\", \"flightsFilePath_\", \"faresFilePath_\"]\n\ndependencies:\n  - \"serde_yaml for YAML parsing\"\n  - \"log for logging\"\n  - \"chrono for timing\""
+}

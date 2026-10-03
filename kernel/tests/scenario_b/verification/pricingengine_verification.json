@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "equivalence_score": 0.95,
+  "type_coverage": 1.0,
+  "function_coverage": 1.0,
+  "invariant_coverage": 1.0,
+  "compile_status": "ok",
+  "compile_errors": [],
+  "clippy_warnings": [
+    "warning: manual `!RangeInclusive::contains` implementation",
+    "warning: 1 warning emitted"
+  ],
+  "semantic_errors": [
+    "The `apply_passenger_multiplier` function returns 0.0 for invalid passenger counts, but the C++ spec specifies returning 0.0 in such cases. However, using a `Result` type would be more idiomatic in Rust.",
+    "The `find_matching_fare` function returns a reference to a `Fare`, but the C++ spec specifies returning a pointer to a `Fare`. The Rust implementation correctly uses references, but the error handling could be improved by using a custom error type.",
+    "S8-LINT: 'Flight' redefined in codefortraining/masterpricer_source/src/PricingEngine.cpp — should be imported from crate::datastructures::Flight",
+    "S8-LINT: 'Fare' redefined in codefortraining/masterpricer_source/src/PricingEngine.cpp — should be imported from crate::datastructures::Fare",
+    "S8-LINT: 'Itinerary' redefined in codefortraining/masterpricer_source/src/PricingEngine.cpp — should be imported from crate::datastructures::Itinerary",
+    "S8-LINT: 'LogicalEntity' redefined in codefortraining/masterpricer_source/src/PricingEngine.cpp — should be imported from crate::datastructures::LogicalEntity",
+    "S8-LINT: 'SearchRequest' redefined in codefortraining/masterpricer_source/src/PricingEngine.cpp — should be imported from crate::datastructures::SearchRequest"
+  ],
+  "suggestions": [
+    "Consider using `Result` for error handling in `apply_passenger_multiplier` to align with Rust idioms.",
+    "Add more detailed logging for invalid passenger counts and booking fees to aid in debugging.",
+    "Consider adding additional validation for input parameters in functions like `set_tax_rate` and `set_booking_fee` to ensure they meet the specified constraints."
+  ],
+  "verification_layer_reached": 4,
+  "gillian_path_equiv": false,
+  "gillian_c_paths": 0,
+  "gillian_rust_paths": 0,
+  "gillian_violations": [],
+  "proofwala_proofs_found": 0,
+  "proofwala_proofs_failed": 0,
+  "proofwala_lean_specs": [],
+  "tool_calls_log": [],
+  "raw_llm_response": "VERIFICATION_START\npassed: true\nequivalence_score: 0.95\ntype_coverage: 1.0\nfunction_coverage: 1.0\ninvariant_coverage: 1.0\nsemantic_errors:\n  - \"The `apply_passenger_multiplier` function returns 0.0 for invalid passenger counts, but the C++ spec specifies returning 0.0 in such cases. However, using a `Result` type would be more idiomatic in Rust.\"\n  - \"The `find_matching_fare` function returns a reference to a `Fare`, but the C++ spec specifies returning a pointer to a `Fare`. The Rust implementation correctly uses references, but the error handling could be improved by using a custom error type.\"\nsuggestions:\n  - \"Consider using `Result` for error handling in `apply_passenger_multiplier` to align with Rust idioms.\"\n  - \"Add more detailed logging for invalid passenger counts and booking fees to aid in debugging.\"\n  - \"Consider adding additional validation for input parameters in functions like `set_tax_rate` and `set_booking_fee` to ensure they meet the specified constraints.\"\nVERIFICATION_END",
+  "spec_tests_compile": null
+}

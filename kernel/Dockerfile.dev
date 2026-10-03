@@ -1,0 +1,39 @@
+FROM debian:bookworm-slim
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install core build system and QEMU (both system and user-mode emulation)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    curl \
+    git \
+    qemu-system-x86 \
+    qemu-user \
+    qemu-user-static \
+    binfmt-support \
+    gdb-multiarch \
+    nasm \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rust toolchain via rustup
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Install cargo-fuzz using stable toolchain to avoid rustix nightly issues
+RUN rustup toolchain install stable && \
+    cargo +stable install cargo-fuzz
+
+# Configure specific nightly toolchain and bare-metal targets
+RUN rustup toolchain install nightly-2026-05-15 && \
+    rustup default nightly-2026-05-15 && \
+    rustup target add x86_64-unknown-none i686-unknown-linux-gnu
+
+WORKDIR /app
+
+# Enable Rust backtraces for diagnostics
+ENV RUST_BACKTRACE=1
+
+CMD ["/bin/bash"]

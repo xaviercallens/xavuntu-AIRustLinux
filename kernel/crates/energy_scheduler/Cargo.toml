@@ -1,0 +1,11 @@
+[package]
+name = "energy_scheduler"
+version = "0.1.0"
+edition = "2021"
+description = "Cyber-Physical Thermodynamic RAPL Smoother and Mechanical Kill-Switch for RunuX"
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+
+[features]
+default = []

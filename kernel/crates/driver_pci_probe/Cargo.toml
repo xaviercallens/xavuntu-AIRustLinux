@@ -1,0 +1,12 @@
+[package]
+name = "driver_pci_probe"
+version = "0.4.0"
+edition = "2021"
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+driver_pci_core = { path = "../driver_pci_core" }
+driver_pci_access = { path = "../driver_pci_access" }
+
+[lib]
+crate-type = ["rlib"]

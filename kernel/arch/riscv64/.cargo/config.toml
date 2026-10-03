@@ -1,0 +1,23 @@
+# RunuX RISC-V Cross-Compilation Configuration
+#
+# Usage:
+#   cd arch/riscv64
+#   cargo build --release
+#
+# Then boot with QEMU:
+#   qemu-system-riscv64 -machine virt -nographic -bios default \
+#     -kernel target/riscv64gc-unknown-none-elf/release/runux_riscv64
+
+[build]
+target = "riscv64gc-unknown-none-elf"
+
+[target.riscv64gc-unknown-none-elf]
+runner = "qemu-system-riscv64 -machine virt -nographic -bios default -kernel"
+rustflags = [
+    "-C", "link-arg=-Tarch/riscv64/link.ld",
+    "-C", "target-feature=+m,+a,+f,+d,+c",
+]
+
+[unstable]
+build-std = ["core", "alloc"]
+build-std-features = ["compiler-builtins-mem"]

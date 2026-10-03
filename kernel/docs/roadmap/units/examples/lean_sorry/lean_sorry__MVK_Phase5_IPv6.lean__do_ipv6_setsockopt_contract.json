@@ -1,0 +1,21 @@
+{
+  "id": "lean_sorry::MVK/Phase5/IPv6.lean::do_ipv6_setsockopt_contract",
+  "type": "lean_sorry",
+  "file": "specs/lean4/MVK/Phase5/IPv6.lean",
+  "target": "theorem do_ipv6_setsockopt_contract",
+  "line": 86,
+  "statement_hash": "ce22628babef37b9",
+  "allowed_edits": [
+    "specs/lean4/MVK/Phase5/IPv6.lean"
+  ],
+  "hints": [
+    "try: simp [*]",
+    "try: omega",
+    "try: decide",
+    "try: aesop",
+    "try: induction on the relevant argument, then simp_all"
+  ],
+  "oracle": "scripts/check_unit.py --type lean_sorry --file specs/lean4/MVK/Phase5/IPv6.lean --theorem do_ipv6_setsockopt_contract",
+  "max_attempts": 3,
+  "escalate_to": "T2"
+}

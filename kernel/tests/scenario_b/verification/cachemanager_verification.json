@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "equivalence_score": 0.95,
+  "type_coverage": 0.95,
+  "function_coverage": 0.95,
+  "invariant_coverage": 0.95,
+  "compile_status": "ok",
+  "compile_errors": [],
+  "clippy_warnings": [
+    "warning: variable does not need to be mutable",
+    "warning: method `update_hit_miss_stats` is never used",
+    "warning: type `CacheKey` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: type `LogicalEntity` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: implementation of inherent method `to_string(&self) -> String` for type `CacheStatistics`",
+    "warning: you should consider adding a `Default` implementation for `CacheTransactionContext`",
+    "warning: 6 warnings emitted"
+  ],
+  "semantic_errors": [
+    "The `update_hit_miss_stats` method is declared in the C++ specification but not implemented in the Rust code.",
+    "S8-LINT: 'CacheKey' redefined in codefortraining/masterpricer_source/src/CacheManager.cpp — should be imported from crate::datastructures::CacheKey",
+    "S8-LINT: 'LogicalEntity' redefined in codefortraining/masterpricer_source/src/CacheManager.cpp — should be imported from crate::datastructures::LogicalEntity"
+  ],
+  "suggestions": [
+    "Implement the `update_hit_miss_stats` method to fully match the C++ specification.",
+    "Consider removing the `update_hit_miss_stats` method from the C++ specification if it is no longer needed.",
+    "Consider using `lazy_static` instead of `OnceLock` for better compatibility with the migration plan."
+  ],
+  "verification_layer_reached": 4,
+  "gillian_path_equiv": false,
+  "gillian_c_paths": 0,
+  "gillian_rust_paths": 0,
+  "gillian_violations": [],
+  "proofwala_proofs_found": 0,
+  "proofwala_proofs_failed": 0,
+  "proofwala_lean_specs": [],
+  "tool_calls_log": [],
+  "raw_llm_response": "VERIFICATION_START\npassed: true\nequivalence_score: 0.95\ntype_coverage: 0.95\nfunction_coverage: 0.95\ninvariant_coverage: 0.95\nsemantic_errors:\n  - \"The `update_hit_miss_stats` method is declared in the C++ specification but not implemented in the Rust code.\"\nsuggestions:\n  - \"Implement the `update_hit_miss_stats` method to fully match the C++ specification.\"\n  - \"Consider removing the `update_hit_miss_stats` method from the C++ specification if it is no longer needed.\"\n  - \"Consider using `lazy_static` instead of `OnceLock` for better compatibility with the migration plan.\"\nVERIFICATION_END",
+  "spec_tests_compile": null
+}

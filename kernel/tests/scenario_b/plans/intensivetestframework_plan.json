@@ -1,0 +1,14 @@
+{
+  "ownership_map": {},
+  "type_map": {},
+  "error_map": {},
+  "lifetime_annotations": [],
+  "trait_hierarchy": [],
+  "module_layout": {
+    "modules": {},
+    "reexports": []
+  },
+  "unsafe_justifications": [],
+  "crate_dependencies": [],
+  "thinking_trace": ""
+}

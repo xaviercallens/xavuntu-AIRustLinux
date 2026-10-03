@@ -1,0 +1,21 @@
+{
+  "id": "lean_sorry::MVK/Phase1/ArchSetup.lean::phase1_establishes_safety",
+  "type": "lean_sorry",
+  "file": "specs/lean4/MVK/Phase1/ArchSetup.lean",
+  "target": "theorem phase1_establishes_safety",
+  "line": 213,
+  "statement_hash": "e14aa831ad2b93ba",
+  "allowed_edits": [
+    "specs/lean4/MVK/Phase1/ArchSetup.lean"
+  ],
+  "hints": [
+    "try: simp [*]",
+    "try: omega",
+    "try: decide",
+    "try: aesop",
+    "try: induction on the relevant argument, then simp_all"
+  ],
+  "oracle": "scripts/check_unit.py --type lean_sorry --file specs/lean4/MVK/Phase1/ArchSetup.lean --theorem phase1_establishes_safety",
+  "max_attempts": 3,
+  "escalate_to": "T2"
+}

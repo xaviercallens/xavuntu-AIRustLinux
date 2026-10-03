@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  mvk-router-ingress:
+    image: alpine:latest
+    container_name: mvk-router-ingress
+    command: >
+      sh -c "apk add --no-repeat iproute2 tcpdump &&
+             echo 'MVK Ingress Node started' &&
+             tail -f /dev/null"
+    cap_add:
+      - NET_ADMIN
+    networks:
+      mvk-net:
+        ipv4_address: 10.99.0.10
+
+  mvk-router-core:
+    image: alpine:latest
+    container_name: mvk-router-core
+    command: >
+      sh -c "apk add --no-repeat iproute2 iptables &&
+             echo 'MVK Core Router Node started' &&
+             tail -f /dev/null"
+    cap_add:
+      - NET_ADMIN
+    networks:
+      mvk-net:
+        ipv4_address: 10.99.0.20
+
+  mvk-router-egress:
+    image: alpine:latest
+    container_name: mvk-router-egress
+    command: >
+      sh -c "apk add --no-repeat iproute2 tcpdump &&
+             echo 'MVK Egress Node started' &&
+             tail -f /dev/null"
+    cap_add:
+      - NET_ADMIN
+    networks:
+      mvk-net:
+        ipv4_address: 10.99.0.30
+
+  mvk-telemetry-collector:
+    image: alpine:latest
+    container_name: mvk-telemetry-collector
+    volumes:
+      - ./scripts:/scripts
+      - shared-logs:/var/log/mvk
+    command: >
+      sh -c "echo 'MVK Telemetry Collector active' &&
+             mkdir -p /var/log/mvk &&
+             touch /var/log/mvk/kernel.log &&
+             sh /scripts/kasan_monitor.sh --log-file /var/log/mvk/kernel.log"
+    networks:
+      mvk-net:
+        ipv4_address: 10.99.0.100
+
+networks:
+  mvk-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.99.0.0/24
+
+volumes:
+  shared-logs:

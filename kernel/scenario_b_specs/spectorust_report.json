@@ -1,0 +1,561 @@
+{
+  "pipeline": "spectorust",
+  "module": "masterpricer_source",
+  "total_files": 22,
+  "converged_files": 11,
+  "compiled_files": 11,
+  "failed_files": 6,
+  "total_duration_seconds": 4186.505535459,
+  "avg_duration_per_file_ms": 190295.7061572273,
+  "baseline_comparable": true,
+  "fallbacks_used": null,
+  "global_spec": {
+    "enabled": false,
+    "type_count": 0,
+    "type_ownership": {}
+  },
+  "per_file": [
+    {
+      "file": "codefortraining/masterpricer_source/include/Common.h",
+      "name": "Common.h",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "iterations": 0,
+      "duration_ms": 518218,
+      "rust_lines": 188,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 0,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/DataStructures.h",
+      "name": "DataStructures.h",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 1,
+      "duration_ms": 436945,
+      "rust_lines": 369,
+      "equivalence_score": 0.9,
+      "compile_status": "ok",
+      "transitive_deps": 0,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/CacheManager.h",
+      "name": "CacheManager.h",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
+      "iterations": 4,
+      "duration_ms": 381146,
+      "rust_lines": 330,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 2,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/DataLoader.h",
+      "name": "DataLoader.h",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
+      "iterations": 5,
+      "duration_ms": 477609,
+      "rust_lines": 564,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 2,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/PricingEngine.h",
+      "name": "PricingEngine.h",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 1,
+      "duration_ms": 195116,
+      "rust_lines": 326,
+      "equivalence_score": 1.0,
+      "compile_status": "ok",
+      "transitive_deps": 2,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/YamlDataLoader.h",
+      "name": "YamlDataLoader.h",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
+      "iterations": 10,
+      "duration_ms": 618778,
+      "rust_lines": 354,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 2,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/Common.cpp",
+      "name": "Common.cpp",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 2,
+      "duration_ms": 367733,
+      "rust_lines": 234,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 1,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/DataStructures.cpp",
+      "name": "DataStructures.cpp",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 3,
+      "duration_ms": 333586,
+      "rust_lines": 502,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 1,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/SearchEngine.h",
+      "name": "SearchEngine.h",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "iterations": 0,
+      "duration_ms": 145839,
+      "rust_lines": 300,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 5,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/CacheManager.cpp",
+      "name": "CacheManager.cpp",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 3,
+      "duration_ms": 319429,
+      "rust_lines": 348,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 3,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/DataLoader.cpp",
+      "name": "DataLoader.cpp",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 6,
+      "duration_ms": 528954,
+      "rust_lines": 513,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 3,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/PricingEngine.cpp",
+      "name": "PricingEngine.cpp",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 4,
+      "duration_ms": 290006,
+      "rust_lines": 234,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 3,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/YamlDataLoader.cpp",
+      "name": "YamlDataLoader.cpp",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "iterations": 0,
+      "duration_ms": 144132,
+      "rust_lines": 677,
+      "equivalence_score": 0.95,
+      "compile_status": "ok",
+      "transitive_deps": 3,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/Orchestrator.h",
+      "name": "Orchestrator.h",
+      "converged": true,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "iterations": 1,
+      "duration_ms": 759136,
+      "rust_lines": 422,
+      "equivalence_score": 0.0,
+      "compile_status": "ok",
+      "transitive_deps": 6,
+      "errors": {
+        "7": "fallback_template"
+      },
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/SearchEngine.cpp",
+      "name": "SearchEngine.cpp",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
+      "iterations": 10,
+      "duration_ms": 1096916,
+      "rust_lines": 1879,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 7,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/IntensiveTestFramework.h",
+      "name": "IntensiveTestFramework.h",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "iterations": 10,
+      "duration_ms": 1224822,
+      "rust_lines": 0,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 8,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/include/TestFramework.h",
+      "name": "TestFramework.h",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
+      "iterations": 5,
+      "duration_ms": 843630,
+      "rust_lines": 998,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 7,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/Orchestrator.cpp",
+      "name": "Orchestrator.cpp",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "iterations": 10,
+      "duration_ms": 1224419,
+      "rust_lines": 0,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 7,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/IntensiveTestFramework.cpp",
+      "name": "IntensiveTestFramework.cpp",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "iterations": 10,
+      "duration_ms": 1672,
+      "rust_lines": 0,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 9,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/TestFramework.cpp",
+      "name": "TestFramework.cpp",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "iterations": 10,
+      "duration_ms": 845,
+      "rust_lines": 0,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 8,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/intensive_tests_main.cpp",
+      "name": "intensive_tests_main.cpp",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "iterations": 10,
+      "duration_ms": 2368,
+      "rust_lines": 0,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 9,
+      "errors": {},
+      "draft_prune": null
+    },
+    {
+      "file": "codefortraining/masterpricer_source/src/main.cpp",
+      "name": "main.cpp",
+      "converged": false,
+      "phases": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "iterations": 10,
+      "duration_ms": 2468,
+      "rust_lines": 0,
+      "equivalence_score": 0.0,
+      "compile_status": "errors",
+      "transitive_deps": 8,
+      "errors": {},
+      "draft_prune": null
+    }
+  ]
+}

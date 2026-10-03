@@ -1,0 +1,3688 @@
+    Checking xfrm6_policy v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/xfrm6_policy)
+    Checking nf_conntrack_proto_tcp v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/nf_conntrack_proto_tcp)
+    Checking gre_demux v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/gre_demux)
+    Checking sysctl_net_ipv6 v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/sysctl_net_ipv6)
+    Checking xfrm6_output v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/xfrm6_output)
+    Checking nf_conntrack_h323_main v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/nf_conntrack_h323_main)
+    Checking nf_nat_helper v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/nf_nat_helper)
+    Checking arp v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/arp)
+    Checking nf_conntrack_amanda v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/nf_conntrack_amanda)
+    Checking ipv6_sockglue v0.4.0 (/Volumes/MacCleanerStorage/xdev/xavux/rust-linux-mini-kernel/crates/ipv6_sockglue)
+error[E0428]: the name `nf_nat_amanda_hook` is defined multiple times
+   --> crates/nf_conntrack_amanda/src/lib.rs:316:1
+    |
+101 |   static mut nf_nat_amanda_hook: AtomicPtr<nf_nat_amanda_hook_t> = AtomicPtr::new(ptr::null_mut());
+    |   ------------------------------------------------------------------------------------------------- previous definition of the value `nf_nat_amanda_hook` here
+...
+316 | / pub unsafe extern "C" fn nf_nat_amanda_hook(
+317 | |     skb: *mut c_void,
+318 | |     ctinfo: c_int,
+319 | |     protoff: c_uint,
+...   |
+325 | |     0
+326 | | }
+    | |_^ `nf_nat_amanda_hook` redefined here
+    |
+    = note: `nf_nat_amanda_hook` must be defined only once in the value namespace of this module
+
+error[E0428]: the name `IP6CB` is defined multiple times
+   --> crates/xfrm6_output/src/lib.rs:279:1
+    |
+274 | unsafe fn IP6CB(skb: *mut sk_buff) -> *mut ip6_skb_cb {
+    | ----------------------------------------------------- previous definition of the value `IP6CB` here
+...
+279 | unsafe fn IP6CB(skb: *mut sk_buff) -> *mut IP6CB {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IP6CB` redefined here
+    |
+    = note: `IP6CB` must be defined only once in the value namespace of this module
+
+warning: unused import: `core::ptr`
+  --> crates/xfrm6_output/src/lib.rs:13:5
+   |
+13 | use core::ptr;
+   |     ^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unexpected `cfg` condition name: `CONFIG_NETFILTER`
+   --> crates/xfrm6_output/src/lib.rs:170:11
+    |
+170 |     #[cfg(CONFIG_NETFILTER)]
+    |           ^^^^^^^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CONFIG_NETFILTER)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(CONFIG_NETFILTER)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+error: `#[panic_handler]` function required, but not found
+
+error: unwinding panics are not supported without std
+  |
+  = help: using nightly cargo, use -Zbuild-std with panic="abort" to avoid unwinding
+  = note: since the core library is usually precompiled with panic="unwind", rebuilding your crate with panic="abort" may not be enough to fix the problem
+
+error[E0609]: no field `sk` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:126:21
+    |
+126 |     let sk = (*skb).sk;
+    |                     ^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0061]: this function takes 3 arguments but 2 arguments were supplied
+   --> crates/xfrm6_output/src/lib.rs:133:5
+    |
+133 |     ipv6_local_rxpmtu(sk, &mut fl6);
+    |     ^^^^^^^^^^^^^^^^^-------------- argument #3 of type `u32` is missing
+    |
+note: function defined here
+   --> crates/xfrm6_output/src/lib.rs:67:8
+    |
+ 67 |     fn ipv6_local_rxpmtu(sk: *mut sock, fl: *mut flowi6, mtu: c_uint);
+    |        ^^^^^^^^^^^^^^^^^                                 ---
+help: provide the argument
+    |
+133 |     ipv6_local_rxpmtu(sk, &mut fl6, /* u32 */);
+    |                                   +++++++++++
+
+error[E0609]: no field `sk` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:143:21
+    |
+143 |     let sk = (*skb).sk;
+    |                     ^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `encapsulation` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:144:25
+    |
+144 |     let hdr = if (*skb).encapsulation != 0 {
+    |                         ^^^^^^^^^^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error: cannot find macro `vec` in this scope
+   --> crates/sysctl_net_ipv6/src/lib.rs:251:27
+    |
+251 |         let mut entries = vec![ctl_table {
+    |                           ^^^
+
+error: cannot find macro `vec` in this scope
+   --> crates/sysctl_net_ipv6/src/lib.rs:268:27
+    |
+268 |         let mut entries = vec![ctl_table {
+    |                           ^^^
+
+error[E0609]: no field `protocol` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:184:36
+    |
+184 |     let protocol = unsafe { (*skb).protocol };
+    |                                    ^^^^^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0530]: let bindings cannot shadow statics
+   --> crates/sysctl_net_ipv6/src/lib.rs:118:9
+    |
+118 |       let ipv6_table_template: *mut ctl_table = ipv6_table_template();
+    |           ^^^^^^^^^^^^^^^^^^^ cannot be named the same as a static
+...
+249 | / pub static mut ipv6_table_template: *mut ctl_table = {
+250 | |     let table = {
+251 | |         let mut entries = vec![ctl_table {
+252 | |             procname: b"bindv6only\0".as_ptr() as *const u8,
+...   |
+262 | |     table
+263 | | };
+    | |__- the static `ipv6_table_template` is defined here
+
+error[E0432]: unresolved import `core::ffi::size_t`
+  --> crates/nf_conntrack_h323_main/src/lib.rs:13:5
+   |
+13 | use core::ffi::size_t;
+   |     ^^^^^^^^^^^^^^^^^ no `size_t` in `ffi`
+   |
+help: a similar name exists in the module
+   |
+13 | use core::ffi::c_size_t;
+   |                ++
+
+error[E0609]: no field `len` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:191:34
+    |
+191 |     let toobig = unsafe { (*skb).len > mtu && skb_is_gso(skb) == 0 };
+    |                                  ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `sk` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:193:55
+    |
+193 |     if toobig && unsafe { xfrm6_local_dontfrag((*skb).sk) } != 0 {
+    |                                                       ^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `ignore_df` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:199:32
+    |
+199 |     } else if !unsafe { (*skb).ignore_df } && toobig && !(*skb).sk.is_null() {
+    |                                ^^^^^^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `sk` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:199:65
+    |
+199 |     } else if !unsafe { (*skb).ignore_df } && toobig && !(*skb).sk.is_null() {
+    |                                                                 ^^ unknown field
+    |
+    = note: available field is: `_private`
+
+warning: unused import: `core::ffi::c_uint`
+  --> crates/xfrm6_policy/src/lib.rs:11:5
+   |
+11 | use core::ffi::c_uint;
+   |     ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0425]: cannot find value `data` in this scope
+   --> crates/sysctl_net_ipv6/src/lib.rs:109:32
+    |
+109 |             offset_of(&*table, data) + offset_of(&(*table).data, 0) + offset_of(&(*table).data, 0),
+    |                                ^^^^ not found in this scope
+
+warning: unused import: `core::slice`
+  --> crates/sysctl_net_ipv6/src/lib.rs:14:5
+   |
+14 | use core::slice;
+   |     ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0425]: cannot find type `size_t` in this scope
+  --> crates/ipv6_sockglue/src/lib.rs:73:22
+   |
+73 |     fn kmalloc(size: size_t, flags: u32) -> *mut c_void;
+   |                      ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `size_t` in this scope
+  --> crates/ipv6_sockglue/src/lib.rs:77:69
+   |
+77 |     fn copy_from_sockptr(to: *mut c_void, from: *const c_void, len: size_t) -> c_int;
+   |                                                                     ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `size_t` in this scope
+   --> crates/ipv6_sockglue/src/lib.rs:121:47
+    |
+121 |             mem::size_of::<ip6_ra_chain>() as size_t,
+    |                                               ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `size_t` in this scope
+   --> crates/ipv6_sockglue/src/lib.rs:296:47
+    |
+296 |         mem::size_of::<group_source_req>() as size_t,
+    |                                               ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `spinlock_t` in this scope
+   --> crates/nf_conntrack_h323_main/src/lib.rs:138:26
+    |
+138 | static mut nf_h323_lock: spinlock_t = spinlock_t { .. };
+    |                          ^^^^^^^^^^ not found in this scope
+
+error[E0422]: cannot find struct, variant or union type `spinlock_t` in this scope
+   --> crates/nf_conntrack_h323_main/src/lib.rs:138:39
+    |
+138 | static mut nf_h323_lock: spinlock_t = spinlock_t { .. };
+    |                                       ^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `eH245_TransportAddress_unicastAddress` in this scope
+   --> crates/nf_conntrack_h323_main/src/lib.rs:242:27
+    |
+242 |     if (*taddr).choice != eH245_TransportAddress_unicastAddress {
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `AF_INET` in this scope
+   --> crates/nf_conntrack_h323_main/src/lib.rs:248:35
+    |
+248 |             if nf_ct_l3num(ct) != AF_INET {
+    |                                   ^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `AF_INET6` in this scope
+   --> crates/nf_conntrack_h323_main/src/lib.rs:258:35
+    |
+258 |             if nf_ct_l3num(ct) != AF_INET6 {
+    |                                   ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `offsetof_nf_conn_help` in this scope
+   --> crates/nf_conntrack_h323_main/src/lib.rs:286:28
+    |
+286 |     (ct as *mut u8).offset(offsetof_nf_conn_help) as *mut nf_ct_h323_master
+    |                            ^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+warning: unused import: `core::ffi::c_void`
+  --> crates/nf_conntrack_h323_main/src/lib.rs:12:5
+   |
+12 | use core::ffi::c_void;
+   |     ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0740]: field must implement `Copy` or be wrapped in `ManuallyDrop<...>` to be used in a union
+  --> crates/nf_conntrack_h323_main/src/lib.rs:34:5
+   |
+34 |     pub ip: in_addr,
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: union fields must not have drop side-effects, which is currently enforced via either `Copy` or `ManuallyDrop<...>`
+help: wrap the field type in `ManuallyDrop<...>`
+   |
+34 |     pub ip: std::mem::ManuallyDrop<in_addr>,
+   |             +++++++++++++++++++++++       +
+
+error[E0425]: cannot find value `GRE_VERSION` in this scope
+   --> crates/gre_demux/src/lib.rs:141:47
+    |
+141 |     if (greh as *const u8).read_volatile() & (GRE_VERSION | GRE_ROUTING) != 0 {
+    |                                               ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `GRE_ROUTING` in this scope
+   --> crates/gre_demux/src/lib.rs:141:61
+    |
+141 |     if (greh as *const u8).read_volatile() & (GRE_VERSION | GRE_ROUTING) != 0 {
+    |                                                             ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `GRE_CSUM` in this scope
+   --> crates/gre_demux/src/lib.rs:158:24
+    |
+158 |     if (*greh).flags & GRE_CSUM != 0 {
+    |                        ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `IPPROTO_GRE` in this scope
+   --> crates/gre_demux/src/lib.rs:160:43
+    |
+160 |             skb_checksum_try_convert(skb, IPPROTO_GRE, null_compute_pseudo);
+    |                                           ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `GRE_KEY` in this scope
+   --> crates/gre_demux/src/lib.rs:168:24
+    |
+168 |     if (*greh).flags & GRE_KEY != 0 {
+    |                        ^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `GRE_SEQ` in this scope
+   --> crates/gre_demux/src/lib.rs:175:24
+    |
+175 |     if (*greh).flags & GRE_SEQ != 0 {
+    |                        ^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `ETH_P_WCCP` in this scope
+   --> crates/gre_demux/src/lib.rs:183:52
+    |
+183 |     if (*greh).flags == 0 && (*tpi).proto == htons(ETH_P_WCCP) {
+    |                                                    ^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `ETH_P_ERSPAN` in this scope
+   --> crates/gre_demux/src/lib.rs:197:35
+    |
+197 |     if ((*greh).protocol == htons(ETH_P_ERSPAN) && hdr_len != 4)
+    |                                   ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `ETH_P_ERSPAN2` in this scope
+   --> crates/gre_demux/src/lib.rs:198:38
+    |
+198 |         || (*greh).protocol == htons(ETH_P_ERSPAN2)
+    |                                      ^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `IPPROTO_GRE` in this scope
+   --> crates/gre_demux/src/lib.rs:262:45
+    |
+262 |     if inet_add_protocol(&net_gre_protocol, IPPROTO_GRE) < 0 {
+    |                                             ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `IPPROTO_GRE` in this scope
+   --> crates/gre_demux/src/lib.rs:270:42
+    |
+270 |     inet_del_protocol(&net_gre_protocol, IPPROTO_GRE);
+    |                                          ^^^^^^^^^^^ not found in this scope
+
+warning: unexpected `cfg` condition value: `kernel_module`
+   --> crates/gre_demux/src/lib.rs:335:7
+    |
+335 | #[cfg(feature = "kernel_module")]
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove the condition
+    |
+    = note: no expected values for `feature`
+    = help: consider adding `kernel_module` as a feature in `Cargo.toml`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unused imports: `c_uint` and `size_t`
+  --> crates/gre_demux/src/lib.rs:12:19
+   |
+12 | use libc::{c_int, c_uint, c_void, size_t};
+   |                   ^^^^^^          ^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:151:37
+    |
+151 | static TCP_CONNTRACK_NAMES: [*const c_char; 11] = {
+    |                                     ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+151 - static TCP_CONNTRACK_NAMES: [*const c_char; 11] = {
+151 + static TCP_CONNTRACK_NAMES: [*const char; 11] = {
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:153:37
+    |
+153 |         "NONE\0".as_ptr() as *const c_char,
+    |                                     ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+153 -         "NONE\0".as_ptr() as *const c_char,
+153 +         "NONE\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:154:41
+    |
+154 |         "SYN_SENT\0".as_ptr() as *const c_char,
+    |                                         ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+154 -         "SYN_SENT\0".as_ptr() as *const c_char,
+154 +         "SYN_SENT\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:155:41
+    |
+155 |         "SYN_RECV\0".as_ptr() as *const c_char,
+    |                                         ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+155 -         "SYN_RECV\0".as_ptr() as *const c_char,
+155 +         "SYN_RECV\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:156:44
+    |
+156 |         "ESTABLISHED\0".as_ptr() as *const c_char,
+    |                                            ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+156 -         "ESTABLISHED\0".as_ptr() as *const c_char,
+156 +         "ESTABLISHED\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:157:41
+    |
+157 |         "FIN_WAIT\0".as_ptr() as *const c_char,
+    |                                         ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+157 -         "FIN_WAIT\0".as_ptr() as *const c_char,
+157 +         "FIN_WAIT\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:158:43
+    |
+158 |         "CLOSE_WAIT\0".as_ptr() as *const c_char,
+    |                                           ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+158 -         "CLOSE_WAIT\0".as_ptr() as *const c_char,
+158 +         "CLOSE_WAIT\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:159:41
+    |
+159 |         "LAST_ACK\0".as_ptr() as *const c_char,
+    |                                         ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+159 -         "LAST_ACK\0".as_ptr() as *const c_char,
+159 +         "LAST_ACK\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:160:42
+    |
+160 |         "TIME_WAIT\0".as_ptr() as *const c_char,
+    |                                          ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+160 -         "TIME_WAIT\0".as_ptr() as *const c_char,
+160 +         "TIME_WAIT\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:161:38
+    |
+161 |         "CLOSE\0".as_ptr() as *const c_char,
+    |                                      ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+161 -         "CLOSE\0".as_ptr() as *const c_char,
+161 +         "CLOSE\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+error[E0425]: cannot find type `c_char` in this scope
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:162:42
+    |
+162 |         "SYN_SENT2\0".as_ptr() as *const c_char,
+    |                                          ^^^^^^
+    |
+help: a builtin type with a similar name exists
+    |
+162 -         "SYN_SENT2\0".as_ptr() as *const c_char,
+162 +         "SYN_SENT2\0".as_ptr() as *const char,
+    |
+help: consider importing one of these type aliases
+    |
+ 10 + use core::ffi::c_char;
+    |
+ 10 + use libc::c_char;
+    |
+
+warning: unexpected `cfg` condition value: `procfs`
+   --> crates/nf_conntrack_proto_tcp/src/lib.rs:104:7
+    |
+104 | #[cfg(feature = "procfs")]
+    |       ^^^^^^^^^^^^^^^^^^ help: remove the condition
+    |
+    = note: no expected values for `feature`
+    = help: consider adding `procfs` as a feature in `Cargo.toml`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unused import: `core::ffi::c_int`
+  --> crates/nf_conntrack_proto_tcp/src/lib.rs:10:5
+   |
+10 | use core::ffi::c_int;
+   |     ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `core::ffi::c_void`
+  --> crates/nf_conntrack_proto_tcp/src/lib.rs:12:5
+   |
+12 | use core::ffi::c_void;
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: unused import: `core::mem`
+  --> crates/nf_conntrack_proto_tcp/src/lib.rs:13:5
+   |
+13 | use core::mem;
+   |     ^^^^^^^^^
+
+warning: unused import: `core::ptr`
+  --> crates/nf_conntrack_proto_tcp/src/lib.rs:14:5
+   |
+14 | use core::ptr;
+   |     ^^^^^^^^^
+
+error[E0425]: cannot find type `c_ushort` in this scope
+  --> crates/arp/src/lib.rs:77:15
+   |
+77 |     protocol: c_ushort,
+   |               ^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+ 9 + use core::ffi::c_ushort;
+   |
+ 9 + use libc::c_ushort;
+   |
+
+error[E0425]: cannot find type `c_char` in this scope
+  --> crates/arp/src/lib.rs:83:10
+   |
+83 |     id: [c_char; 10],
+   |          ^^^^^^
+   |
+help: a builtin type with a similar name exists
+   |
+83 -     id: [c_char; 10],
+83 +     id: [char; 10],
+   |
+help: consider importing one of these type aliases
+   |
+ 9 + use core::ffi::c_char;
+   |
+ 9 + use libc::c_char;
+   |
+
+error[E0425]: cannot find value `neigh_direct_output` in this scope
+   --> crates/arp/src/lib.rs:138:27
+    |
+138 |         (*neigh).output = neigh_direct_output;
+    |                           ^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `NUD_VALID` in this scope
+   --> crates/arp/src/lib.rs:157:33
+    |
+157 |         if (*neigh).nud_state & NUD_VALID != 0 {
+    |                                 ^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `NEIGH_PARMS_DEFAULT` in this scope
+   --> crates/arp/src/lib.rs:201:17
+    |
+201 |     parms: &mut NEIGH_PARMS_DEFAULT,
+    |                 ^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `neigh_direct_output` in this scope
+   --> crates/arp/src/lib.rs:214:18
+    |
+214 |     output: Some(neigh_direct_output),
+    |                  ^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `neigh_direct_output` in this scope
+   --> crates/arp/src/lib.rs:215:28
+    |
+215 |     connected_output: Some(neigh_direct_output),
+    |                            ^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `neigh_resolve_output` in this scope
+   --> crates/arp/src/lib.rs:223:18
+    |
+223 |     output: Some(neigh_resolve_output),
+    |                  ^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `neigh_resolve_output` in this scope
+   --> crates/arp/src/lib.rs:224:28
+    |
+224 |     connected_output: Some(neigh_resolve_output),
+    |                            ^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `neigh_resolve_output` in this scope
+   --> crates/arp/src/lib.rs:232:18
+    |
+232 |     output: Some(neigh_resolve_output),
+    |                  ^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `neigh_connected_output` in this scope
+   --> crates/arp/src/lib.rs:233:28
+    |
+233 |     connected_output: Some(neigh_connected_output),
+    |                            ^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `net` in this scope
+   --> crates/arp/src/lib.rs:241:43
+    |
+241 |     fn inet_addr_type_dev_table(net: *mut net, dev: *mut net_device, addr: __be32) -> c_int;
+    |                                           ^^^ not found in this scope
+
+error[E0425]: cannot find type `c_ushort` in this scope
+   --> crates/arp/src/lib.rs:265:17
+    |
+265 | const ETH_P_IP: c_ushort = 0x0800;
+    |                 ^^^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+  9 + use core::ffi::c_ushort;
+    |
+  9 + use libc::c_ushort;
+    |
+
+warning: unused imports: `c_uint` and `size_t`
+  --> crates/arp/src/lib.rs:10:19
+   |
+10 | use libc::{c_int, c_uint, c_ulong, size_t, c_void};
+   |                   ^^^^^^           ^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0609]: no field `sk_type` on type `sock`
+   --> crates/ipv6_sockglue/src/lib.rs:110:34
+    |
+110 |     let sk_type = unsafe { (*sk).sk_type }; // Placeholder - actual field depends on sock struct
+    |                                  ^^^^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `inet_num` on type `sock`
+   --> crates/ipv6_sockglue/src/lib.rs:111:35
+    |
+111 |     let inet_num = unsafe { (*sk).inet_num }; // Placeholder - actual field depends on sock struct
+    |                                   ^^^^^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `next` on type `*mut ip6_ra_chain`
+   --> crates/ipv6_sockglue/src/lib.rs:161:27
+    |
+161 |         rap = &mut (*rap).next;
+    |                           ^^^^ unknown field
+    |
+help: `(*rap)` is a raw pointer; try dereferencing it
+    |
+161 |         rap = &mut (*(*rap)).next;
+    |                    ++      +
+
+warning: unused variable: `optname`
+   --> crates/ipv6_sockglue/src/lib.rs:306:26
+    |
+306 | unsafe fn ip6_mroute_opt(optname: c_int) -> bool {
+    |                          ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_optname`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0609.
+For more information about an error, try `rustc --explain E0425`.
+error[E0277]: the trait bound `AtomicPtr<gre_protocol>: Copy` is not satisfied
+  --> crates/gre_demux/src/lib.rs:52:15
+   |
+52 |     unsafe { [AtomicPtr::new(ptr::null_mut()); GREPROTO_MAX] };
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Copy` is not implemented for `AtomicPtr<gre_protocol>`
+   |
+   = note: the `Copy` trait is required because this value will be copied for each element of the array
+help: create an inline `const` block
+   |
+52 |     unsafe { [const { AtomicPtr::new(ptr::null_mut()) }; GREPROTO_MAX] };
+   |               +++++++                                 +
+
+warning: `ipv6_sockglue` (lib) generated 1 warning
+error: could not compile `ipv6_sockglue` (lib) due to 9 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:109:66
+    |
+109 |             offset_of(&*table, data) + offset_of(&(*table).data, 0) + offset_of(&(*table).data, 0),
+    |                                        ---------                 ^ expected `&_`, found integer
+    |                                        |
+    |                                        arguments to this function are incorrect
+    |
+    = note: expected reference `&_`
+                    found type `{integer}`
+note: function defined here
+   --> crates/sysctl_net_ipv6/src/lib.rs:89:11
+    |
+ 89 | unsafe fn offset_of<T, U>(_: &T, _: &U) -> usize {
+    |           ^^^^^^^^^              -----
+help: consider borrowing here
+    |
+109 |             offset_of(&*table, data) + offset_of(&(*table).data, &0) + offset_of(&(*table).data, 0),
+    |                                                                  +
+
+error[E0308]: mismatched types
+   --> crates/xfrm6_output/src/lib.rs:208:52
+    |
+208 |         return unsafe { ip6_fragment(net, sk, skb, __xfrm6_output_finish) };
+    |                         ------------               ^^^^^^^^^^^^^^^^^^^^^ expected "C" fn, found "Rust" fn
+    |                         |
+    |                         arguments to this function are incorrect
+    |
+    = note: expected fn pointer `extern "C" fn(_, _, _) -> _`
+                  found fn item `fn(_, _, _) -> _ {__xfrm6_output_finish}`
+note: function defined here
+   --> crates/xfrm6_output/src/lib.rs:70:8
+    |
+ 70 |     fn ip6_fragment(
+    |        ^^^^^^^^^^^^
+...
+ 74 |         okfn: extern "C" fn(*mut net, *mut sock, *mut sk_buff) -> c_int,
+    |         ----
+
+error[E0609]: no field `dev` on type `sk_buff`
+   --> crates/xfrm6_output/src/lib.rs:223:16
+    |
+223 |         (*skb).dev as *mut c_void,
+    |                ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `dev` on type `dst_entry`
+   --> crates/xfrm6_output/src/lib.rs:224:25
+    |
+224 |         (*skb_dst(skb)).dev as *mut c_void,
+    |                         ^^^ unknown field
+    |
+    = note: available field is: `xfrm`
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:109:97
+    |
+109 |             offset_of(&*table, data) + offset_of(&(*table).data, 0) + offset_of(&(*table).data, 0),
+    |                                                                       ---------                 ^ expected `&_`, found integer
+    |                                                                       |
+    |                                                                       arguments to this function are incorrect
+    |
+    = note: expected reference `&_`
+                    found type `{integer}`
+note: function defined here
+   --> crates/sysctl_net_ipv6/src/lib.rs:89:11
+    |
+ 89 | unsafe fn offset_of<T, U>(_: &T, _: &U) -> usize {
+    |           ^^^^^^^^^              -----
+help: consider borrowing here
+    |
+109 |             offset_of(&*table, data) + offset_of(&(*table).data, 0) + offset_of(&(*table).data, &0),
+    |                                                                                                 +
+
+error[E0308]: mismatched types
+   --> crates/xfrm6_policy/src/lib.rs:167:9
+    |
+165 |     ptr::copy(
+    |     --------- arguments to this function are incorrect
+166 |         &fl6.daddr,
+167 |         &mut fl6.daddr as *mut _ as *mut u8,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut in6_addr`, found `*mut u8`
+    |
+    = note: expected raw pointer `*mut in6_addr`
+               found raw pointer `*mut u8`
+note: function defined here
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:623:21
+    |
+623 | pub const unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
+    |                     ^^^^
+
+error[E0618]: expected function, found `*mut ctl_table`
+   --> crates/sysctl_net_ipv6/src/lib.rs:118:47
+    |
+118 |     let ipv6_table_template: *mut ctl_table = ipv6_table_template();
+    |                                               ^^^^^^^^^^^^^^^^^^^--
+    |                                               |
+    |                                               call expression requires function
+...
+249 | pub static mut ipv6_table_template: *mut ctl_table = {
+    | -------------------------------------------------- `ipv6_table_template` defined here
+
+error[E0308]: mismatched types
+   --> crates/xfrm6_policy/src/lib.rs:173:13
+    |
+171 |         ptr::copy(
+    |         --------- arguments to this function are incorrect
+172 |             &(*saddr).in6,
+173 |             &mut fl6.saddr as *mut _ as *mut u8,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut in6_addr`, found `*mut u8`
+    |
+    = note: expected raw pointer `*mut in6_addr`
+               found raw pointer `*mut u8`
+note: function defined here
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:623:21
+    |
+623 | pub const unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
+    |                     ^^^^
+
+error[E0609]: no field `idev` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:205:24
+    |
+205 |     let dev = (*(*dst).idev).dev;
+    |                        ^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+205 -     let dev = (*(*dst).idev).dev;
+205 +     let dev = (*(*dst).dev).dev;
+    |
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:224:15
+    |
+224 |     (*xdst).u.rt6.rt6i_idev = in6_dev_get(dev);
+    |               ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:225:18
+    |
+225 |     if (*xdst).u.rt6.rt6i_idev.is_null() {
+    |                  ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:231:15
+    |
+231 |     (*xdst).u.rt6.rt6i_flags = (*rt).rt6i_flags & (0x01 | 0x02); // RTF_ANYCAST | RTF_LOCAL
+    |               ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:232:15
+    |
+232 |     (*xdst).u.rt6.rt6i_gateway = (*rt).rt6i_gateway;
+    |               ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:233:15
+    |
+233 |     (*xdst).u.rt6.rt6i_dst = (*rt).rt6i_dst;
+    |               ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:234:15
+    |
+234 |     (*xdst).u.rt6.rt6i_src = (*rt).rt6i_src;
+    |               ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0308]: arguments to this function are incorrect
+   --> crates/xfrm6_output/src/lib.rs:217:5
+    |
+217 |     NF_HOOK_COND(
+    |     ^^^^^^^^^^^^
+...
+226 |         !((*IP6CB(skb)).flags & IP6SKB_REROUTED),
+    |         ---------------------------------------- expected `i32`, found `u64`
+    |
+note: expected "C" fn, found "Rust" fn
+   --> crates/xfrm6_output/src/lib.rs:225:9
+    |
+225 |         __xfrm6_output,
+    |         ^^^^^^^^^^^^^^
+    = note: expected fn pointer `extern "C" fn(_, _, _) -> _`
+                  found fn item `fn(_, _, _) -> _ {__xfrm6_output}`
+note: function defined here
+   --> crates/xfrm6_output/src/lib.rs:87:8
+    |
+ 87 |     fn NF_HOOK_COND(
+    |        ^^^^^^^^^^^^
+...
+ 95 |         okfn: extern "C" fn(*mut net, *mut sock, *mut sk_buff) -> c_int,
+    |         ----
+ 96 |         cond: c_int,
+    |         ----
+help: you can convert a `u64` to an `i32` and panic if the converted value doesn't fit
+    |
+226 |         (!((*IP6CB(skb)).flags & IP6SKB_REROUTED)).try_into().unwrap(),
+    |         +                                        +++++++++++++++++++++
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:235:35
+    |
+235 |     INIT_LIST_HEAD(&mut (*xdst).u.rt6.rt6i_uncached);
+    |                                   ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:236:42
+    |
+236 |     rt6_uncached_list_add(&mut (*xdst).u.rt6);
+    |                                          ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `ipv6` on type `net`
+   --> crates/xfrm6_policy/src/lib.rs:237:37
+    |
+237 |     atomic_inc(&mut (*dev_net(dev)).ipv6.rt6_stats.fib_rt_uncache);
+    |                                     ^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:284:19
+    |
+284 |     if !(*xdst).u.rt6.rt6i_idev.is_null() {
+    |                   ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:285:31
+    |
+285 |         in6_dev_put((*xdst).u.rt6.rt6i_idev);
+    |                               ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:290:19
+    |
+290 |     if !(*xdst).u.rt6.rt6i_uncached_list.is_null() {
+    |                   ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:291:46
+    |
+291 |         rt6_uncached_list_del(&mut (*xdst).u.rt6);
+    |                                              ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0425]: cannot find function `rt6_uncached_list_del` in this scope
+   --> crates/xfrm6_policy/src/lib.rs:291:9
+    |
+291 |         rt6_uncached_list_del(&mut (*xdst).u.rt6);
+    |         ^^^^^^^^^^^^^^^^^^^^^
+...
+362 |     fn rt6_uncached_list_add(rt: *mut rt6_info);
+    |     -------------------------------------------- similarly named function `rt6_uncached_list_add` defined here
+    |
+help: a function with a similar name exists
+    |
+291 -         rt6_uncached_list_del(&mut (*xdst).u.rt6);
+291 +         rt6_uncached_list_add(&mut (*xdst).u.rt6);
+    |
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:312:20
+    |
+312 |     if (*(*xdst).u.rt6.rt6i_idev).dev == dev {
+    |                    ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `loopback_dev` on type `*mut net`
+   --> crates/xfrm6_policy/src/lib.rs:313:54
+    |
+313 |         let loopback_idev = in6_dev_get(dev_net(dev).loopback_dev);
+    |                                                      ^^^^^^^^^^^^ unknown field
+    |
+help: `dev_net(dev)` is a raw pointer; try dereferencing it
+    |
+313 |         let loopback_idev = in6_dev_get((*dev_net(dev)).loopback_dev);
+    |                                         ++            +
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:317:43
+    |
+317 |             in6_dev_put((*current_xdst).u.rt6.rt6i_idev);
+    |                                           ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `rt6` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:318:31
+    |
+318 |             (*current_xdst).u.rt6.rt6i_idev = loopback_idev;
+    |                               ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `dst` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:321:59
+    |
+321 |             let child = xfrm_dst_child(&(*current_xdst).u.dst);
+    |                                                           ^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0609]: no field `xfrm` on type `dst_entry`
+   --> crates/xfrm6_policy/src/lib.rs:322:44
+    |
+322 |             if child.is_null() || (*child).xfrm.is_null() {
+    |                                            ^^^^ unknown field
+    |
+    = note: available fields are: `error`, `ops`, `route_cookie`, `dev`
+
+error[E0308]: mismatched types
+   --> crates/gre_demux/src/lib.rs:159:42
+    |
+159 |         if !skb_checksum_simple_validate(skb) {
+    |             ---------------------------- ^^^ expected `*mut c_void`, found `*mut u8`
+    |             |
+    |             arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut u8`
+note: function defined here
+   --> crates/gre_demux/src/lib.rs:297:11
+    |
+297 | unsafe fn skb_checksum_simple_validate(skb: *mut c_void) -> bool {
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ----------------
+
+error[E0308]: arguments to this function are incorrect
+   --> crates/gre_demux/src/lib.rs:160:13
+    |
+160 |             skb_checksum_try_convert(skb, IPPROTO_GRE, null_compute_pseudo);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: expected `*mut c_void`, found `*mut u8`
+   --> crates/gre_demux/src/lib.rs:160:38
+    |
+160 |             skb_checksum_try_convert(skb, IPPROTO_GRE, null_compute_pseudo);
+    |                                      ^^^
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut u8`
+note: expected "C" fn, found "Rust" fn
+   --> crates/gre_demux/src/lib.rs:160:56
+    |
+160 |             skb_checksum_try_convert(skb, IPPROTO_GRE, null_compute_pseudo);
+    |                                                        ^^^^^^^^^^^^^^^^^^^
+    = note: expected fn pointer `unsafe extern "C" fn()`
+                  found fn item `unsafe fn() {null_compute_pseudo}`
+note: function defined here
+   --> crates/gre_demux/src/lib.rs:300:11
+    |
+300 | unsafe fn skb_checksum_try_convert(skb: *mut c_void, proto: c_int, cb: unsafe extern "C" fn()) {}
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^ ----------------                --------------------------
+
+error[E0614]: type `()` cannot be dereferenced
+   --> crates/gre_demux/src/lib.rs:162:13
+    |
+162 |             *csum_err.write_volatile(true);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ can't be dereferenced
+
+error[E0308]: arguments to this function are incorrect
+   --> crates/gre_demux/src/lib.rs:184:19
+    |
+184 |         let val = skb_header_pointer(skb, nhs + hdr_len, 1, 0 as *mut u8) as *const u8;
+    |                   ^^^^^^^^^^^^^^^^^^
+    |
+note: expected `*mut c_void`, found `*mut u8`
+   --> crates/gre_demux/src/lib.rs:184:38
+    |
+184 |         let val = skb_header_pointer(skb, nhs + hdr_len, 1, 0 as *mut u8) as *const u8;
+    |                                      ^^^
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut u8`
+note: expected `*mut c_void`, found `*mut u8`
+   --> crates/gre_demux/src/lib.rs:184:61
+    |
+184 |         let val = skb_header_pointer(skb, nhs + hdr_len, 1, 0 as *mut u8) as *const u8;
+    |                                                             ^^^^^^^^^^^^
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut u8`
+note: function defined here
+   --> crates/gre_demux/src/lib.rs:302:11
+    |
+302 | unsafe fn skb_header_pointer(
+    |           ^^^^^^^^^^^^^^^^^^
+303 |     skb: *mut c_void,
+    |     ----------------
+...
+306 |     data: *mut c_void,
+    |     -----------------
+
+error[E0308]: arguments to this function are incorrect
+   --> crates/nf_conntrack_h323_main/src/lib.rs:165:14
+    |
+165 |     let th = skb_header_pointer(skb, protoff, mem::size_of::<tcphdr>() as c_int, ptr::null_mut::<tcphdr>());
+    |              ^^^^^^^^^^^^^^^^^^      ------- expected `i32`, found `u32`
+    |
+note: expected `*mut u8`, found `*mut tcphdr`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:165:82
+    |
+165 |     let th = skb_header_pointer(skb, protoff, mem::size_of::<tcphdr>() as c_int, ptr::null_mut::<tcphdr>());
+    |                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: expected raw pointer `*mut u8`
+               found raw pointer `*mut tcphdr`
+note: function defined here
+   --> crates/nf_conntrack_h323_main/src/lib.rs:290:11
+    |
+290 | unsafe fn skb_header_pointer(
+    |           ^^^^^^^^^^^^^^^^^^
+291 |     skb: *mut sk_buff,
+292 |     offset: c_int,
+    |     -------------
+293 |     size: c_int,
+294 |     buffer: *mut u8,
+    |     ---------------
+help: you can convert a `u32` to an `i32` and panic if the converted value doesn't fit
+    |
+165 |     let th = skb_header_pointer(skb, protoff.try_into().unwrap(), mem::size_of::<tcphdr>() as c_int, ptr::null_mut::<tcphdr>());
+    |                                             ++++++++++++++++++++
+
+error[E0133]: use of mutable static is unsafe and requires unsafe function or block
+   --> crates/xfrm6_policy/src/lib.rs:391:15
+    |
+391 |     dst_ops: &xfrm6_dst_ops_template,
+    |               ^^^^^^^^^^^^^^^^^^^^^^ use of mutable static
+    |
+    = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+
+error[E0610]: `u8` is a primitive type and therefore doesn't have fields
+   --> crates/nf_conntrack_h323_main/src/lib.rs:170:38
+    |
+170 |     let tcpdataoff = protoff + (*th).doff as c_int * 4;
+    |                                      ^^^^
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:144:20
+    |
+144 |         libc::free(ipv6_route_table);
+    |         ---------- ^^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:171:35
+    |
+171 |     let tcpdatalen = (*skb).len - tcpdataoff;
+    |                                   ^^^^^^^^^^ expected `i32`, found `u32`
+
+Some errors have detailed explanations: E0133, E0308, E0425, E0609.
+For more information about an error, try `rustc --explain E0133`.
+error[E0277]: cannot subtract `u32` from `i32`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:171:33
+    |
+171 |     let tcpdatalen = (*skb).len - tcpdataoff;
+    |                                 ^ no implementation for `i32 - u32`
+    |
+    = help: the trait `Sub<u32>` is not implemented for `i32`
+help: the following other types implement trait `Sub<Rhs>`
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/internal_macros.rs:22:9
+    |
+ 22 |         impl const $imp<$u> for &$t {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `&i32` implements `Sub<i32>`
+...
+ 33 |         impl const $imp<&$u> for $t {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `i32` implements `Sub<&i32>`
+...
+ 44 |         impl const $imp<&$u> for &$t {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `&i32` implements `Sub`
+    |
+   ::: /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ops/arith.rs:212:9
+    |
+212 |         impl const Sub for $t {
+    |         ^^^^^^^^^^^^^^^^^^^^^ `i32` implements `Sub`
+...
+227 | sub_impl! { usize u8 u16 u32 u64 u128 isize i8 i16 i32 i64 i128 f16 f32 f64 f128 }
+    | ---------------------------------------------------------------------------------- in this macro invocation
+    = note: this error originates in the macro `forward_ref_binop` which comes from the expansion of the macro `sub_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:179:40
+    |
+179 |         tpkt = skb_header_pointer(skb, tcpdataoff, tcpdatalen, h323_buffer);
+    |                ------------------      ^^^^^^^^^^ expected `i32`, found `u32`
+    |                |
+    |                arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/nf_conntrack_h323_main/src/lib.rs:290:11
+    |
+290 | unsafe fn skb_header_pointer(
+    |           ^^^^^^^^^^^^^^^^^^
+291 |     skb: *mut sk_buff,
+292 |     offset: c_int,
+    |     -------------
+help: you can convert a `u32` to an `i32` and panic if the converted value doesn't fit
+    |
+179 |         tpkt = skb_header_pointer(skb, tcpdataoff.try_into().unwrap(), tcpdatalen, h323_buffer);
+    |                                                  ++++++++++++++++++++
+
+error[E0609]: no field `tpkt_len` on type `*mut nf_ct_h323_master`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:185:21
+    |
+185 |             if info.tpkt_len[dir] > 0 {
+    |                     ^^^^^^^^ unknown field
+    |
+help: `info` is a raw pointer; try dereferencing it
+    |
+185 |             if (*info).tpkt_len[dir] > 0 {
+    |                ++    +
+
+error[E0609]: no field `tpkt_len` on type `*mut nf_ct_h323_master`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:187:25
+    |
+187 |                 if info.tpkt_len[dir] <= tcpdatalen as u16 {
+    |                         ^^^^^^^^ unknown field
+    |
+help: `info` is a raw pointer; try dereferencing it
+    |
+187 |                 if (*info).tpkt_len[dir] <= tcpdatalen as u16 {
+    |                    ++    +
+
+error[E0609]: no field `tpkt_len` on type `*mut nf_ct_h323_master`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:189:37
+    |
+189 |                     *datalen = info.tpkt_len[dir] as c_int;
+    |                                     ^^^^^^^^ unknown field
+    |
+help: `info` is a raw pointer; try dereferencing it
+    |
+189 |                     *datalen = (*info).tpkt_len[dir] as c_int;
+    |                                ++    +
+
+error[E0599]: no method named `is_null` found for fn pointer `unsafe extern "C" fn(*mut c_void) -> i32` in the current scope
+   --> crates/gre_demux/src/lib.rs:229:44
+    |
+229 |     if proto.is_null() || (*proto).handler.is_null() {
+    |                                            ^^^^^^^ method not found in `unsafe extern "C" fn(*mut c_void) -> i32`
+
+error[E0606]: casting `c_void` as `*mut u8` is invalid
+   --> crates/gre_demux/src/lib.rs:221:15
+    |
+221 |     let ver = (*skb as *mut u8).add(1).read_volatile() & 0x7f;
+    |               ^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:149:77
+    |
+149 |     let hdr = register_net_sysctl(net, b"net/ipv6\0".as_ptr() as *const u8, ipv6_table);
+    |               ------------------- arguments to this function are incorrect  ^^^^^^^^^^ expected `*mut ctl_table`, found `*mut c_void`
+    |
+    = note: expected raw pointer `*mut ctl_table`
+               found raw pointer `*mut c_void`
+note: function defined here
+   --> crates/sysctl_net_ipv6/src/lib.rs:240:8
+    |
+240 |     fn register_net_sysctl(net: *mut net, path: *const u8, table: *mut ctl_table) -> *mut ctl_table_header;
+    |        ^^^^^^^^^^^^^^^^^^^                                 -----
+
+warning: unused variable: `x`
+   --> crates/xfrm6_output/src/lib.rs:112:5
+    |
+112 |     x: *mut xfrm_state,
+    |     ^ help: if this is intentional, prefix it with an underscore: `_x`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `net`
+   --> crates/xfrm6_output/src/lib.rs:160:26
+    |
+160 | fn __xfrm6_output_finish(net: *mut net, sk: *mut sock, skb: *mut sk_buff) -> c_int {
+    |                          ^^^ help: if this is intentional, prefix it with an underscore: `_net`
+
+warning: `xfrm6_policy` (lib) generated 1 warning
+error: could not compile `xfrm6_policy` (lib) due to 26 previous errors; 1 warning emitted
+error[E0599]: no variant or associated item named `TCP_CONNTRACK_RETRANS` found for enum `TcpConntrack` in the current scope
+  --> crates/nf_conntrack_proto_tcp/src/lib.rs:96:28
+   |
+39 | pub enum TcpConntrack {
+   | --------------------- variant or associated item `TCP_CONNTRACK_RETRANS` not found for this enum
+...
+96 |     timeouts[TcpConntrack::TCP_CONNTRACK_RETRANS as usize] = 5 * 60 * HZ;
+   |                            ^^^^^^^^^^^^^^^^^^^^^ variant or associated item not found in `TcpConntrack`
+   |
+help: there is a variant with a similar name
+   |
+96 -     timeouts[TcpConntrack::TCP_CONNTRACK_RETRANS as usize] = 5 * 60 * HZ;
+96 +     timeouts[TcpConntrack::TCP_CONNTRACK_NONE as usize] = 5 * 60 * HZ;
+   |
+
+error[E0369]: no implementation for `*const u16 << {integer}`
+   --> crates/gre_demux/src/lib.rs:243:60
+    |
+243 |     let ver = (*iph.add((*iph as *const u16 as *const u16) << 2) + 1).read_volatile() & 0x7f;
+    |                         ---------------------------------- ^^ - {integer}
+    |                         |
+    |                         *const u16
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:151:20
+    |
+151 |         libc::free(ipv6_icmp_table);
+    |         ---------- ^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:152:20
+    |
+152 |         libc::free(ipv6_route_table);
+    |         ---------- ^^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:160:20
+    |
+160 |         libc::free(ipv6_icmp_table);
+    |         ---------- ^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:203:28
+    |
+203 |         tpkt = (*data).add(*datalen);
+    |                        --- ^^^^^^^^ expected `usize`, found `i32`
+    |                        |
+    |                        arguments to this method are incorrect
+    |
+note: method defined here
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ptr/mut_ptr.rs:927:25
+    |
+927 |     pub const unsafe fn add(self, count: usize) -> Self
+    |                         ^^^
+help: you can convert an `i32` to a `usize` and panic if the converted value doesn't fit
+    |
+203 |         tpkt = (*data).add((*datalen).try_into().unwrap());
+    |                            +        +++++++++++++++++++++
+
+error[E0609]: no field `tpkt_len` on type `*mut nf_ct_h323_master`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:217:18
+    |
+217 |             info.tpkt_len[dir] = tpktlen - 4;
+    |                  ^^^^^^^^ unknown field
+    |
+help: `info` is a raw pointer; try dereferencing it
+    |
+217 |             (*info).tpkt_len[dir] = tpktlen - 4;
+    |             ++    +
+
+error[E0609]: no field `tpkt_len` on type `*mut nf_ct_h323_master`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:226:10
+    |
+226 |     info.tpkt_len[dir] = 0;
+    |          ^^^^^^^^ unknown field
+    |
+help: `info` is a raw pointer; try dereferencing it
+    |
+226 |     (*info).tpkt_len[dir] = 0;
+    |     ++    +
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:161:20
+    |
+161 |         libc::free(ipv6_route_table);
+    |         ---------- ^^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0599]: no variant or associated item named `TCP_CONNTRACK_UNACK` found for enum `TcpConntrack` in the current scope
+  --> crates/nf_conntrack_proto_tcp/src/lib.rs:97:28
+   |
+39 | pub enum TcpConntrack {
+   | --------------------- variant or associated item `TCP_CONNTRACK_UNACK` not found for this enum
+...
+97 |     timeouts[TcpConntrack::TCP_CONNTRACK_UNACK as usize] = 5 * 60 * HZ;
+   |                            ^^^^^^^^^^^^^^^^^^^ variant or associated item not found in `TcpConntrack`
+   |
+help: there is a variant with a similar name
+   |
+97 -     timeouts[TcpConntrack::TCP_CONNTRACK_UNACK as usize] = 5 * 60 * HZ;
+97 +     timeouts[TcpConntrack::TCP_CONNTRACK_NONE as usize] = 5 * 60 * HZ;
+   |
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:170:20
+    |
+170 |         libc::free(ipv6_icmp_table);
+    |         ---------- ^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+Some errors have detailed explanations: E0061, E0308, E0428, E0609.
+For more information about an error, try `rustc --explain E0061`.
+error[E0599]: no method named `dev_net` found for struct `net_device` in the current scope
+   --> crates/arp/src/lib.rs:129:54
+    |
+ 27 | pub struct net_device {
+    | --------------------- method `dev_net` not found for this struct
+...
+129 |     (*neigh).type_ = inet_addr_type_dev_table((*dev).dev_net(dev), dev, addr);
+    |                                                      ^^^^^^^ method not found in `net_device`
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:171:20
+    |
+171 |         libc::free(ipv6_route_table);
+    |         ---------- ^^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0599]: no method named `read_volatile` found for type `u8` in the current scope
+   --> crates/gre_demux/src/lib.rs:243:71
+    |
+243 |     let ver = (*iph.add((*iph as *const u16 as *const u16) << 2) + 1).read_volatile() & 0x7f;
+    |                                                                       ^^^^^^^^^^^^^ method not found in `u8`
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:193:16
+    |
+193 |     libc::free(ipv6_table);
+    |     ---------- ^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:194:16
+    |
+194 |     libc::free(ipv6_route_table);
+    |     ---------- ^^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:195:16
+    |
+195 |     libc::free(ipv6_icmp_table);
+    |     ---------- ^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut ctl_table`
+    |     |
+    |     arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut ctl_table`
+note: function defined here
+   --> /Users/xcallens/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.186/src/unix/mod.rs:699:12
+    |
+699 |     pub fn free(p: *mut c_void);
+    |            ^^^^
+
+error[E0425]: cannot find function `init_net` in this scope
+   --> crates/sysctl_net_ipv6/src/lib.rs:201:14
+    |
+201 |         &mut init_net() as *mut net,
+    |              ^^^^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:251:30
+    |
+251 |             let p = data.add((*taddr).unicastAddress.iPAddress.network);
+    |                          --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `usize`, found `i32`
+    |                          |
+    |                          arguments to this method are incorrect
+    |
+note: method defined here
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ptr/const_ptr.rs:829:25
+    |
+829 |     pub const unsafe fn add(self, count: usize) -> Self
+    |                         ^^^
+help: you can convert an `i32` to a `usize` and panic if the converted value doesn't fit
+    |
+251 |             let p = data.add((*taddr).unicastAddress.iPAddress.network.try_into().unwrap());
+    |                                                                       ++++++++++++++++++++
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:137:24
+    |
+137 |         (*neigh).ops = &arp_direct_ops;
+    |                        ^^^^^^^^^^^^^^^ types differ in mutability
+    |
+    = note: expected raw pointer `*mut neigh_ops`
+                 found reference `&neigh_ops`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:152:28
+    |
+152 |             (*neigh).ops = &arp_hh_ops;
+    |                            ^^^^^^^^^^^ types differ in mutability
+    |
+    = note: expected raw pointer `*mut neigh_ops`
+                 found reference `&neigh_ops`
+
+error[E0618]: expected function, found `*mut ctl_table`
+   --> crates/sysctl_net_ipv6/src/lib.rs:203:9
+    |
+203 |         ipv6_rotable(),
+    |         ^^^^^^^^^^^^--
+    |         |
+    |         call expression requires function
+...
+266 | pub static mut ipv6_rotable: *mut ctl_table = {
+    | ------------------------------------------- `ipv6_rotable` defined here
+
+error[E0283]: type annotations needed
+   --> crates/gre_demux/src/lib.rs:331:14
+    |
+331 |     unsafe { ptr::null_mut() };
+    |              ^^^^^^^^^^^^^ cannot infer type of the type parameter `T` declared on the function `null_mut`
+    |
+    = note: cannot satisfy `_: Thin`
+note: required by a bound in `null_mut`
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:862:41
+    |
+862 | pub const fn null_mut<T: PointeeSized + Thin>() -> *mut T {
+    |                                         ^^^^ required by this bound in `null_mut`
+help: consider specifying the generic argument
+    |
+331 |     unsafe { ptr::null_mut::<T>() };
+    |                           +++++
+
+error[E0618]: expected function, found `pernet_operations`
+   --> crates/sysctl_net_ipv6/src/lib.rs:209:43
+    |
+209 |     let err = register_pernet_subsys(&mut ipv6_sysctl_net_ops());
+    |                                           ^^^^^^^^^^^^^^^^^^^--
+    |                                           |
+    |                                           call expression requires function
+...
+283 | pub static mut ipv6_sysctl_net_ops: pernet_operations = pernet_operations {
+    | ----------------------------------------------------- `ipv6_sysctl_net_ops` defined here
+
+error[E0425]: cannot find function `ip6_header` in this scope
+   --> crates/sysctl_net_ipv6/src/lib.rs:220:22
+    |
+220 |     let ip6_header = ip6_header();
+    |                      ^^^^^^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:261:30
+    |
+261 |             let p = data.add((*taddr).unicastAddress.iP6Address.network);
+    |                          --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `usize`, found `i32`
+    |                          |
+    |                          arguments to this method are incorrect
+    |
+note: method defined here
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ptr/const_ptr.rs:829:25
+    |
+829 |     pub const unsafe fn add(self, count: usize) -> Self
+    |                         ^^^
+help: you can convert an `i32` to a `usize` and panic if the converted value doesn't fit
+    |
+261 |             let p = data.add((*taddr).unicastAddress.iP6Address.network.try_into().unwrap());
+    |                                                                        ++++++++++++++++++++
+
+error[E0618]: expected function, found `pernet_operations`
+   --> crates/sysctl_net_ipv6/src/lib.rs:222:35
+    |
+222 |     unregister_pernet_subsys(&mut ipv6_sysctl_net_ops());
+    |                                   ^^^^^^^^^^^^^^^^^^^--
+    |                                   |
+    |                                   call expression requires function
+...
+283 | pub static mut ipv6_sysctl_net_ops: pernet_operations = pernet_operations {
+    | ----------------------------------------------------- `ipv6_sysctl_net_ops` defined here
+
+error[E0609]: no field `data` on type `sk_buff`
+   --> crates/nf_conntrack_h323_main/src/lib.rs:297:23
+    |
+297 |     let data = (*skb).data; // Assuming data field exists
+    |                       ^^^^ unknown field
+    |
+    = note: available field is: `len`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:154:28
+    |
+154 |             (*neigh).ops = &arp_generic_ops;
+    |                            ^^^^^^^^^^^^^^^^ types differ in mutability
+    |
+    = note: expected raw pointer `*mut neigh_ops`
+                 found reference `&neigh_ops`
+
+Some errors have detailed explanations: E0425, E0599.
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:284:11
+    |
+284 |     init: ipv6_sysctl_net_init,
+    |           ^^^^^^^^^^^^^^^^^^^^ expected safe fn, found unsafe fn
+    |
+    = note: expected fn pointer `extern "C" fn(_) -> _`
+                  found fn item `unsafe extern "C" fn(_) -> _ {ipv6_sysctl_net_init}`
+    = note: unsafe functions cannot be coerced into safe function pointers
+
+error[E0425]: cannot find function `arp_send_dst` in this scope
+   --> crates/arp/src/lib.rs:187:5
+    |
+187 |     arp_send_dst(type_, ptype, dest_ip, dev, src_ip, dest_hw, src_hw, target_hw, ptr::null_mut());
+    |     ^^^^^^^^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/sysctl_net_ipv6/src/lib.rs:285:11
+    |
+285 |     exit: ipv6_sysctl_net_exit,
+    |           ^^^^^^^^^^^^^^^^^^^^ expected safe fn, found unsafe fn
+    |
+    = note: expected fn pointer `extern "C" fn(_)`
+                  found fn item `unsafe extern "C" fn(_) {ipv6_sysctl_net_exit}`
+    = note: unsafe functions cannot be coerced into safe function pointers
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:310:5
+    |
+308 | unsafe fn nf_ct_l3num(ct: *mut nf_conn) -> c_int {
+    |                                            ----- expected `i32` because of return type
+309 |     // Simplified version of nf_ct_l3num
+310 |     (*ct).tuplehash[0].tuple.src.u3.ip.s_addr & 0xFF
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `i32`, found `u32`
+    |
+help: you can convert a `u32` to an `i32` and panic if the converted value doesn't fit
+    |
+310 |     ((*ct).tuplehash[0].tuple.src.u3.ip.s_addr & 0xFF).try_into().unwrap()
+    |     +                                                +++++++++++++++++++++
+
+warning: unused variable: `ptr`
+   --> crates/gre_demux/src/lib.rs:291:30
+    |
+291 | unsafe fn rcu_dereference<T>(ptr: *const AtomicPtr<T>) -> *const T {
+    |                              ^^^ help: if this is intentional, prefix it with an underscore: `_ptr`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `skb`
+   --> crates/gre_demux/src/lib.rs:294:25
+    |
+294 | unsafe fn pskb_may_pull(skb: *mut u8, len: usize) -> bool {
+    |                         ^^^ help: if this is intentional, prefix it with an underscore: `_skb`
+
+error[E0425]: cannot find function `cpu_to_be16` in this scope
+   --> crates/arp/src/lib.rs:194:15
+    |
+194 |     protocol: cpu_to_be16(ETH_P_IP),
+    |               ^^^^^^^^^^^ not found in this scope
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:314:55
+    |
+314 | static mut set_h245_addr_hook: set_h245_addr_hook_t = ptr::null();
+    |                                                       ^^^^^^^^^^^ expected fn pointer, found `*const _`
+    |
+    = note: expected fn pointer `extern "C" fn(*mut sk_buff, u32, *mut *mut u8, i32, *mut H245_TransportAddress, *mut nf_inet_addr, u16) -> i32`
+              found raw pointer `*const _`
+
+warning: unused variable: `container_type`
+  --> crates/sysctl_net_ipv6/src/lib.rs:84:44
+   |
+84 | unsafe fn container_of(ptr: *const c_void, container_type: usize, member_offset: usize) -> *mut c_void {
+   |                                            ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_container_type`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+error[E0308]: mismatched types
+   --> crates/nf_conntrack_h323_main/src/lib.rs:315:55
+    |
+315 | static mut set_h225_addr_hook: set_h225_addr_hook_t = ptr::null();
+    |                                                       ^^^^^^^^^^^ expected fn pointer, found `*const _`
+    |
+    = note: expected fn pointer `extern "C" fn(*mut sk_buff, u32, *mut *mut u8, i32, *mut TransportAddress, *mut nf_inet_addr, u16) -> i32`
+              found raw pointer `*const _`
+
+warning: unused variable: `len`
+   --> crates/gre_demux/src/lib.rs:294:39
+    |
+294 | unsafe fn pskb_may_pull(skb: *mut u8, len: usize) -> bool {
+    |                                       ^^^ help: if this is intentional, prefix it with an underscore: `_len`
+
+warning: unused variable: `skb`
+   --> crates/gre_demux/src/lib.rs:297:40
+    |
+297 | unsafe fn skb_checksum_simple_validate(skb: *mut c_void) -> bool {
+    |                                        ^^^ help: if this is intentional, prefix it with an underscore: `_skb`
+
+warning: unused variable: `skb`
+   --> crates/gre_demux/src/lib.rs:300:36
+    |
+300 | unsafe fn skb_checksum_try_convert(skb: *mut c_void, proto: c_int, cb: unsafe extern "C" fn()) {}
+    |                                    ^^^ help: if this is intentional, prefix it with an underscore: `_skb`
+
+warning: unused variable: `proto`
+   --> crates/gre_demux/src/lib.rs:300:54
+    |
+300 | unsafe fn skb_checksum_try_convert(skb: *mut c_void, proto: c_int, cb: unsafe extern "C" fn()) {}
+    |                                                      ^^^^^ help: if this is intentional, prefix it with an underscore: `_proto`
+
+warning: unused variable: `cb`
+   --> crates/gre_demux/src/lib.rs:300:68
+    |
+300 | unsafe fn skb_checksum_try_convert(skb: *mut c_void, proto: c_int, cb: unsafe extern "C" fn()) {}
+    |                                                                    ^^ help: if this is intentional, prefix it with an underscore: `_cb`
+
+warning: `xfrm6_output` (lib) generated 4 warnings
+error: could not compile `xfrm6_output` (lib) due to 16 previous errors; 4 warnings emitted
+warning: unused variable: `skb`
+   --> crates/gre_demux/src/lib.rs:303:5
+    |
+303 |     skb: *mut c_void,
+    |     ^^^ help: if this is intentional, prefix it with an underscore: `_skb`
+
+warning: unused variable: `offset`
+   --> crates/gre_demux/src/lib.rs:304:5
+    |
+304 |     offset: usize,
+    |     ^^^^^^ help: if this is intentional, prefix it with an underscore: `_offset`
+
+Some errors have detailed explanations: E0308, E0425, E0530, E0618.
+For more information about an error, try `rustc --explain E0308`.
+warning: unused variable: `size`
+   --> crates/gre_demux/src/lib.rs:305:5
+    |
+305 |     size: usize,
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_size`
+
+warning: unused variable: `data`
+   --> crates/gre_demux/src/lib.rs:306:5
+    |
+306 |     data: *mut c_void,
+    |     ^^^^ help: if this is intentional, prefix it with an underscore: `_data`
+
+warning: unused variable: `flags`
+   --> crates/gre_demux/src/lib.rs:313:25
+    |
+313 | unsafe fn gre_calc_hlen(flags: u16) -> usize {
+    |                         ^^^^^ help: if this is intentional, prefix it with an underscore: `_flags`
+
+warning: unused variable: `proto`
+   --> crates/gre_demux/src/lib.rs:325:29
+    |
+325 | unsafe fn inet_add_protocol(proto: *const net_protocol, num: c_int) -> c_int {
+    |                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_proto`
+
+warning: unused variable: `num`
+   --> crates/gre_demux/src/lib.rs:325:57
+    |
+325 | unsafe fn inet_add_protocol(proto: *const net_protocol, num: c_int) -> c_int {
+    |                                                         ^^^ help: if this is intentional, prefix it with an underscore: `_num`
+
+Some errors have detailed explanations: E0277, E0308, E0422, E0425, E0432, E0609, E0610, E0740.
+warning: unused variable: `proto`
+   --> crates/gre_demux/src/lib.rs:328:29
+    |
+328 | unsafe fn inet_del_protocol(proto: *const net_protocol, num: c_int) {}
+    |                             ^^^^^ help: if this is intentional, prefix it with an underscore: `_proto`
+
+warning: unused variable: `num`
+   --> crates/gre_demux/src/lib.rs:328:57
+    |
+328 | unsafe fn inet_del_protocol(proto: *const net_protocol, num: c_int) {}
+    |                                                         ^^^ help: if this is intentional, prefix it with an underscore: `_num`
+
+For more information about an error, try `rustc --explain E0277`.
+Some errors have detailed explanations: E0277, E0283, E0308, E0369, E0425, E0599, E0606, E0614.
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:195:11
+    |
+195 |     hash: Some(arp_hash),
+    |           ^^^^^^^^^^^^^^ expected fn pointer, found `Option<...>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*const c_void, *const net_device, *mut u64) -> u64`
+                     found enum `Option<unsafe extern "C" fn(*const c_void, *const net_device, *mut u64) -> u64 {arp_hash}>`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:196:13
+    |
+196 |     key_eq: Some(arp_key_eq),
+    |             ^^^^^^^^^^^^^^^^ expected fn pointer, found `Option<...>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour, *const c_void) -> i32`
+                     found enum `Option<unsafe extern "C" fn(*mut neighbour, *const c_void) -> i32 {arp_key_eq}>`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:197:18
+    |
+197 |     constructor: Some(arp_constructor),
+    |                  ^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found `Option<...>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour) -> i32`
+                     found enum `Option<unsafe extern "C" fn(*mut neighbour) -> i32 {arp_constructor}>`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:198:17
+    |
+198 |     proxy_redo: Some(parp_redo),
+    |                 ^^^^^^^^^^^^^^^ expected fn pointer, found `Option<...>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut c_void)`
+                     found enum `Option<unsafe extern "C" fn(*mut sk_buff) {parp_redo}>`
+
+warning: `sysctl_net_ipv6` (lib) generated 2 warnings
+error: could not compile `sysctl_net_ipv6` (lib) due to 27 previous errors; 2 warnings emitted
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:199:19
+    |
+199 |     is_multicast: Some(arp_is_multicast),
+    |                   ^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found `Option<...>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*const c_void) -> i32`
+                     found enum `Option<unsafe extern "C" fn(*const c_void) -> i32 {arp_is_multicast}>`
+
+warning: `nf_conntrack_proto_tcp` (lib) generated 5 warnings
+error: could not compile `nf_conntrack_proto_tcp` (lib) due to 15 previous errors; 5 warnings emitted
+warning: `nf_conntrack_h323_main` (lib) generated 1 warning
+error: could not compile `nf_conntrack_h323_main` (lib) due to 27 previous errors; 1 warning emitted
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:212:14
+    |
+212 |     solicit: None,
+    |              ^^^^ expected fn pointer, found `Option<_>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour, *mut c_void)`
+                     found enum `Option<_>`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:213:19
+    |
+213 |     error_report: None,
+    |                   ^^^^ expected fn pointer, found `Option<_>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour, *mut c_void)`
+                     found enum `Option<_>`
+
+warning: `gre_demux` (lib) generated 18 warnings
+error: could not compile `gre_demux` (lib) due to 23 previous errors; 18 warnings emitted
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:221:14
+    |
+221 |     solicit: None,
+    |              ^^^^ expected fn pointer, found `Option<_>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour, *mut c_void)`
+                     found enum `Option<_>`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:222:19
+    |
+222 |     error_report: None,
+    |                   ^^^^ expected fn pointer, found `Option<_>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour, *mut c_void)`
+                     found enum `Option<_>`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:230:14
+    |
+230 |     solicit: None,
+    |              ^^^^ expected fn pointer, found `Option<_>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour, *mut c_void)`
+                     found enum `Option<_>`
+
+error[E0308]: mismatched types
+   --> crates/arp/src/lib.rs:231:19
+    |
+231 |     error_report: None,
+    |                   ^^^^ expected fn pointer, found `Option<_>`
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(*mut neighbour, *mut c_void)`
+                     found enum `Option<_>`
+
+warning: unused variable: `neigh`
+   --> crates/arp/src/lib.rs:169:5
+    |
+169 |     neigh: *mut neighbour,
+    |     ^^^^^ help: if this is intentional, prefix it with an underscore: `_neigh`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0308, E0425, E0599.
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:15:24
+   |
+15 | pub const IPPROTO_TCP: c_int = 6;
+   |                        ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:16:24
+   |
+16 | pub const IPPROTO_UDP: c_int = 17;
+   |                        ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:17:25
+   |
+17 | pub const NFPROTO_IPV4: c_int = 2;
+   |                         ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:18:30
+   |
+18 | pub const IPS_NAT_DONE_MASK: c_int = 0x0000000F;
+   |                              ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:28:13
+   |
+28 |     status: c_int,
+   |             ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:34:10
+   |
+34 |     dir: c_int,
+   |          ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:35:18
+   |
+35 |     saved_proto: c_int,
+   |                  ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:40:12
+   |
+40 |     flags: c_int,
+   |            ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:43:16
+   |
+43 |     min_proto: c_int,
+   |                ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:44:16
+   |
+44 |     max_proto: c_int,
+   |                ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:49:62
+   |
+49 |     fn skb_ensure_writable(skb: *mut sk_buff, len: usize) -> c_int;
+   |                                                              ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:50:83
+   |
+50 |     fn pskb_expand_head(skb: *mut sk_buff, headroom: usize, tailroom: usize, gfp: c_int) -> c_int;
+   |                                                                                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:50:93
+   |
+50 |     fn pskb_expand_head(skb: *mut sk_buff, headroom: usize, tailroom: usize, gfp: c_int) -> c_int;
+   |                                                                                             ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:53:16
+   |
+53 |         l3num: c_int,
+   |                ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:54:19
+   |
+54 |         protocol: c_int,
+   |                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:57:17
+   |
+57 |         newlen: c_int,
+   |                 ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:58:17
+   |
+58 |         oldlen: c_int,
+   |                 ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:59:10
+   |
+59 |     ) -> c_int;
+   |          ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:60:51
+   |
+60 |     fn nf_ct_seqadj_set(ct: *mut nf_conn, ctinfo: c_int, seq: *mut c_void, delta: c_int);
+   |                                                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:60:83
+   |
+60 |     fn nf_ct_seqadj_set(ct: *mut nf_conn, ctinfo: c_int, seq: *mut c_void, delta: c_int);
+   |                                                                                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:61:41
+   |
+61 |     fn nf_ct_l3num(ct: *mut nf_conn) -> c_int;
+   |                                         ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:69:19
+   |
+69 | pub const EINVAL: c_int = -22;
+   |                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:70:19
+   |
+70 | pub const ENOMEM: c_int = -12;
+   |                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:75:14
+   |
+75 |     dataoff: c_uint,
+   |              ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:76:19
+   |
+76 |     match_offset: c_uint,
+   |                   ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:77:16
+   |
+77 |     match_len: c_uint,
+   |                ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_nat_helper/src/lib.rs:79:14
+   |
+79 |     rep_len: c_uint,
+   |              ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:133:13
+    |
+133 |     ctinfo: c_int,
+    |             ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:134:14
+    |
+134 |     protoff: c_uint,
+    |              ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:135:19
+    |
+135 |     match_offset: c_uint,
+    |                   ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:136:16
+    |
+136 |     match_len: c_uint,
+    |                ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:138:14
+    |
+138 |     rep_len: c_uint,
+    |              ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:139:13
+    |
+139 |     adjust: c_int,
+    |             ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:140:6
+    |
+140 | ) -> c_int {
+    |      ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:164:52
+    |
+164 |         protoff + (*tcph.offset(12) as u32 * 4) as c_uint,
+    |                                                    ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:178:20
+    |
+178 |         datalen as c_int,
+    |                    ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:179:19
+    |
+179 |         oldlen as c_int,
+    |                   ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:187:38
+    |
+187 |             (rep_len - match_len) as c_int,
+    |                                      ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:199:13
+    |
+199 |     ctinfo: c_int,
+    |             ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:200:14
+    |
+200 |     protoff: c_uint,
+    |              ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:201:19
+    |
+201 |     match_offset: c_uint,
+    |                   ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:202:16
+    |
+202 |     match_len: c_uint,
+    |                ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:204:14
+    |
+204 |     rep_len: c_uint,
+    |              ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:205:6
+    |
+205 | ) -> c_int {
+    |      ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:251:20
+    |
+251 |         datalen as c_int,
+    |                    ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:252:19
+    |
+252 |         oldlen as c_int,
+    |                   ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:260:74
+    |
+260 | pub unsafe extern "C" fn enlarge_skb(skb: *mut sk_buff, extra: usize) -> c_int {
+    |                                                                          ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_nat_helper/src/lib.rs:312:78
+    |
+312 |     fn nf_nat_setup_info(ct: *mut nf_conn, range: *mut nf_nat_range2, manip: c_int);
+    |                                                                              ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+warning: `arp` (lib) generated 2 warnings
+error: could not compile `arp` (lib) due to 32 previous errors; 2 warnings emitted
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:21:22
+   |
+21 | pub const NF_ACCEPT: c_int = 0;
+   |                      ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:22:20
+   |
+22 | pub const NF_DROP: c_int = 1;
+   |                    ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:24:19
+   |
+24 | pub const EINVAL: c_int = -22;
+   |                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:25:19
+   |
+25 | pub const ENOMEM: c_int = -12;
+   |                   ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:72:19
+   |
+72 |     max_expected: c_uint,
+   |                   ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:73:14
+   |
+73 |     timeout: c_uint,
+   |              ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:80:38
+   |
+80 |     help: extern "C" fn(*mut c_void, c_uint, *mut nf_conn, c_int) -> c_int,
+   |                                      ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:80:60
+   |
+80 |     help: extern "C" fn(*mut c_void, c_uint, *mut nf_conn, c_int) -> c_int,
+   |                                                            ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:80:70
+   |
+80 |     help: extern "C" fn(*mut c_void, c_uint, *mut nf_conn, c_int) -> c_int,
+   |                                                                      ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:87:28
+   |
+87 | static mut master_timeout: c_uint = 300;
+   |                            ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:94:5
+   |
+94 |     c_int,       // ctinfo
+   |     ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:95:5
+   |
+95 |     c_uint,      // protoff
+   |     ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:96:5
+   |
+96 |     c_uint,      // matchoff
+   |     ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_uint` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:97:5
+   |
+97 |     c_uint,      // matchlen
+   |     ^^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_uint;
+   |
+11 + use libc::c_uint;
+   |
+
+error[E0425]: cannot find type `c_int` in this scope
+  --> crates/nf_conntrack_amanda/src/lib.rs:99:6
+   |
+99 | ) -> c_int;
+   |      ^^^^^ not found in this scope
+   |
+help: consider importing one of these type aliases
+   |
+11 + use core::ffi::c_int;
+   |
+11 + use libc::c_int;
+   |
+
+error[E0425]: cannot find type `size_t` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:107:10
+    |
+107 |     len: size_t,
+    |          ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:146:46
+    |
+146 |     fn skb_find_text(skb: *mut c_void, from: c_uint, to: c_uint, ts: *mut ts_config) -> c_uint;
+    |                                              ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:146:58
+    |
+146 |     fn skb_find_text(skb: *mut c_void, from: c_uint, to: c_uint, ts: *mut ts_config) -> c_uint;
+    |                                                          ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:146:89
+    |
+146 |     fn skb_find_text(skb: *mut c_void, from: c_uint, to: c_uint, ts: *mut ts_config) -> c_uint;
+    |                                                                                         ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:148:67
+    |
+148 |     fn nf_ct_refresh(ct: *mut nf_conn, skb: *mut c_void, timeout: c_uint);
+    |                                                                   ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:163:69
+    |
+163 |     fn nf_ct_expect_related(exp: *mut nf_conntrack_expect, timeout: c_int) -> c_int;
+    |                                                                     ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:163:79
+    |
+163 |     fn nf_ct_expect_related(exp: *mut nf_conntrack_expect, timeout: c_int) -> c_int;
+    |                                                                               ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:167:83
+    |
+167 |     fn nf_conntrack_helpers_register(helpers: *mut nf_conntrack_helper, nhelpers: c_int) -> c_int;
+    |                                                                                   ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:167:93
+    |
+167 |     fn nf_conntrack_helpers_register(helpers: *mut nf_conntrack_helper, nhelpers: c_int) -> c_int;
+    |                                                                                             ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:169:85
+    |
+169 |     fn nf_conntrack_helpers_unregister(helpers: *mut nf_conntrack_helper, nhelpers: c_int);
+    |                                                                                     ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `size_t` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:174:14
+    |
+174 |         len: size_t,
+    |              ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:175:14
+    |
+175 |         gfp: c_int,
+    |              ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:176:16
+    |
+176 |         flags: c_int,
+    |                ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:188:14
+    |
+188 |     protoff: c_uint,
+    |              ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:190:13
+    |
+190 |     ctinfo: c_int,
+    |             ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:191:6
+    |
+191 | ) -> c_int {
+    |      ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `udphdr` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:203:44
+    |
+203 |     let dataoff = protoff + mem::size_of::<udphdr>() as c_uint;
+    |                                            ^^^^^^ not found in this scope
+    |
+help: you might be missing a type parameter
+    |
+186 | pub unsafe extern "C" fn amanda_help<udphdr>(
+    |                                     ++++++++
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:203:57
+    |
+203 |     let dataoff = protoff + mem::size_of::<udphdr>() as c_uint;
+    |                                                         ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0433]: cannot find module or crate `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:210:17
+    |
+210 |     if start == c_uint::MAX {
+    |                 ^^^^^^ use of unresolved module or unlinked crate `c_uint`
+    |
+    = help: if you wanted to use a crate named `c_uint`, use `cargo add c_uint` to add it to your `Cargo.toml`
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0433]: cannot find module or crate `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:216:16
+    |
+216 |     if stop == c_uint::MAX {
+    |                ^^^^^^ use of unresolved module or unlinked crate `c_uint`
+    |
+    = help: if you wanted to use a crate named `c_uint`, use `cargo add c_uint` to add it to your `Cargo.toml`
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0433]: cannot find module or crate `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:223:19
+    |
+223 |         if off == c_uint::MAX {
+    |                   ^^^^^^ use of unresolved module or unlinked crate `c_uint`
+    |
+    = help: if you wanted to use a crate named `c_uint`, use `cargo add c_uint` to add it to your `Cargo.toml`
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find value `IPS_NAT_MASK` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:261:53
+    |
+261 |         if !nf_nat_amanda.is_null() && (ct.status & IPS_NAT_MASK) != 0 {
+    |                                                     ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:262:77
+    |
+262 |             ret = nf_nat_amanda(skb, ctinfo, protoff, off - dataoff, len as c_uint, exp);
+    |                                                                             ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:274:56
+    |
+274 | pub unsafe extern "C" fn nf_conntrack_amanda_init() -> c_int {
+    |                                                        ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:276:16
+    |
+276 |     let mut i: c_int;
+    |                ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:306:16
+    |
+306 |     let mut i: c_int;
+    |                ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:318:13
+    |
+318 |     ctinfo: c_int,
+    |             ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:319:14
+    |
+319 |     protoff: c_uint,
+    |              ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:320:15
+    |
+320 |     matchoff: c_uint,
+    |               ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:321:15
+    |
+321 |     matchlen: c_uint,
+    |               ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:323:6
+    |
+323 | ) -> c_int {
+    |      ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:330:30
+    |
+330 | unsafe fn CTINFO2DIR(ctinfo: c_int) -> u8 {
+    |                              ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_uint` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:340:51
+    |
+340 | unsafe fn skb_copy_bits(skb: *mut c_void, offset: c_uint, to: *mut u8, len: c_int) -> c_int {
+    |                                                   ^^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_uint;
+    |
+ 11 + use libc::c_uint;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:340:77
+    |
+340 | unsafe fn skb_copy_bits(skb: *mut c_void, offset: c_uint, to: *mut u8, len: c_int) -> c_int {
+    |                                                                             ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0425]: cannot find type `c_int` in this scope
+   --> crates/nf_conntrack_amanda/src/lib.rs:340:87
+    |
+340 | unsafe fn skb_copy_bits(skb: *mut c_void, offset: c_uint, to: *mut u8, len: c_int) -> c_int {
+    |                                                                                       ^^^^^ not found in this scope
+    |
+help: consider importing one of these type aliases
+    |
+ 11 + use core::ffi::c_int;
+    |
+ 11 + use libc::c_int;
+    |
+
+error[E0308]: mismatched types
+   --> crates/nf_nat_helper/src/lib.rs:97:13
+    |
+ 95 |         ptr::copy(
+    |         --------- arguments to this function are incorrect
+ 96 |             rep_buffer,
+ 97 |             data.offset(match_offset as isize),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut c_void`, found `*mut u8`
+    |
+    = note: expected raw pointer `*mut c_void`
+               found raw pointer `*mut u8`
+note: function defined here
+   --> /Users/xcallens/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:623:21
+    |
+623 | pub const unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
+    |                     ^^^^
+
+error[E0609]: no field `len` on type `&sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:109:57
+    |
+109 |                 (skb as *mut sk_buff).as_ref().unwrap().len + (rep_len - match_len) as usize,
+    |                                                         ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `nfct` on type `&sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:114:65
+    |
+114 |         if nf_ct_l3num((*skb as *mut sk_buff).as_ref().unwrap().nfct as *mut nf_conn)
+    |                                                                 ^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `len` on type `&sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:118:89
+    |
+118 |             (*ip_hdr.offset(2) as *mut u16) = ((*skb as *mut sk_buff).as_ref().unwrap().len) as u16;
+    |                                                                                         ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0070]: invalid left-hand side of assignment
+   --> crates/nf_nat_helper/src/lib.rs:118:45
+    |
+118 |             (*ip_hdr.offset(2) as *mut u16) = ((*skb as *mut sk_buff).as_ref().unwrap().len) as u16;
+    |             ------------------------------- ^
+    |             |
+    |             cannot assign to this expression
+
+error[E0609]: no field `len` on type `&sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:123:59
+    |
+123 |                 ((*skb as *mut sk_buff).as_ref().unwrap().len - 40) as u16;
+    |                                                           ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0070]: invalid left-hand side of assignment
+   --> crates/nf_nat_helper/src/lib.rs:122:48
+    |
+122 |             (*ipv6_hdr.offset(40) as *mut u16) =
+    |             ---------------------------------- ^
+    |             |
+    |             cannot assign to this expression
+
+error[E0605]: non-primitive cast: `sk_buff` as `*mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:114:24
+    |
+114 |         if nf_ct_l3num((*skb as *mut sk_buff).as_ref().unwrap().nfct as *mut nf_conn)
+    |                        ^^^^^^^^^^^^^^^^^^^^^^ invalid cast
+    |
+help: consider borrowing the value
+    |
+114 |         if nf_ct_l3num((&mut *skb as *mut sk_buff).as_ref().unwrap().nfct as *mut nf_conn)
+    |                         ++++
+
+error[E0605]: non-primitive cast: `sk_buff` as `*mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:118:48
+    |
+118 |             (*ip_hdr.offset(2) as *mut u16) = ((*skb as *mut sk_buff).as_ref().unwrap().len) as u16;
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^ invalid cast
+    |
+help: consider borrowing the value
+    |
+118 |             (*ip_hdr.offset(2) as *mut u16) = ((&mut *skb as *mut sk_buff).as_ref().unwrap().len) as u16;
+    |                                                 ++++
+
+error[E0605]: non-primitive cast: `sk_buff` as `*mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:123:18
+    |
+123 |                 ((*skb as *mut sk_buff).as_ref().unwrap().len - 40) as u16;
+    |                  ^^^^^^^^^^^^^^^^^^^^^^ invalid cast
+    |
+help: consider borrowing the value
+    |
+123 |                 ((&mut *skb as *mut sk_buff).as_ref().unwrap().len - 40) as u16;
+    |                   ++++
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:144:41
+    |
+144 |     if skb_ensure_writable(skb, skb_ref.len) != 0 {
+    |                                         ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:151:21
+    |
+151 |             skb_ref.len - (skb_tail_pointer(skb) as usize - skb_network_header(skb) as usize);
+    |                     ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:161:26
+    |
+161 |     let oldlen = skb_ref.len - protoff as usize;
+    |                          ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:171:27
+    |
+171 |     let datalen = skb_ref.len - protoff as usize;
+    |                           ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0308]: mismatched types
+   --> crates/nf_nat_helper/src/lib.rs:177:9
+    |
+172 |     nf_nat_csum_recalc(
+    |     ------------------ arguments to this function are incorrect
+...
+177 |         &mut (*tcph.offset(16) as *mut u16),
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut u16`, found `&mut *mut u16`
+    |
+    = note:    expected raw pointer `_`
+            found mutable reference `&mut _`
+note: function defined here
+   --> crates/nf_nat_helper/src/lib.rs:51:8
+    |
+ 51 |     fn nf_nat_csum_recalc(
+    |        ^^^^^^^^^^^^^^^^^^
+...
+ 56 |         check: *mut u16,
+    |         -----
+help: consider removing the borrow
+    |
+177 -         &mut (*tcph.offset(16) as *mut u16),
+177 +         (*tcph.offset(16) as *mut u16),
+    |
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:209:41
+    |
+209 |     if skb_ensure_writable(skb, skb_ref.len) != 0 {
+    |                                         ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:216:21
+    |
+216 |             skb_ref.len - (skb_tail_pointer(skb) as usize - skb_network_header(skb) as usize);
+    |                     ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:226:26
+    |
+226 |     let oldlen = skb_ref.len - protoff as usize;
+    |                          ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:237:27
+    |
+237 |     let datalen = skb_ref.len - protoff as usize;
+    |                           ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0277]: `*const u8` cannot be shared between threads safely
+   --> crates/nf_conntrack_amanda/src/lib.rs:356:27
+    |
+356 | pub static amanda_helper: [nf_conntrack_helper; 2] = [
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^ `*const u8` cannot be shared between threads safely
+    |
+    = help: within `[nf_conntrack_helper; 2]`, the trait `Sync` is not implemented for `*const u8`
+note: required because it appears within the type `nf_conntrack_helper`
+   --> crates/nf_conntrack_amanda/src/lib.rs:77:12
+    |
+ 77 | pub struct nf_conntrack_helper {
+    |            ^^^^^^^^^^^^^^^^^^^
+    = note: required because it appears within the type `[nf_conntrack_helper; 2]`
+    = note: shared static variables must have a type that implements `Sync`
+
+error[E0070]: invalid left-hand side of assignment
+   --> crates/nf_nat_helper/src/lib.rs:238:35
+    |
+238 |     (*udph.offset(4) as *mut u16) = datalen as u16;
+    |     ----------------------------- ^
+    |     |
+    |     cannot assign to this expression
+
+error[E0277]: `*const c_void` cannot be shared between threads safely
+   --> crates/nf_conntrack_amanda/src/lib.rs:356:27
+    |
+356 | pub static amanda_helper: [nf_conntrack_helper; 2] = [
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^ `*const c_void` cannot be shared between threads safely
+    |
+    = help: within `[nf_conntrack_helper; 2]`, the trait `Sync` is not implemented for `*const c_void`
+note: required because it appears within the type `nf_conntrack_helper`
+   --> crates/nf_conntrack_amanda/src/lib.rs:77:12
+    |
+ 77 | pub struct nf_conntrack_helper {
+    |            ^^^^^^^^^^^^^^^^^^^
+    = note: required because it appears within the type `[nf_conntrack_helper; 2]`
+    = note: shared static variables must have a type that implements `Sync`
+
+error[E0277]: `*const nf_conntrack_expect_policy` cannot be shared between threads safely
+   --> crates/nf_conntrack_amanda/src/lib.rs:356:27
+    |
+356 | pub static amanda_helper: [nf_conntrack_helper; 2] = [
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^ `*const nf_conntrack_expect_policy` cannot be shared between threads safely
+    |
+    = help: within `[nf_conntrack_helper; 2]`, the trait `Sync` is not implemented for `*const nf_conntrack_expect_policy`
+note: required because it appears within the type `nf_conntrack_helper`
+   --> crates/nf_conntrack_amanda/src/lib.rs:77:12
+    |
+ 77 | pub struct nf_conntrack_helper {
+    |            ^^^^^^^^^^^^^^^^^^^
+    = note: required because it appears within the type `[nf_conntrack_helper; 2]`
+    = note: shared static variables must have a type that implements `Sync`
+
+error[E0308]: mismatched types
+   --> crates/nf_nat_helper/src/lib.rs:241:41
+    |
+241 |     if (*udph.offset(6) as *mut u16) == 0 && (*skb).ip_summed != 1 {
+    |        -----------------------------    ^ expected `*mut u16`, found `usize`
+    |        |
+    |        expected because this is `*mut u16`
+    |
+    = note: expected raw pointer `*mut u16`
+                      found type `usize`
+help: if you meant to create a null pointer, use `core::ptr::null_mut()`
+    |
+241 -     if (*udph.offset(6) as *mut u16) == 0 && (*skb).ip_summed != 1 {
+241 +     if (*udph.offset(6) as *mut u16) == core::ptr::null_mut() && (*skb).ip_summed != 1 {
+    |
+
+error[E0609]: no field `ip_summed` on type `sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:241:53
+    |
+241 |     if (*udph.offset(6) as *mut u16) == 0 && (*skb).ip_summed != 1 {
+    |                                                     ^^^^^^^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0308]: mismatched types
+   --> crates/nf_nat_helper/src/lib.rs:250:9
+    |
+245 |     nf_nat_csum_recalc(
+    |     ------------------ arguments to this function are incorrect
+...
+250 |         &mut (*udph.offset(6) as *mut u16),
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut u16`, found `&mut *mut u16`
+    |
+    = note:    expected raw pointer `_`
+            found mutable reference `&mut _`
+note: function defined here
+   --> crates/nf_nat_helper/src/lib.rs:51:8
+    |
+ 51 |     fn nf_nat_csum_recalc(
+    |        ^^^^^^^^^^^^^^^^^^
+...
+ 56 |         check: *mut u16,
+    |         -----
+help: consider removing the borrow
+    |
+250 -         &mut (*udph.offset(6) as *mut u16),
+250 +         (*udph.offset(6) as *mut u16),
+    |
+
+error[E0609]: no field `len` on type `&mut sk_buff`
+   --> crates/nf_nat_helper/src/lib.rs:263:16
+    |
+263 |     if skb_ref.len + extra as usize > 65535 {
+    |                ^^^ unknown field
+    |
+    = note: available field is: `_private`
+
+error[E0609]: no field `tuplehash` on type `nf_conn`
+   --> crates/nf_nat_helper/src/lib.rs:294:36
+    |
+294 |         min_addr: (*ct_ref.master).tuplehash[!exp_ref.dir].tuple.dst.u3,
+    |                                    ^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `status`, `master`
+
+error[E0609]: no field `tuplehash` on type `nf_conn`
+   --> crates/nf_nat_helper/src/lib.rs:295:36
+    |
+295 |         max_addr: (*ct_ref.master).tuplehash[!exp_ref.dir].tuple.dst.u3,
+    |                                    ^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `status`, `master`
+
+error[E0609]: no field `tuplehash` on type `nf_conn`
+   --> crates/nf_nat_helper/src/lib.rs:305:39
+    |
+305 |     range.min_addr = (*ct_ref.master).tuplehash[!exp_ref.dir].tuple.src.u3;
+    |                                       ^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `status`, `master`
+
+error[E0609]: no field `tuplehash` on type `nf_conn`
+   --> crates/nf_nat_helper/src/lib.rs:306:39
+    |
+306 |     range.max_addr = (*ct_ref.master).tuplehash[!exp_ref.dir].tuple.src.u3;
+    |                                       ^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `status`, `master`
+
+error[E0609]: no field `len` on type `c_void`
+   --> crates/nf_conntrack_amanda/src/lib.rs:204:26
+    |
+204 |     if dataoff >= (*skb).len {
+    |                          ^^^ unknown field
+
+error[E0609]: no field `len` on type `c_void`
+   --> crates/nf_conntrack_amanda/src/lib.rs:209:52
+    |
+209 |     let start = skb_find_text(skb, dataoff, (*skb).len, search[0].ts);
+    |                                                    ^^^ unknown field
+
+warning: unused variable: `ip_hdr`
+   --> crates/nf_nat_helper/src/lib.rs:316:25
+    |
+316 | unsafe fn ip_send_check(ip_hdr: *mut u8) {
+    |                         ^^^^^^ help: if this is intentional, prefix it with an underscore: `_ip_hdr`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+error[E0609]: no field `len` on type `c_void`
+   --> crates/nf_conntrack_amanda/src/lib.rs:215:49
+    |
+215 |     let stop = skb_find_text(skb, start, (*skb).len, search[1].ts);
+    |                                                 ^^^ unknown field
+
+Some errors have detailed explanations: E0070, E0308, E0425, E0605, E0609.
+For more information about an error, try `rustc --explain E0070`.
+warning: `nf_nat_helper` (lib) generated 1 warning
+error: could not compile `nf_nat_helper` (lib) due to 78 previous errors; 1 warning emitted
+error[E0609]: no field `tuplehash` on type `*mut nf_conn`
+   --> crates/nf_conntrack_amanda/src/lib.rs:248:25
+    |
+248 |         let tuple = &ct.tuplehash[IP_CT_DIR_ORIGINAL].tuple;
+    |                         ^^^^^^^^^ unknown field
+    |
+help: `ct` is a raw pointer; try dereferencing it
+    |
+248 |         let tuple = &(*ct).tuplehash[IP_CT_DIR_ORIGINAL].tuple;
+    |                      ++  +
+
+error[E0609]: no field `status` on type `*mut nf_conn`
+   --> crates/nf_conntrack_amanda/src/lib.rs:261:44
+    |
+261 |         if !nf_nat_amanda.is_null() && (ct.status & IPS_NAT_MASK) != 0 {
+    |                                            ^^^^^^ unknown field
+    |
+help: `ct` is a raw pointer; try dereferencing it
+    |
+261 |         if !nf_nat_amanda.is_null() && ((*ct).status & IPS_NAT_MASK) != 0 {
+    |                                         ++  +
+
+error[E0609]: no field `l3num` on type `nf_conntrack_tuple_ip`
+   --> crates/nf_conntrack_amanda/src/lib.rs:336:34
+    |
+336 |     (*ct).tuplehash[0].tuple.src.l3num
+    |                                  ^^^^^ unknown field
+    |
+    = note: available field is: `u3`
+
+Some errors have detailed explanations: E0277, E0425, E0428, E0433, E0609.
+error: could not compile `nf_conntrack_amanda` (lib) due to 62 previous errors

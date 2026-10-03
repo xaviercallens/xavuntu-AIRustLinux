@@ -1,0 +1,140 @@
+# ============================================================
+# Chaos Mesh Experiments for MVK Kernel Resilience Testing
+# Based on: Kangrejos 2025, CVE-2025-68260 FFI boundary analysis
+# ============================================================
+{{- if .Values.chaos.enabled }}
+
+# --- 3.1: Network Partition ---
+# Validates: TCP stack recovery, no kernel panic under isolation
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: mvk-network-partition
+  labels:
+    experiment: network-partition
+    phase: chaos
+  annotations:
+    description: "Simulate network partition between MVK kernel pods"
+    reference: "gVisor/Kata benchmark methodology (2024)"
+spec:
+  action: partition
+  mode: all
+  selector:
+    labelSelectors:
+      app: mvk-kernel
+  direction: to
+  duration: {{ .Values.chaos.networkPartitionDuration | quote }}
+
+---
+# --- 3.2: Network Delay ---
+# Validates: TCP congestion control, retransmission under latency
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: mvk-network-delay
+  labels:
+    experiment: network-delay
+    phase: chaos
+spec:
+  action: delay
+  mode: all
+  selector:
+    labelSelectors:
+      app: mvk-kernel
+      role: server
+  delay:
+    latency: {{ .Values.chaos.networkDelay | quote }}
+    jitter: {{ .Values.chaos.networkDelayJitter | quote }}
+    correlation: "50"
+  direction: to
+  duration: "60s"
+
+---
+# --- 3.3: Packet Loss ---
+# Validates: UDP loss handling, TCP retransmission efficiency
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: mvk-packet-loss
+  labels:
+    experiment: packet-loss
+    phase: chaos
+spec:
+  action: loss
+  mode: all
+  selector:
+    labelSelectors:
+      app: mvk-kernel
+  loss:
+    loss: "{{ .Values.chaos.packetLossPercent }}"
+    correlation: "25"
+  direction: to
+  duration: "60s"
+
+---
+# --- 3.4: CPU Stress ---
+# Validates: Kernel scheduler under contention, no deadlocks
+# Reference: CVE-2025-68260 - concurrency race conditions in Rust kernel
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: mvk-cpu-stress
+  labels:
+    experiment: cpu-stress
+    phase: chaos
+  annotations:
+    reference: "CVE-2025-68260: Rust Binder race condition under CPU contention"
+spec:
+  mode: all
+  selector:
+    labelSelectors:
+      app: mvk-kernel
+  stressors:
+    cpu:
+      workers: {{ .Values.chaos.cpuStressWorkers }}
+      load: 100
+  duration: "60s"
+
+---
+# --- 3.5: Memory Pressure ---
+# Validates: OOM behavior, allocation failure paths
+# Reference: Rust's panic-on-OOM vs C's silent NULL return
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: mvk-memory-pressure
+  labels:
+    experiment: memory-pressure
+    phase: chaos
+  annotations:
+    description: "Test Rust kernel OOM behavior vs C silent NULL"
+spec:
+  mode: all
+  selector:
+    labelSelectors:
+      app: mvk-kernel
+  stressors:
+    memory:
+      workers: 2
+      size: "{{ .Values.chaos.memoryStressPercent }}%"
+  duration: "60s"
+
+---
+# --- 3.6: Pod Kill & Restart ---
+# Validates: QEMU recovery, boot time under restart pressure
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: mvk-pod-kill
+  labels:
+    experiment: pod-kill
+    phase: chaos
+spec:
+  action: pod-kill
+  mode: one
+  selector:
+    labelSelectors:
+      app: mvk-kernel
+  gracePeriod: 0
+
+{{- end }}

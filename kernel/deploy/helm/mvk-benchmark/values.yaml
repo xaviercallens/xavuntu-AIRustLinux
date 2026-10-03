@@ -1,0 +1,68 @@
+# Default values for mvk-benchmark
+# Override with: helm install --set key=value
+
+# Container image
+image:
+  repository: gcr.io/gen-lang-client-0625573011/mvk-kernel
+  tag: "9.4.0"
+  pullPolicy: IfNotPresent
+
+# C baseline image (stock Linux kernel for comparison)
+baselineImage:
+  repository: gcr.io/gen-lang-client-0625573011/c-baseline
+  tag: "5.10"
+  pullPolicy: IfNotPresent
+
+# Benchmark configuration
+benchmark:
+  # Number of MVK kernel pods
+  mvkReplicas: 2
+  # Number of C baseline pods
+  baselineReplicas: 1
+  # Test duration (seconds)
+  duration: 60
+  # iperf3 parallel streams
+  streams: 4
+  # Target bandwidth for UDP tests
+  udpBandwidth: "10G"
+
+# Resource requests/limits for benchmark pods
+resources:
+  requests:
+    cpu: "4"
+    memory: "8Gi"
+  limits:
+    cpu: "7"
+    memory: "12Gi"
+
+# Node selection
+nodeSelector:
+  role: benchmark
+
+# Toleration for benchmark taint
+tolerations:
+  - key: "benchmark"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+
+# Chaos Mesh experiments
+chaos:
+  enabled: true
+  # Network partition duration
+  networkPartitionDuration: "30s"
+  # Network delay
+  networkDelay: "100ms"
+  networkDelayJitter: "50ms"
+  # Packet loss percentage
+  packetLossPercent: 10
+  # CPU stress workers
+  cpuStressWorkers: 4
+  # Memory stress percent
+  memoryStressPercent: 80
+
+# Monitoring
+monitoring:
+  enabled: true
+  prometheus:
+    scrapeInterval: "10s"

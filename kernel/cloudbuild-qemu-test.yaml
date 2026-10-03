@@ -1,0 +1,22 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'mvk-dev-env', '-f', 'Dockerfile.dev', '.']
+    id: 'build-dev-env'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['run', '--rm', '-v', '/workspace:/app', '-w', '/app', 'mvk-dev-env', 'bash', '-c', 'cd examples/demo_kernel && cargo build --release && cd ../.. && python3 scripts/qemu_boot_test.py --kernel examples/demo_kernel/target/i686-unknown-linux-gnu/release/demo_kernel']
+    id: 'qemu-boot-test'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['run', '--rm', '-v', '/workspace:/app', '-w', '/app', 'mvk-dev-env', 'bash', '-c', 'python3 scripts/stress_test_qemu.py --kernel examples/demo_kernel/target/i686-unknown-linux-gnu/release/demo_kernel --concurrency 5']
+    id: 'qemu-stress-test'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['run', '--rm', '-v', '/workspace:/app', '-w', '/app', 'mvk-dev-env', 'bash', '-c', './scripts/run_fuzzing.sh fuzz_routing 30 && ./scripts/run_fuzzing.sh fuzz_packet 30']
+    id: 'fuzzing-tests'
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+
+timeout: 1800s

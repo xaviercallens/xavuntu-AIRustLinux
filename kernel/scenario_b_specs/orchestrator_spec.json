@@ -1,0 +1,196 @@
+{
+  "types": [
+    {
+      "cpp": "std::string",
+      "rust": "String",
+      "ownership": "owned",
+      "notes": "Standard string type. Use String for owned data, &str for references."
+    },
+    {
+      "cpp": "const SearchRequest&",
+      "rust": "&SearchRequest",
+      "ownership": "&",
+      "notes": "Immutable reference. Ensure SearchRequest implements Clone if needed for internal caching, but pass by ref for API."
+    },
+    {
+      "cpp": "SearchResults",
+      "rust": "SearchResults",
+      "ownership": "owned",
+      "notes": "Value type. Contains status, message, time, cache flag. No complex ownership semantics."
+    },
+    {
+      "cpp": "const std::vector<std::string>&",
+      "rust": "&[String]",
+      "ownership": "&",
+      "notes": "Slice reference to a vector of strings. Efficient iteration."
+    },
+    {
+      "cpp": "std::shared_ptr<CacheTransactionContext>",
+      "rust": "CacheTransactionContext",
+      "ownership": "owned",
+      "notes": "C++ uses shared_ptr for RAII context, implying shared ownership or copyable context. In Rust, RAII is handled by stack allocation or explicit struct lifetime. Since it's a context wrapper, it likely holds a reference to a CacheManager. Use a struct that implements Drop for cleanup."
+    },
+    {
+      "cpp": "std::ostringstream",
+      "rust": "String",
+      "ownership": "owned",
+      "notes": "Use String::new() and format!() or write!() macro in Rust."
+    },
+    {
+      "cpp": "std::regex",
+      "rust": "regex::Regex",
+      "ownership": "Arc<Regex>",
+      "notes": "Regex compilation is expensive. Compile once and share via Arc or static Lazy. In Rust, use the `regex` crate."
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "Static Singleton Members (initialized_, totalSearches_, etc.)",
+      "rust_pattern": "static mut or OnceCell/AtomicUsize",
+      "rationale": "C++ uses global static members for state. In Rust, static mut is unsafe. Use std::sync::OnceCell for lazy initialization of singletons or std::sync::atomic::AtomicUsize for counters if concurrent access is required. Given the current single-threaded assumption, a simple struct with interior mutability (RefCell) or a global OnceCell is preferred for safety."
+    },
+    {
+      "cpp_pattern": "RAII CacheTransactionContext",
+      "rust_pattern": "Struct with Drop impl",
+      "rationale": "C++ RAII manages transaction scope. Rust's Drop trait provides identical functionality automatically when the struct goes out of scope. No heap allocation needed unless the context holds complex state."
+    },
+    {
+      "cpp_pattern": "std::exception catching",
+      "rust_pattern": "Result<T, E> propagation",
+      "rationale": "C++ uses exceptions for control flow in error cases. Rust uses Result. The Orchestrator should return Result<SearchResults, OrchestratorError> or handle errors internally by returning a SearchResults with ERROR status, but the API should ideally expose failure via Result for better ergonomics."
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "Orchestrator::initialize",
+      "recovery": "Returns false on failure, logs error.",
+      "rust": "Result<bool, InitializationError>"
+    },
+    {
+      "source": "Orchestrator::validateRequest",
+      "recovery": "Returns false, caller creates error result.",
+      "rust": "Result<(), ValidationError>"
+    },
+    {
+      "source": "SearchEngine::MP_Search",
+      "recovery": "Throws std::exception, caught and converted to SearchStatus::ERROR.",
+      "rust": "Result<SearchResults, SearchEngineError>"
+    },
+    {
+      "source": "DataLoader::init",
+      "recovery": "Returns false on failure.",
+      "rust": "Result<(), DataLoaderError>"
+    }
+  ],
+  "functions": [
+    {
+      "name": "performSearch",
+      "pre": [
+        "Orchestrator must be initialized",
+        "Request must be valid"
+      ],
+      "post": [
+        "Returns SearchResults with status OK, NOT_FOUND, or ERROR",
+        "Statistics updated"
+      ],
+      "side_effects": [
+        "Updates totalSearches_, successfulSearches_, errorSearches_, totalProcessingTimeMs_",
+        "Accesses CacheManager via CacheTransactionContext"
+      ],
+      "complexity": "O(1) logic overhead + O(N) search complexity depending on SearchEngine"
+    },
+    {
+      "name": "initialize",
+      "pre": [
+        "System not previously initialized"
+      ],
+      "post": [
+        "initialized_ set to true",
+        "DataLoader initialized",
+        "Statistics reset"
+      ],
+      "side_effects": [
+        "Initializes DataLoader",
+        "Resets PricingEngine defaults",
+        "Resets Orchestrator statistics"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "validateRequest",
+      "pre": [
+        "Request object exists"
+      ],
+      "post": [
+        "Returns true if request is valid, false otherwise"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(L) where L is length of string fields (regex matching)"
+    },
+    {
+      "name": "warmUpCache",
+      "pre": [
+        "Orchestrator initialized",
+        "Routes vector provided"
+      ],
+      "post": [
+        "Cache populated with results from performSearch",
+        "Returns count of new entries"
+      ],
+      "side_effects": [
+        "Calls performSearch multiple times",
+        "Updates statistics for each search"
+      ],
+      "complexity": "O(K * T) where K is number of routes, T is time per search"
+    },
+    {
+      "name": "configure",
+      "pre": [
+        "System initialized (optional, but logically required for effect)"
+      ],
+      "post": [
+        "SearchEngine max itineraries set",
+        "PricingEngine tax/fee set"
+      ],
+      "side_effects": [
+        "Updates global configuration in SearchEngine and PricingEngine"
+      ],
+      "complexity": "O(1)"
+    }
+  ],
+  "invariants": [
+    "initialized_ must be true before any search operation can succeed.",
+    "Statistics counters (totalSearches_, successfulSearches_, errorSearches_) must remain consistent with actual search outcomes.",
+    "CacheTransactionContext must ensure cache transaction integrity (commit/rollback) upon scope exit.",
+    "Request validation must enforce 3-letter uppercase airport codes and YYYY-MM-DD date format.",
+    "numPassengers must be between 1 and 9 inclusive.",
+    "Origin and Destination must not be identical."
+  ],
+  "concurrency": {
+    "thread_safety": "Currently not thread-safe due to static mutable state. Rust migration should introduce std::sync::Mutex or std::sync::RwLock around shared state if multi-threading is required, or use thread-local storage if appropriate.",
+    "shared_state": [
+      "initialized_",
+      "totalSearches_",
+      "successfulSearches_",
+      "errorSearches_",
+      "totalProcessingTimeMs_",
+      "CacheManager instance"
+    ]
+  },
+  "dependencies": [
+    "MasterPricer::SearchRequest",
+    "MasterPricer::SearchResults",
+    "MasterPricer::SearchEngine",
+    "MasterPricer::DataLoader",
+    "MasterPricer::PricingEngine",
+    "MasterPricer::CacheManager",
+    "MasterPricer::CacheTransactionContext",
+    "MasterPricer::Timer",
+    "MasterPricer::SearchStatus",
+    "regex crate",
+    "log crate"
+  ],
+  "raw_spec": "types:\n  - cpp: \"std::string\"\n    rust: \"String\"\n    ownership: \"owned\"\n    notes: \"Standard string type. Use String for owned data, &str for references.\"\n  - cpp: \"const SearchRequest&\"\n    rust: \"&SearchRequest\"\n    ownership: \"&\"\n    notes: \"Immutable reference. Ensure SearchRequest implements Clone if needed for internal caching, but pass by ref for API.\"\n  - cpp: \"SearchResults\"\n    rust: \"SearchResults\"\n    ownership: \"owned\"\n    notes: \"Value type. Contains status, message, time, cache flag. No complex ownership semantics.\"\n  - cpp: \"const std::vector<std::string>&\"\n    rust: \"&[String]\"\n    ownership: \"&\"\n    notes: \"Slice reference to a vector of strings. Efficient iteration.\"\n  - cpp: \"std::shared_ptr<CacheTransactionContext>\"\n    rust: \"CacheTransactionContext\"\n    ownership: \"owned\"\n    notes: \"C++ uses shared_ptr for RAII context, implying shared ownership or copyable context. In Rust, RAII is handled by stack allocation or explicit struct lifetime. Since it's a context wrapper, it likely holds a reference to a CacheManager. Use a struct that implements Drop for cleanup.\"\n  - cpp: \"std::ostringstream\"\n    rust: \"String\"\n    ownership: \"owned\"\n    notes: \"Use String::new() and format!() or write!() macro in Rust.\"\n  - cpp: \"std::regex\"\n    rust: \"regex::Regex\"\n    ownership: \"Arc<Regex>\"\n    notes: \"Regex compilation is expensive. Compile once and share via Arc or static Lazy. In Rust, use the `regex` crate.\"\n\nownership:\n  - cpp_pattern: \"Static Singleton Members (initialized_, totalSearches_, etc.)\"\n    rust_pattern: \"static mut or OnceCell/AtomicUsize\"\n    rationale: \"C++ uses global static members for state. In Rust, static mut is unsafe. Use std::sync::OnceCell for lazy initialization of singletons or std::sync::atomic::AtomicUsize for counters if concurrent access is required. Given the current single-threaded assumption, a simple struct with interior mutability (RefCell) or a global OnceCell is preferred for safety.\"\n  - cpp_pattern: \"RAII CacheTransactionContext\"\n    rust_pattern: \"Struct with Drop impl\"\n    rationale: \"C++ RAII manages transaction scope. Rust's Drop trait provides identical functionality automatically when the struct goes out of scope. No heap allocation needed unless the context holds complex state.\"\n  - cpp_pattern: \"std::exception catching\"\n    rust_pattern: \"Result<T, E> propagation\"\n    rationale: \"C++ uses exceptions for control flow in error cases. Rust uses Result. The Orchestrator should return Result<SearchResults, OrchestratorError> or handle errors internally by returning a SearchResults with ERROR status, but the API should ideally expose failure via Result for better ergonomics.\"\n\nerror_paths:\n  - source: \"Orchestrator::initialize\"\n    recovery: \"Returns false on failure, logs error.\"\n    rust: \"Result<bool, InitializationError>\"\n  - source: \"Orchestrator::validateRequest\"\n    recovery: \"Returns false, caller creates error result.\"\n    rust: \"Result<(), ValidationError>\"\n  - source: \"SearchEngine::MP_Search\"\n    recovery: \"Throws std::exception, caught and converted to SearchStatus::ERROR.\"\n    rust: \"Result<SearchResults, SearchEngineError>\"\n  - source: \"DataLoader::init\"\n    recovery: \"Returns false on failure.\"\n    rust: \"Result<(), DataLoaderError>\"\n\nfunctions:\n  - name: \"performSearch\"\n    pre: [\"Orchestrator must be initialized\", \"Request must be valid\"]\n    post: [\"Returns SearchResults with status OK, NOT_FOUND, or ERROR\", \"Statistics updated\"]\n    side_effects: [\"Updates totalSearches_, successfulSearches_, errorSearches_, totalProcessingTimeMs_\", \"Accesses CacheManager via CacheTransactionContext\"]\n    complexity: \"O(1) logic overhead + O(N) search complexity depending on SearchEngine\"\n  - name: \"initialize\"\n    pre: [\"System not previously initialized\"]\n    post: [\"initialized_ set to true\", \"DataLoader initialized\", \"Statistics reset\"]\n    side_effects: [\"Initializes DataLoader\", \"Resets PricingEngine defaults\", \"Resets Orchestrator statistics\"]\n    complexity: \"O(1)\"\n  - name: \"validateRequest\"\n    pre: [\"Request object exists\"]\n    post: [\"Returns true if request is valid, false otherwise\"]\n    side_effects: [\"None\"]\n    complexity: \"O(L) where L is length of string fields (regex matching)\"\n  - name: \"warmUpCache\"\n    pre: [\"Orchestrator initialized\", \"Routes vector provided\"]\n    post: [\"Cache populated with results from performSearch\", \"Returns count of new entries\"]\n    side_effects: [\"Calls performSearch multiple times\", \"Updates statistics for each search\"]\n    complexity: \"O(K * T) where K is number of routes, T is time per search\"\n  - name: \"configure\"\n    pre: [\"System initialized (optional, but logically required for effect)\"]\n    post: [\"SearchEngine max itineraries set\", \"PricingEngine tax/fee set\"]\n    side_effects: [\"Updates global configuration in SearchEngine and PricingEngine\"]\n    complexity: \"O(1)\"\n\ninvariants:\n  - \"initialized_ must be true before any search operation can succeed.\"\n  - \"Statistics counters (totalSearches_, successfulSearches_, errorSearches_) must remain consistent with actual search outcomes.\"\n  - \"CacheTransactionContext must ensure cache transaction integrity (commit/rollback) upon scope exit.\"\n  - \"Request validation must enforce 3-letter uppercase airport codes and YYYY-MM-DD date format.\"\n  - \"numPassengers must be between 1 and 9 inclusive.\"\n  - \"Origin and Destination must not be identical.\"\n\nconcurrency:\n  thread_safety: \"Currently not thread-safe due to static mutable state. Rust migration should introduce std::sync::Mutex or std::sync::RwLock around shared state if multi-threading is required, or use thread-local storage if appropriate.\"\n  shared_state: [\"initialized_\", \"totalSearches_\", \"successfulSearches_\", \"errorSearches_\", \"totalProcessingTimeMs_\", \"CacheManager instance\"]\n\ndependencies:\n  - \"MasterPricer::SearchRequest\"\n  - \"MasterPricer::SearchResults\"\n  - \"MasterPricer::SearchEngine\"\n  - \"MasterPricer::DataLoader\"\n  - \"MasterPricer::PricingEngine\"\n  - \"MasterPricer::CacheManager\"\n  - \"MasterPricer::CacheTransactionContext\"\n  - \"MasterPricer::Timer\"\n  - \"MasterPricer::SearchStatus\"\n  - \"regex crate\"\n  - \"log crate\""
+}

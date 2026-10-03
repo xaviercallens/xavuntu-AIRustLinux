@@ -1,0 +1,12 @@
+[package]
+name = "pci_probe_userspace"
+version = "0.1.0"
+edition = "2021"
+description = "Runs RunuX's real driver_pci_probe/driver_pci_access enumeration code, unmodified, as a privileged Linux userspace binary -- a way to verify the exact same PCI config-space logic the bare-metal kernel uses against genuine (non-QEMU) hardware, without needing a full custom kernel boot on a cloud VM."
+
+[dependencies]
+kernel_types = { path = "../../crates/kernel_types" }
+driver_pci_core = { path = "../../crates/driver_pci_core" }
+driver_pci_probe = { path = "../../crates/driver_pci_probe" }
+driver_pci_access = { path = "../../crates/driver_pci_access" }
+libc = "0.2"

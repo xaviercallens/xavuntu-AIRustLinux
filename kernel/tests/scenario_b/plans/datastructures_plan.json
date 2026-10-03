@@ -1,0 +1,77 @@
+{
+  "ownership_map": {
+    "SearchRequest": "owned (struct with String fields)",
+    "Flight": "owned (struct with String fields)",
+    "Fare": "owned (struct with String fields)",
+    "Itinerary": "owned (struct with Vec<Flight> and f64)",
+    "CacheKey": "owned (struct with String fields)",
+    "LogicalEntity": "owned (struct with Vec<Flight> and Vec<Fare>)",
+    "SearchResults": "owned (struct with Vec<Itinerary> and metadata)"
+  },
+  "type_map": {
+    "std::string": "String",
+    "std::vector": "Vec",
+    "std::ostringstream": "std::fmt::Debug"
+  },
+  "error_map": {
+    "No explicit error handling in C++": "Result<T, ValidationError>"
+  },
+  "lifetime_annotations": [
+    "&self in methods to borrow struct fields",
+    "lifetimes for borrowed references in Display implementations"
+  ],
+  "trait_hierarchy": [
+    {
+      "name": "Display",
+      "methods": [
+        "fmt"
+      ],
+      "supertraits": [
+        "std::fmt::Debug"
+      ]
+    },
+    {
+      "name": " PartialEq",
+      "methods": [
+        "eq"
+      ],
+      "supertraits": [
+        "Copy"
+      ]
+    }
+  ],
+  "module_layout": {
+    "modules": {
+      "masterpricer": [
+        "SearchRequest",
+        "Flight",
+        "Fare",
+        "Itinerary",
+        "CacheKey",
+        "LogicalEntity",
+        "SearchResults",
+        "SearchStatus",
+        "ValidationError"
+      ]
+    },
+    "reexports": [
+      "pub use SearchRequest;",
+      "pub use Flight;",
+      "pub use Fare;",
+      "pub use Itinerary;",
+      "pub use CacheKey;",
+      "pub use LogicalEntity;",
+      "pub use SearchResults;",
+      "pub use SearchStatus;",
+      "pub use ValidationError;"
+    ]
+  },
+  "unsafe_justifications": [
+    "None needed - all operations are safe and managed by Rust's ownership"
+  ],
+  "crate_dependencies": [
+    "serde = { version = \"1.0.0\", features = [\"derive\"] }",
+    "thiserror = \"1.0.24\""
+  ],
+  "thinking_trace": "### Migration Plan\n\n```yaml\nPLAN_START\nownership_map:\n  \"SearchRequest\": \"owned (struct with String fields)\"\n  \"Flight\": \"owned (struct with String fields)\"\n  \"Fare\": \"owned (struct with String fields)\"\n  \"Itinerary\": \"owned (struct with Vec<Flight> and f64)\"\n  \"CacheKey\": \"owned (struct with String fields)\"\n  \"LogicalEntity\": \"owned (struct with Vec<Flight> and Vec<Fare>)\"\n  \"SearchResults\": \"owned (struct with Vec<Itinerary> and metadata)\"\n\ntype_map:\n  \"std::string\": \"String\"\n  \"std::vector\": \"Vec\"\n  \"std::ostringstream\": \"std::fmt::Debug\"\n\nerror_map:\n  \"No explicit error handling in C++\": \"Result<T, ValidationError>\"\n\nlifetime_annotations:\n  - \"&self in methods to borrow struct fields\"\n  - \"lifetimes for borrowed references in Display implementations\"\n\ntrait_hierarchy:\n  - name: \"Display\"\n    methods: [\"fmt\"]\n    supertraits: [\"std::fmt::Debug\"]\n  - name: \" PartialEq\"\n    methods: [\"eq\"]\n    supertraits: [\"Copy\"]\n\nmodule_layout:\n  modules:\n    \"masterpricer\":\n      - \"SearchRequest\"\n      - \"Flight\"\n      - \"Fare\"\n      - \"Itinerary\"\n      - \"CacheKey\"\n      - \"LogicalEntity\"\n      - \"SearchResults\"\n      - \"SearchStatus\"\n      - \"ValidationError\"\n  reexports:\n    - \"pub use SearchRequest;\"\n    - \"pub use Flight;\"\n    - \"pub use Fare;\"\n    - \"pub use Itinerary;\"\n    - \"pub use CacheKey;\"\n    - \"pub use LogicalEntity;\"\n    - \"pub use SearchResults;\"\n    - \"pub use SearchStatus;\"\n    - \"pub use ValidationError;\"\n\nunsafe_justifications:\n  - \"None needed - all operations are safe and managed by Rust's ownership\"\n\ncrate_dependencies:\n  - \"serde = { version = \\\"1.0.0\\\", features = [\\\"derive\\\"] }\"\n  - \"thiserror = \\\"1.0.24\\\"\"\nPLAN_END\n```\n\n### Step-by-Step Explanation\n\n1. **Ownership Graph**:\n   - All C++ types are value types with no pointers, so they map directly to Rust structs with owned fields.\n   - Structs like `SearchRequest`, `Flight`, etc., are translated to Rust structs with `String` fields.\n\n2. **Lifetime Dependencies**:\n   - Methods like `toString` use `&self` to borrow the struct, requiring no complex lifetime annotations.\n   - Display implementations borrow fields with lifetimes tied to `&self`.\n\n3. **Concurrency Safety**:\n   - No shared mutable state, so no need for `Arc<Mutex<T>>` or similar.\n   - All operations are single-threaded and safe.\n\n4. **Error Propagation**:\n   - C++ has no explicit error handling, so we introduce `Result<T, ValidationError>`.\n   - `ValidationError` enum handles validation errors (e.g., empty strings, negative numbers).\n\n5. **Module Boundary Design**:\n   - All types are public and exported via `pub use`.\n   - Module structure mirrors C++ namespace, grouping related types together.\n\n### Rust Code Implementation\n\n```rust\nuse serde::{Deserialize, Serialize};\nuse std::fmt;\nuse std::cmp::PartialEq;\nuse thiserror::Error;\n\n#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]\npub struct SearchRequest {\n    pub origin: String,\n    pub destination: String,\n    pub date: String,\n    pub num_passengers: i32,\n}\n\nimpl fmt::Display for SearchRequest {\n    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {\n        write!(\n            f,\n            \"SearchRequest{{{}->{}, {}, {} pax}}\",\n            self.origin, self.destination, self.date, self.num_passengers\n        )\n    }\n}\n\n// Other structs and implementations follow similar patterns...\n\n#[derive(Error, Debug)]\npub enum ValidationError {\n    #[error(\"String field cannot be empty\")]\n    EmptyString,\n    #[error(\"Number of passengers must be >= 0\")]\n    InvalidPassengers,\n    #[error(\"Price must be >= 0\")]\n    InvalidPrice,\n}\n\npub type Result<T> = std::result::Result<T, ValidationError>;\n```\n\nThis plan ensures a smooth migration to Rust while maintaining the original functionality and adding Rust's safety and error handling features."
+}

@@ -1,0 +1,9 @@
+[package]
+name = "runux_aarch64"
+version = "0.1.0"
+edition = "2021"
+description = "RunuX AArch64 architecture support layer (QEMU virt)"
+license = "MIT"
+
+[dependencies]
+kernel_types = { path = "../../crates/kernel_types" }

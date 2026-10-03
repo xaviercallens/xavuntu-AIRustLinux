@@ -1,0 +1,230 @@
+{
+  "types": [
+    {
+      "cpp": "CacheKey",
+      "rust": "struct CacheKey { /* fields */ }",
+      "ownership": "owned",
+      "notes": "Represents a unique cache key derived from SearchRequest parameters."
+    },
+    {
+      "cpp": "LogicalEntity",
+      "rust": "struct LogicalEntity { /* fields */ }",
+      "ownership": "owned",
+      "notes": "Represents cached data (flights, fares)."
+    },
+    {
+      "cpp": "CacheStatistics",
+      "rust": "struct CacheStatistics { /* fields */ }",
+      "ownership": "owned",
+      "notes": "Tracks cache hits, misses, puts, and invalidations."
+    },
+    {
+      "cpp": "std::map<CacheKey, LogicalEntity>",
+      "rust": "std::sync::Mutex<std::collections::HashMap<CacheKey, LogicalEntity>>",
+      "ownership": "Arc<Mutex<>>",
+      "notes": "Thread-safe cache storage using a HashMap wrapped in a Mutex."
+    },
+    {
+      "cpp": "std::mutex",
+      "rust": "std::sync::Mutex",
+      "ownership": "Arc<Mutex<>>",
+      "notes": "Mutex for thread-safe access to shared data."
+    },
+    {
+      "cpp": "CacheTransactionContext",
+      "rust": "struct CacheTransactionContext { /* fields */ }",
+      "ownership": "owned",
+      "notes": "Context for cache transactions (not fully implemented)."
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "Singleton instance",
+      "rust_pattern": "lazy_static::Lazy<CacheManager>",
+      "rationale": "Rust's lazy_static provides a thread-safe singleton pattern."
+    },
+    {
+      "cpp_pattern": "Raw pointers in std::map",
+      "rust_pattern": "Owned data in HashMap",
+      "rationale": "Rust's HashMap uses owned data, ensuring memory safety."
+    },
+    {
+      "cpp_pattern": "Mutex-protected shared state",
+      "rust_pattern": "Arc<Mutex<>>",
+      "rationale": "Arc provides thread-safe shared ownership, Mutex ensures exclusivity."
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "CacheManager::get",
+      "recovery": "Return false on miss",
+      "rust": "Result<bool, CacheError>"
+    },
+    {
+      "source": "CacheManager::put",
+      "recovery": "Return false on exception",
+      "rust": "Result<bool, CacheError>"
+    },
+    {
+      "source": "CacheManager::invalidate",
+      "recovery": "Return false on non-existent key",
+      "rust": "Result<bool, CacheError>"
+    },
+    {
+      "source": "CacheManager::toString",
+      "recovery": "Return empty string on error",
+      "rust": "Result<String, CacheError>"
+    }
+  ],
+  "functions": [
+    {
+      "name": "CacheManager::get",
+      "pre": [
+        "key is valid"
+      ],
+      "post": [
+        "outEntity contains the cached LogicalEntity if found"
+      ],
+      "side_effects": [
+        "Updates hit/miss statistics"
+      ],
+      "complexity": "O(log n)"
+    },
+    {
+      "name": "CacheManager::put",
+      "pre": [
+        "key is valid"
+      ],
+      "post": [
+        "LogicalEntity is stored in cache"
+      ],
+      "side_effects": [
+        "Updates statistics"
+      ],
+      "complexity": "O(log n)"
+    },
+    {
+      "name": "CacheManager::invalidate",
+      "pre": [
+        "key is valid"
+      ],
+      "post": [
+        "Cache entry is removed if exists"
+      ],
+      "side_effects": [
+        "Updates statistics"
+      ],
+      "complexity": "O(log n)"
+    },
+    {
+      "name": "CacheManager::clear",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "All cache entries are removed"
+      ],
+      "side_effects": [
+        "Updates statistics"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheManager::contains",
+      "pre": [
+        "key is valid"
+      ],
+      "post": [
+        "Returns true if key exists in cache"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(log n)"
+    },
+    {
+      "name": "CacheManager::size",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns the number of cache entries"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheManager::getStatistics",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns current cache statistics"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheManager::resetStatistics",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Resets all statistics to zero"
+      ],
+      "side_effects": [
+        "Updates statistics"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheManager::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns a string representation of the cache"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "CacheManager::updateHitMissStats",
+      "pre": [
+        "hit is either true or false"
+      ],
+      "post": [
+        "Statistics are updated based on hit/miss"
+      ],
+      "side_effects": [
+        "Updates statistics"
+      ],
+      "complexity": "O(1)"
+    }
+  ],
+  "invariants": [
+    "put(key, entity) followed by get(key) returns the same entity.",
+    "No key collisions; distinct SearchRequests map to distinct CacheKeys.",
+    "Thread-safe; concurrent get/put operations maintain data integrity.",
+    "Idempotent puts; putting the same key multiple times is safe.",
+    "Cache consistency; get() returns the exact copy of previously stored data.",
+    "No capacity limits or time-based expiration (simplified for POC).",
+    "No distributed caching or persistence (in-memory only).",
+    "All cache operations are atomic and consistent under concurrent access."
+  ],
+  "concurrency": {
+    "thread_safety": "All cache operations are protected by a Mutex, ensuring thread-safe access.",
+    "shared_state": [
+      "cache_",
+      "stats_"
+    ]
+  },
+  "dependencies": [],
+  "raw_spec": "types:\n  - cpp: \"CacheKey\"\n    rust: \"struct CacheKey { /* fields */ }\"\n    ownership: \"owned\"\n    notes: \"Represents a unique cache key derived from SearchRequest parameters.\"\n  - cpp: \"LogicalEntity\"\n    rust: \"struct LogicalEntity { /* fields */ }\"\n    ownership: \"owned\"\n    notes: \"Represents cached data (flights, fares).\"\n  - cpp: \"CacheStatistics\"\n    rust: \"struct CacheStatistics { /* fields */ }\"\n    ownership: \"owned\"\n    notes: \"Tracks cache hits, misses, puts, and invalidations.\"\n  - cpp: \"std::map<CacheKey, LogicalEntity>\"\n    rust: \"std::sync::Mutex<std::collections::HashMap<CacheKey, LogicalEntity>>\"\n    ownership: \"Arc<Mutex<>>\"\n    notes: \"Thread-safe cache storage using a HashMap wrapped in a Mutex.\"\n  - cpp: \"std::mutex\"\n    rust: \"std::sync::Mutex\"\n    ownership: \"Arc<Mutex<>>\"\n    notes: \"Mutex for thread-safe access to shared data.\"\n  - cpp: \"CacheTransactionContext\"\n    rust: \"struct CacheTransactionContext { /* fields */ }\"\n    ownership: \"owned\"\n    notes: \"Context for cache transactions (not fully implemented).\"\n\nownership:\n  - cpp_pattern: \"Singleton instance\"\n    rust_pattern: \"lazy_static::Lazy<CacheManager>\"\n    rationale: \"Rust's lazy_static provides a thread-safe singleton pattern.\"\n  - cpp_pattern: \"Raw pointers in std::map\"\n    rust_pattern: \"Owned data in HashMap\"\n    rationale: \"Rust's HashMap uses owned data, ensuring memory safety.\"\n  - cpp_pattern: \"Mutex-protected shared state\"\n    rust_pattern: \"Arc<Mutex<>>\"\n    rationale: \"Arc provides thread-safe shared ownership, Mutex ensures exclusivity.\"\n\nerror_paths:\n  - source: \"CacheManager::get\"\n    recovery: \"Return false on miss\"\n    rust: \"Result<bool, CacheError>\"\n  - source: \"CacheManager::put\"\n    recovery: \"Return false on exception\"\n    rust: \"Result<bool, CacheError>\"\n  - source: \"CacheManager::invalidate\"\n    recovery: \"Return false on non-existent key\"\n    rust: \"Result<bool, CacheError>\"\n  - source: \"CacheManager::toString\"\n    recovery: \"Return empty string on error\"\n    rust: \"Result<String, CacheError>\"\n\nfunctions:\n  - name: \"CacheManager::get\"\n    pre: [\"key is valid\"]\n    post: [\"outEntity contains the cached LogicalEntity if found\"]\n    side_effects: [\"Updates hit/miss statistics\"]\n    complexity: \"O(log n)\"\n  - name: \"CacheManager::put\"\n    pre: [\"key is valid\"]\n    post: [\"LogicalEntity is stored in cache\"]\n    side_effects: [\"Updates statistics\"]\n    complexity: \"O(log n)\"\n  - name: \"CacheManager::invalidate\"\n    pre: [\"key is valid\"]\n    post: [\"Cache entry is removed if exists\"]\n    side_effects: [\"Updates statistics\"]\n    complexity: \"O(log n)\"\n  - name: \"CacheManager::clear\"\n    pre: [\"None\"]\n    post: [\"All cache entries are removed\"]\n    side_effects: [\"Updates statistics\"]\n    complexity: \"O(1)\"\n  - name: \"CacheManager::contains\"\n    pre: [\"key is valid\"]\n    post: [\"Returns true if key exists in cache\"]\n    side_effects: [\"None\"]\n    complexity: \"O(log n)\"\n  - name: \"CacheManager::size\"\n    pre: [\"None\"]\n    post: [\"Returns the number of cache entries\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n  - name: \"CacheManager::getStatistics\"\n    pre: [\"None\"]\n    post: [\"Returns current cache statistics\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n  - name: \"CacheManager::resetStatistics\"\n    pre: [\"None\"]\n    post: [\"Resets all statistics to zero\"]\n    side_effects: [\"Updates statistics\"]\n    complexity: \"O(1)\"\n  - name: \"CacheManager::toString\"\n    pre: [\"None\"]\n    post: [\"Returns a string representation of the cache\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n)\"\n  - name: \"CacheManager::updateHitMissStats\"\n    pre: [\"hit is either true or false\"]\n    post: [\"Statistics are updated based on hit/miss\"]\n    side_effects: [\"Updates statistics\"]\n    complexity: \"O(1)\"\n\ninvariants:\n  - \"put(key, entity) followed by get(key) returns the same entity.\"\n  - \"No key collisions; distinct SearchRequests map to distinct CacheKeys.\"\n  - \"Thread-safe; concurrent get/put operations maintain data integrity.\"\n  - \"Idempotent puts; putting the same key multiple times is safe.\"\n  - \"Cache consistency; get() returns the exact copy of previously stored data.\"\n  - \"No capacity limits or time-based expiration (simplified for POC).\"\n  - \"No distributed caching or persistence (in-memory only).\"\n  - \"All cache operations are atomic and consistent under concurrent access.\"\n\nconcurrency:\n  thread_safety: \"All cache operations are protected by a Mutex, ensuring thread-safe access.\"\n  shared_state: [\"cache_\", \"stats_\"]"
+}

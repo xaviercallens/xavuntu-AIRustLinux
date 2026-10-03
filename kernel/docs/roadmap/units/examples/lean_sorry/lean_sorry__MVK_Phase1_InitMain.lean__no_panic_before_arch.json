@@ -1,0 +1,21 @@
+{
+  "id": "lean_sorry::MVK/Phase1/InitMain.lean::no_panic_before_arch",
+  "type": "lean_sorry",
+  "file": "specs/lean4/MVK/Phase1/InitMain.lean",
+  "target": "theorem no_panic_before_arch",
+  "line": 178,
+  "statement_hash": "e6a6c30c310b9ad8",
+  "allowed_edits": [
+    "specs/lean4/MVK/Phase1/InitMain.lean"
+  ],
+  "hints": [
+    "try: simp [*]",
+    "try: omega",
+    "try: decide",
+    "try: aesop",
+    "try: induction on the relevant argument, then simp_all"
+  ],
+  "oracle": "scripts/check_unit.py --type lean_sorry --file specs/lean4/MVK/Phase1/InitMain.lean --theorem no_panic_before_arch",
+  "max_attempts": 3,
+  "escalate_to": "T2"
+}

@@ -1,0 +1,11 @@
+[package]
+name = "laya_firewall"
+version = "0.1.0"
+edition = "2021"
+description = "Edge-Native Laya-LoRA Semantic Firewall and Split Conformal Router for RunuX"
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+
+[features]
+default = []

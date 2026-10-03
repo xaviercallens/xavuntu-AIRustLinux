@@ -1,0 +1,22 @@
+[package]
+name = "qemu_harness"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kernel_types = { path = "../../crates/kernel_types" }
+udp = { path = "../../crates/udp" }
+icmp = { path = "../../crates/icmp" }
+ip6_input = { path = "../../crates/ip6_input" }
+ip6_output = { path = "../../crates/ip6_output" }
+ipv6_sockglue = { path = "../../crates/ipv6_sockglue" }
+
+[profile.dev]
+panic = "abort"
+opt-level = 0
+
+[profile.release]
+panic = "abort"
+opt-level = 3
+lto = "fat"
+codegen-units = 1

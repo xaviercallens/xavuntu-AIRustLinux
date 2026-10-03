@@ -1,0 +1,11 @@
+[package]
+name = "immutable_logs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+ebpf_firewall = { path = "../ebpf_firewall" }
+
+[lib]
+crate-type = ["rlib"]

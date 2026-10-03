@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+    gcloud container clusters get-credentials mvk-benchmark --zone us-central1-a --project gen-lang-client-0625573011
+    echo "=== CLIENT LOGS ==="
+    kubectl logs -l role=client -n default --tail=100
+    echo "=== SERVER LOGS ==="
+    kubectl logs -l role=server -n default --tail=100

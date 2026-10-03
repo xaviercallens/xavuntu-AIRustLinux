@@ -1,0 +1,96 @@
+{
+  "types": [
+    {
+      "cpp": "struct CacheStatistics",
+      "rust": "struct CacheStatistics",
+      "ownership": "owned",
+      "notes": "Direct translation of struct with public fields"
+    },
+    {
+      "cpp": "std::string",
+      "rust": "String",
+      "ownership": "owned",
+      "notes": "Rust's String type is the standard owned string type"
+    },
+    {
+      "cpp": "std::ostringstream",
+      "rust": "std::ostringstream",
+      "ownership": "owned",
+      "notes": "Rust's std::ostringstream can be used for string formatting"
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "global variable (CacheStatistics g_cacheStats)",
+      "rust_pattern": "static variable (static mut g_cacheStats: CacheStatistics)",
+      "rationale": "Rust's static variables are thread-safe by default, but require unsafe operations for mutation"
+    },
+    {
+      "cpp_pattern": "no smart pointers",
+      "rust_pattern": "direct usage of types",
+      "rationale": "No ownership transfers needed for simple data structures"
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "No explicit error handling in C++",
+      "recovery": "None",
+      "rust": "Result<T, E> could be used for error handling if needed"
+    }
+  ],
+  "functions": [
+    {
+      "name": "CacheAppTxnContext_Init",
+      "pre": [],
+      "post": [
+        "Logs initialization message"
+      ],
+      "side_effects": [
+        "Writes to log"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheAppTxnContext_Quit",
+      "pre": [],
+      "post": [
+        "Logs termination message"
+      ],
+      "side_effects": [
+        "Writes to log"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheStatistics::toString",
+      "pre": [
+        "Valid CacheStatistics instance"
+      ],
+      "post": [
+        "Returns formatted string with statistics"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    }
+  ],
+  "invariants": [
+    "CacheStatistics must maintain accurate counts of hits, misses, puts, and invalidations",
+    "hitRate() must correctly compute hit rate as hits / (hits + misses)",
+    "g_cacheStats must remain a single global instance"
+  ],
+  "concurrency": {
+    "thread_safety": "Not thread-safe in C++, would require explicit synchronization in Rust",
+    "shared_state": [
+      "g_cacheStats"
+    ]
+  },
+  "dependencies": [
+    "Common.h",
+    "<sstream>",
+    "<iomanip>",
+    "MasterPricer namespace"
+  ],
+  "raw_spec": "types:\n  - cpp: \"struct CacheStatistics\"\n    rust: \"struct CacheStatistics\"\n    ownership: \"owned\"\n    notes: \"Direct translation of struct with public fields\"\n\n  - cpp: \"std::string\"\n    rust: \"String\"\n    ownership: \"owned\"\n    notes: \"Rust's String type is the standard owned string type\"\n\n  - cpp: \"std::ostringstream\"\n    rust: \"std::ostringstream\"\n    ownership: \"owned\"\n    notes: \"Rust's std::ostringstream can be used for string formatting\"\n\nownership:\n  - cpp_pattern: \"global variable (CacheStatistics g_cacheStats)\"\n    rust_pattern: \"static variable (static mut g_cacheStats: CacheStatistics)\"\n    rationale: \"Rust's static variables are thread-safe by default, but require unsafe operations for mutation\"\n\n  - cpp_pattern: \"no smart pointers\"\n    rust_pattern: \"direct usage of types\"\n    rationale: \"No ownership transfers needed for simple data structures\"\n\nerror_paths:\n  - source: \"No explicit error handling in C++\"\n    recovery: \"None\"\n    rust: \"Result<T, E> could be used for error handling if needed\"\n\nfunctions:\n  - name: \"CacheAppTxnContext_Init\"\n    pre: []\n    post: [\"Logs initialization message\"]\n    side_effects: [\"Writes to log\"]\n    complexity: \"O(1)\"\n\n  - name: \"CacheAppTxnContext_Quit\"\n    pre: []\n    post: [\"Logs termination message\"]\n    side_effects: [\"Writes to log\"]\n    complexity: \"O(1)\"\n\n  - name: \"CacheStatistics::toString\"\n    pre: [\"Valid CacheStatistics instance\"]\n    post: [\"Returns formatted string with statistics\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\ninvariants:\n  - \"CacheStatistics must maintain accurate counts of hits, misses, puts, and invalidations\"\n  - \"hitRate() must correctly compute hit rate as hits / (hits + misses)\"\n  - \"g_cacheStats must remain a single global instance\"\n\nconcurrency:\n  thread_safety: \"Not thread-safe in C++, would require explicit synchronization in Rust\"\n  shared_state: [\"g_cacheStats\"]\n\ndependencies:\n  - \"Common.h\"\n  - \"<sstream>\"\n  - \"<iomanip>\"\n  - \"MasterPricer namespace\""
+}

@@ -1,0 +1,174 @@
+# ============================================================
+# MVK Rust Kernel - Server Pod (iperf3/netperf server)
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: mvk-kernel-server
+  labels:
+    app: mvk-kernel
+    role: server
+spec:
+  selector:
+    app: mvk-kernel
+    role: server
+  ports:
+    - name: iperf3
+      port: 5201
+      targetPort: 5201
+      protocol: TCP
+    - name: iperf3-udp
+      port: 5201
+      targetPort: 5201
+      protocol: UDP
+    - name: netperf
+      port: 12865
+      targetPort: 12865
+      protocol: TCP
+  clusterIP: None  # Headless for direct pod-to-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mvk-kernel-server
+  labels:
+    app: mvk-kernel
+    role: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mvk-kernel
+      role: server
+  template:
+    metadata:
+      labels:
+        app: mvk-kernel
+        role: server
+        kernel-type: rust
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      containers:
+        - name: mvk-kernel
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["server"]
+          ports:
+            - containerPort: 5201
+              name: iperf3
+            - containerPort: 12865
+              name: netperf
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu | quote }}
+              memory: {{ .Values.resources.requests.memory | quote }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu | quote }}
+              memory: {{ .Values.resources.limits.memory | quote }}
+          securityContext:
+            privileged: true  # Required for /dev/kvm access
+          volumeMounts:
+            - name: results
+              mountPath: /mvk/results
+            - name: dev-kvm
+              mountPath: /dev/kvm
+          readinessProbe:
+            exec:
+              command: ["cat", "/mvk/results/boot_time_ms.txt"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: results
+          emptyDir: {}
+        - name: dev-kvm
+          hostPath:
+            path: /dev/kvm
+            type: CharDevice
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      # Anti-affinity: spread across nodes
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values: ["mvk-kernel"]
+                topologyKey: kubernetes.io/hostname
+---
+# ============================================================
+# MVK Rust Kernel - Client Pod (benchmark runner)
+# ============================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mvk-kernel-client
+  labels:
+    app: mvk-kernel
+    role: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mvk-kernel
+      role: client
+  template:
+    metadata:
+      labels:
+        app: mvk-kernel
+        role: client
+        kernel-type: rust
+    spec:
+      containers:
+        - name: mvk-kernel
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["client"]
+          env:
+            - name: BENCHMARK_TARGET
+              value: "mvk-kernel-server"
+            - name: BENCHMARK_DURATION
+              value: "{{ .Values.benchmark.duration }}"
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu | quote }}
+              memory: {{ .Values.resources.requests.memory | quote }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu | quote }}
+              memory: {{ .Values.resources.limits.memory | quote }}
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: results
+              mountPath: /mvk/results
+            - name: dev-kvm
+              mountPath: /dev/kvm
+      volumes:
+        - name: results
+          emptyDir: {}
+        - name: dev-kvm
+          hostPath:
+            path: /dev/kvm
+            type: CharDevice
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values: ["mvk-kernel"]
+                topologyKey: kubernetes.io/hostname

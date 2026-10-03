@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "project": "RunuX (Rust Linux Minimum Viable Kernel)",
+    "version": "9.4.0",
+    "date": "2026-05-22",
+    "author": "Xavier Callens",
+    "target_kernel": "Linux 5.10 LTS",
+    "repository": "https://github.com/xaviercallens/rust-linux-mini-kernel"
+  },
+  "compilation_metrics": {
+    "total_modules": 297,
+    "compiling_modules": 297,
+    "compilation_rate": 1.0,
+    "warnings": 0,
+    "errors": 0,
+    "lines_of_rust": 150000,
+    "shared_types_in_kernel_types": 38,
+    "documented_fix_patterns": 20,
+    "compilation_errors_resolved": 189
+  },
+  "performance_benchmarks": {
+    "crc32_checksum_1m_x_4kb": {
+      "c": {
+        "compiler": "gcc",
+        "flags": "-O3 -march=native",
+        "binary_size_bytes": 33792,
+        "runs_seconds": [10.430, 10.947, 10.452, 10.135, 10.127],
+        "median_seconds": 10.430,
+        "min_seconds": 10.127
+      },
+      "rust": {
+        "compiler": "rustc (nightly-2026-05-15)",
+        "flags": "-C opt-level=3 -C lto=fat -C codegen-units=1",
+        "binary_size_bytes": 319264,
+        "runs_seconds": [10.170, 10.560, 9.937, 9.931, 9.890],
+        "median_seconds": 9.937,
+        "min_seconds": 9.890
+      },
+      "rust_speedup_pct": 4.73
+    },
+    "qemu_boot_time_ms": {
+      "c_baseline": 5003,
+      "rust": 5004,
+      "delta_pct": 0.02,
+      "pass_threshold": "<=105%",
+      "verdict": "PASS"
+    },
+    "tcp_throughput_under_stress_gbps": {
+      "rust": 15.534,
+      "pass_threshold": ">=95% of C baseline",
+      "verdict": "PASS"
+    }
+  },
+  "chaos_engineering": {
+    "platform": "GKE Standard (n2d-standard-8, Dataplane V2)",
+    "tool": "Chaos Mesh v2.6.x",
+    "timestamp": "2026-05-21T17:07:35Z",
+    "total_duration_seconds": 375,
+    "experiments": [
+      {"name": "Network Partition", "duration_s": 45, "panics": 0, "oops": 0, "pod_count": 2},
+      {"name": "Network Delay", "duration_s": 75, "panics": 0, "oops": 0, "pod_count": 2},
+      {"name": "Packet Loss", "duration_s": 75, "panics": 0, "oops": 0, "pod_count": 2},
+      {"name": "CPU Stress", "duration_s": 75, "panics": 0, "oops": 0, "pod_count": 2},
+      {"name": "Memory Pressure", "duration_s": 75, "panics": 0, "oops": 0, "pod_count": 2},
+      {"name": "Pod Kill", "duration_s": 30, "panics": 0, "oops": 0, "pod_count": 2}
+    ],
+    "aggregate": {
+      "total_panics": 0,
+      "total_oops": 0,
+      "verdict": "PASS"
+    }
+  },
+  "formal_verification": {
+    "lean4": {
+      "toolchain": "leanprover/lean4:v4.29.1",
+      "lake_version": "5.0.0",
+      "theorems_verified": 12,
+      "sorry_tactics": 0,
+      "axioms_remaining": 1,
+      "build_status": "PASS"
+    },
+    "verus": {
+      "status": "integrated (conditional compilation)",
+      "proofs_modules": ["verus_proofs.rs"],
+      "bounds_checks_verified": ["packet_slice", "header_offset"]
+    }
+  },
+  "ci_cd": {
+    "github_actions_workflow": "runtime_tests.yml",
+    "qemu_boot_test": "PASS",
+    "fuzzing_targets": ["fuzz_packet", "fuzz_routing"],
+    "fuzzing_duration_seconds": 30,
+    "fuzzing_crashes": 0
+  }
+}

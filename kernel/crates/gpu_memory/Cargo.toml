@@ -1,0 +1,10 @@
+[package]
+name = "gpu_memory"
+version = "10.7.0"
+edition = "2021"
+authors = ["Linux Kernel Contributors", "Socrate AI"]
+license = "GPL-2.0"
+
+[dependencies]
+gpu_types = { path = "../gpu_types" }
+iommu_vtd = { path = "../iommu_vtd" }

@@ -1,0 +1,25 @@
+{
+  "passed": false,
+  "equivalence_score": 0.0,
+  "type_coverage": 0.0,
+  "function_coverage": 0.0,
+  "invariant_coverage": 0.0,
+  "compile_status": "errors",
+  "compile_errors": [
+    "Empty Rust code"
+  ],
+  "clippy_warnings": [],
+  "semantic_errors": [],
+  "suggestions": [],
+  "verification_layer_reached": 1,
+  "gillian_path_equiv": false,
+  "gillian_c_paths": 0,
+  "gillian_rust_paths": 0,
+  "gillian_violations": [],
+  "proofwala_proofs_found": 0,
+  "proofwala_proofs_failed": 0,
+  "proofwala_lean_specs": [],
+  "tool_calls_log": [],
+  "raw_llm_response": "",
+  "spec_tests_compile": null
+}

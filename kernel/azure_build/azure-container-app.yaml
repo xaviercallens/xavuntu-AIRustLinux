@@ -1,0 +1,59 @@
+# Azure Container App Configuration
+# For deploying Rust kernel build and test infrastructure
+
+apiVersion: 2023-05-01
+type: Microsoft.App/containerApps
+name: rust-kernel-builder
+location: swedencentral
+properties:
+  environmentId: /subscriptions/{subscription-id}/resourceGroups/rg-rust-kernel/providers/Microsoft.App/managedEnvironments/rust-kernel-env
+  configuration:
+    ingress:
+      external: false
+      targetPort: 8080
+    secrets:
+      - name: github-token
+        value: ${GITHUB_TOKEN}
+      - name: azure-storage-key
+        value: ${AZURE_STORAGE_KEY}
+    registries:
+      - server: rustkernel.azurecr.io
+        username: rustkernel
+        passwordSecretRef: acr-password
+  template:
+    containers:
+      - name: rust-builder
+        image: rustkernel.azurecr.io/rust-kernel-builder:latest
+        resources:
+          cpu: 4.0
+          memory: 8Gi
+        env:
+          - name: WORKSPACE_ROOT
+            value: /workspace
+          - name: PARALLEL_JOBS
+            value: "4"
+          - name: RUST_BACKTRACE
+            value: "1"
+          - name: CARGO_NET_GIT_FETCH_WITH_CLI
+            value: "true"
+        volumeMounts:
+          - volumeName: workspace
+            mountPath: /workspace
+          - volumeName: cache
+            mountPath: /root/.cargo
+    scale:
+      minReplicas: 0
+      maxReplicas: 5
+      rules:
+        - name: cpu-scaling
+          custom:
+            type: cpu
+            metadata:
+              type: Utilization
+              value: "75"
+    volumes:
+      - name: workspace
+        storageType: AzureFile
+        storageName: rust-kernel-storage
+      - name: cache
+        storageType: EmptyDir

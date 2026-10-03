@@ -1,0 +1,89 @@
+{
+  "ownership_map": {
+    "Itinerary": "&",
+    "LogicalEntity": "&",
+    "SearchRequest": "&",
+    "Fare": "&",
+    "Flight": "&",
+    "std::string": "String",
+    "const Fare*": "&Fare",
+    "double": "f64",
+    "int": "i32"
+  },
+  "type_map": {
+    "Itinerary": "struct Itinerary",
+    "LogicalEntity": "struct LogicalEntity",
+    "SearchRequest": "struct SearchRequest",
+    "Fare": "struct Fare",
+    "Flight": "struct Flight",
+    "std::string": "String",
+    "const Fare*": "&Fare",
+    "double": "f64",
+    "int": "i32"
+  },
+  "error_map": {
+    "PricingException": "Result<T, Error>",
+    "Invalid passenger count": "Result<T, Error>",
+    "Invalid tax rate": "Result<T, Error>",
+    "Invalid booking fee": "Result<T, Error>"
+  },
+  "lifetime_annotations": [
+    "All function parameters have 'static lifetimes since they are passed by reference.",
+    "References to owned data (e.g., &Fare) are annotated with 'static lifetime."
+  ],
+  "trait_hierarchy": [
+    {
+      "name": "PricingEngine",
+      "methods": [
+        "computePrice",
+        "computePriceWithDetails",
+        "setTaxRate",
+        "getTaxRate",
+        "setBookingFee",
+        "getBookingFee",
+        "resetToDefaults",
+        "getPricingCount",
+        "resetPricingCount",
+        "findMatchingFare",
+        "calculateTax",
+        "applyPassengerMultiplier"
+      ],
+      "supertraits": []
+    }
+  ],
+  "module_layout": {
+    "modules": {
+      "PricingEngine": [
+        "computePrice",
+        "computePriceWithDetails",
+        "setTaxRate",
+        "getTaxRate",
+        "setBookingFee",
+        "getBookingFee",
+        "resetToDefaults",
+        "getPricingCount",
+        "resetPricingCount",
+        "findMatchingFare",
+        "calculateTax",
+        "applyPassengerMultiplier"
+      ]
+    },
+    "reexports": [
+      "pub use PricingEngine;",
+      "pub use Itinerary;",
+      "pub use LogicalEntity;",
+      "pub use SearchRequest;",
+      "pub use Fare;",
+      "pub use Flight;"
+    ]
+  },
+  "unsafe_justifications": [
+    "No unsafe code needed since all operations are safe and thread-safe using Arc<Mutex<T>>."
+  ],
+  "crate_dependencies": [
+    "log",
+    "thiserror",
+    "lru"
+  ],
+  "thinking_trace": "### Step-by-Step Migration Plan\n\n#### 1. Ownership Graph Analysis\n- **C++ Objects**:\n  - `Itinerary`, `LogicalEntity`, `SearchRequest`, `Fare`, `Flight` are passed by const reference (`const &`).\n  - `std::string` is passed by reference but owned in Rust (`String`).\n- **Rust Mapping**:\n  - Use references (`&T`) for borrowed objects.\n  - Use `String` for owned string data.\n\n#### 2. Lifetime Dependencies\n- All function parameters are references to objects with static lifetimes.\n- Annotate lifetimes in Rust function signatures to ensure references don't outlive owners.\n\n#### 3. Concurrency Safety\n- Shared mutable state (`taxRate_`, `bookingFee_`, `pricingCount_`) needs thread-safe access.\n- Use `Arc<Mutex<T>>` for shared state to ensure thread safety.\n\n#### 4. Error Propagation\n- Replace C++ exceptions with Rust `Result<T, Error>`.\n- Use `thiserror` crate to define custom error types for different error sources.\n\n#### 5. Module Boundary Design\n- Public API functions (`computePrice`, `computePriceWithDetails`, etc.) are part of the module.\n- Use `pub use` to re-export types and functions shared across modules.\n\n---\n\n### YAML Migration Plan\n\n```yaml\nPLAN_START\nownership_map:\n  \"Itinerary\": \"&\"\n  \"LogicalEntity\": \"&\"\n  \"SearchRequest\": \"&\"\n  \"Fare\": \"&\"\n  \"Flight\": \"&\"\n  \"std::string\": \"String\"\n  \"const Fare*\": \"&Fare\"\n  \"double\": \"f64\"\n  \"int\": \"i32\"\n\ntype_map:\n  \"Itinerary\": \"struct Itinerary\"\n  \"LogicalEntity\": \"struct LogicalEntity\"\n  \"SearchRequest\": \"struct SearchRequest\"\n  \"Fare\": \"struct Fare\"\n  \"Flight\": \"struct Flight\"\n  \"std::string\": \"String\"\n  \"const Fare*\": \"&Fare\"\n  \"double\": \"f64\"\n  \"int\": \"i32\"\n\nerror_map:\n  \"PricingException\": \"Result<T, Error>\"\n  \"Invalid passenger count\": \"Result<T, Error>\"\n  \"Invalid tax rate\": \"Result<T, Error>\"\n  \"Invalid booking fee\": \"Result<T, Error>\"\n\nlifetime_annotations:\n  - \"All function parameters have 'static lifetimes since they are passed by reference.\"\n  - \"References to owned data (e.g., &Fare) are annotated with 'static lifetime.\"\n\ntrait_hierarchy:\n  - name: \"PricingEngine\"\n    methods:\n      - \"computePrice\"\n      - \"computePriceWithDetails\"\n      - \"setTaxRate\"\n      - \"getTaxRate\"\n      - \"setBookingFee\"\n      - \"getBookingFee\"\n      - \"resetToDefaults\"\n      - \"getPricingCount\"\n      - \"resetPricingCount\"\n      - \"findMatchingFare\"\n      - \"calculateTax\"\n      - \"applyPassengerMultiplier\"\n    supertraits: []\n\nmodule_layout:\n  modules:\n    \"PricingEngine\":\n      - \"computePrice\"\n      - \"computePriceWithDetails\"\n      - \"setTaxRate\"\n      - \"getTaxRate\"\n      - \"setBookingFee\"\n      - \"getBookingFee\"\n      - \"resetToDefaults\"\n      - \"getPricingCount\"\n      - \"resetPricingCount\"\n      - \"findMatchingFare\"\n      - \"calculateTax\"\n      - \"applyPassengerMultiplier\"\n  reexports:\n    - \"pub use PricingEngine;\"\n    - \"pub use Itinerary;\"\n    - \"pub use LogicalEntity;\"\n    - \"pub use SearchRequest;\"\n    - \"pub use Fare;\"\n    - \"pub use Flight;\"\n\nunsafe_justifications:\n  - \"No unsafe code needed since all operations are safe and thread-safe using Arc<Mutex<T>>.\"\n\ncrate_dependencies:\n  - \"log\"\n  - \"thiserror\"\n  - \"lru\"\nPLAN_END\n```"
+}

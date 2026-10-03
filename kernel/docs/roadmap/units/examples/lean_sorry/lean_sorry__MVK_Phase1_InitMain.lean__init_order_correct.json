@@ -1,0 +1,21 @@
+{
+  "id": "lean_sorry::MVK/Phase1/InitMain.lean::init_order_correct",
+  "type": "lean_sorry",
+  "file": "specs/lean4/MVK/Phase1/InitMain.lean",
+  "target": "theorem init_order_correct",
+  "line": 239,
+  "statement_hash": "4b627f7c529ec7f3",
+  "allowed_edits": [
+    "specs/lean4/MVK/Phase1/InitMain.lean"
+  ],
+  "hints": [
+    "try: simp [*]",
+    "try: omega",
+    "try: decide",
+    "try: aesop",
+    "try: induction on the relevant argument, then simp_all"
+  ],
+  "oracle": "scripts/check_unit.py --type lean_sorry --file specs/lean4/MVK/Phase1/InitMain.lean --theorem init_order_correct",
+  "max_attempts": 3,
+  "escalate_to": "T2"
+}

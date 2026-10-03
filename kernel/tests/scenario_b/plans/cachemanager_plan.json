@@ -1,0 +1,76 @@
+{
+  "ownership_map": {
+    "CacheManager instance": "lazy_static::Lazy<CacheManager>",
+    "cache_": "Arc<Mutex<HashMap<CacheKey, LogicalEntity>>>",
+    "stats_": "Arc<Mutex<CacheStatistics>>",
+    "CacheKey": "owned",
+    "LogicalEntity": "owned",
+    "CacheStatistics": "owned"
+  },
+  "type_map": {
+    "std::map<CacheKey, LogicalEntity>": "std::sync::Mutex<std::collections::HashMap<CacheKey, LogicalEntity>>",
+    "std::mutex": "std::sync::Mutex",
+    "CacheTransactionContext": "struct CacheTransactionContext"
+  },
+  "error_map": {
+    "std::exception": "CacheError",
+    "bool return values": "Result<bool, CacheError>"
+  },
+  "lifetime_annotations": [
+    "&CacheKey for get() and put() to ensure key validity during operation",
+    "&LogicalEntity for get() to ensure data validity during copy"
+  ],
+  "trait_hierarchy": [
+    {
+      "name": "CacheOperations",
+      "methods": [
+        "get",
+        "put",
+        "invalidate",
+        "clear",
+        "contains",
+        "size",
+        "getStatistics",
+        "resetStatistics",
+        "toString"
+      ],
+      "supertraits": [
+        "Send",
+        "Sync"
+      ]
+    }
+  ],
+  "module_layout": {
+    "modules": {
+      "cache": [
+        "CacheManager",
+        "CacheKey",
+        "LogicalEntity",
+        "CacheStatistics",
+        "CacheTransactionContext"
+      ],
+      "statistics": [
+        "CacheStatistics",
+        "CacheError"
+      ],
+      "transaction": [
+        "CacheTransactionContext"
+      ]
+    },
+    "reexports": [
+      "pub use cache::CacheManager;",
+      "pub use cache::CacheKey;",
+      "pub use cache::LogicalEntity;",
+      "pub use cache::CacheStatistics;",
+      "pub use cache::CacheTransactionContext;"
+    ]
+  },
+  "unsafe_justifications": [
+    "Unsafe block in CacheManager::instance() to initialize global statistics"
+  ],
+  "crate_dependencies": [
+    "lazy_static = \"1.4.0\"",
+    "thiserror = \"1.0.24\""
+  ],
+  "thinking_trace": "### Migration Plan\n\n```yaml\nPLAN_START\nownership_map:\n  \"CacheManager instance\": \"lazy_static::Lazy<CacheManager>\"\n  \"cache_\": \"Arc<Mutex<HashMap<CacheKey, LogicalEntity>>>\"\n  \"stats_\": \"Arc<Mutex<CacheStatistics>>\"\n  \"CacheKey\": \"owned\"\n  \"LogicalEntity\": \"owned\"\n  \"CacheStatistics\": \"owned\"\n\ntype_map:\n  \"std::map<CacheKey, LogicalEntity>\": \"std::sync::Mutex<std::collections::HashMap<CacheKey, LogicalEntity>>\"\n  \"std::mutex\": \"std::sync::Mutex\"\n  \"CacheTransactionContext\": \"struct CacheTransactionContext\"\n\nerror_map:\n  \"std::exception\": \"CacheError\"\n  \"bool return values\": \"Result<bool, CacheError>\"\n\nlifetime_annotations:\n  - \"&CacheKey for get() and put() to ensure key validity during operation\"\n  - \"&LogicalEntity for get() to ensure data validity during copy\"\n\ntrait_hierarchy:\n  - name: \"CacheOperations\"\n    methods: [\"get\", \"put\", \"invalidate\", \"clear\", \"contains\", \"size\", \"getStatistics\", \"resetStatistics\", \"toString\"]\n    supertraits: [\"Send\", \"Sync\"]\n\nmodule_layout:\n  modules:\n    \"cache\":\n      - \"CacheManager\"\n      - \"CacheKey\"\n      - \"LogicalEntity\"\n      - \"CacheStatistics\"\n      - \"CacheTransactionContext\"\n    \"statistics\":\n      - \"CacheStatistics\"\n      - \"CacheError\"\n    \"transaction\":\n      - \"CacheTransactionContext\"\n  reexports:\n    - \"pub use cache::CacheManager;\"\n    - \"pub use cache::CacheKey;\"\n    - \"pub use cache::LogicalEntity;\"\n    - \"pub use cache::CacheStatistics;\"\n    - \"pub use cache::CacheTransactionContext;\"\n\nunsafe_justifications:\n  - \"Unsafe block in CacheManager::instance() to initialize global statistics\"\n\ncrate_dependencies:\n  - \"lazy_static = \\\"1.4.0\\\"\"\n  - \"thiserror = \\\"1.0.24\\\"\"\nPLAN_END\n```\n\n### Step-by-Step Migration Plan\n\n1. **Ownership Graph Analysis**:\n   - The `CacheManager` is a singleton instance managed by `lazy_static`.\n   - The cache storage (`cache_`) is an `Arc<Mutex<HashMap<CacheKey, LogicalEntity>>>` to ensure thread-safe shared ownership.\n   - Statistics (`stats_`) are stored in an `Arc<Mutex<CacheStatistics>>` to allow thread-safe updates.\n   - `CacheKey`, `LogicalEntity`, and `CacheStatistics` are owned types passed by value or reference.\n\n2. **Lifetime Dependencies**:\n   - The `get()` and `put()` methods take `&CacheKey` references to ensure the key is valid during the operation.\n   - The `get()` method returns a `&LogicalEntity` reference to ensure the data is valid during the copy.\n\n3. **Concurrency Safety**:\n   - All cache operations are protected by a `Mutex` to ensure thread safety.\n   - The `Arc<Mutex<>>` pattern is used for shared mutable state.\n\n4. **Error Propagation**:\n   - The `CacheError` enum is created to handle all possible error scenarios.\n   - The `Result` type is used for error handling, replacing the C++ `bool` return values.\n\n5. **Module Boundary Design**:\n   - The `cache` module contains the main `CacheManager` and related types.\n   - The `statistics` module handles error handling and statistics.\n   - The `transaction` module contains the `CacheTransactionContext`.\n   - Public types are re-exported using `pub use` to minimize cross-module coupling.\n\n### Justification for Unsafe Code\n\n- The `CacheManager::instance()` method uses an unsafe block to initialize the global statistics. This is necessary to ensure thread-safe initialization of the singleton instance. Safety is ensured by using `lazy_static` which guarantees thread-safe initialization."
+}

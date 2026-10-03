@@ -1,0 +1,7 @@
+# Azure Functions for Python
+azure-functions
+
+# HTTP requests
+requests
+
+# Python standard library (no additional deps needed for benchmark)

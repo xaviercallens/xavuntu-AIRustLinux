@@ -1,0 +1,54 @@
+{
+  "ownership_map": {
+    "CacheStatistics g_cacheStats": "Arc<Mutex<CacheStatistics>>",
+    "std::string": "String",
+    "std::ostringstream": "String"
+  },
+  "type_map": {
+    "struct CacheStatistics": "struct CacheStatistics",
+    "std::string": "String",
+    "std::ostringstream": "String"
+  },
+  "error_map": {
+    "No explicit error handling in C++": "Result<T, E> could be used for error handling if needed"
+  },
+  "lifetime_annotations": [
+    "No explicit lifetime annotations needed beyond what is handled by Arc and Mutex"
+  ],
+  "trait_hierarchy": [
+    {
+      "name": "CacheStatistics",
+      "methods": [
+        "hitRate",
+        "toString"
+      ],
+      "supertraits": []
+    }
+  ],
+  "module_layout": {
+    "modules": {
+      "common": [
+        "CacheStatistics",
+        "g_cacheStats",
+        "CacheAppTxnContext_Init",
+        "CacheAppTxnContext_Quit",
+        "CacheStatistics::toString"
+      ]
+    },
+    "reexports": [
+      "pub use CacheStatistics;",
+      "pub use CacheAppTxnContext_Init;",
+      "pub use CacheAppTxnContext_Quit;",
+      "pub use CacheStatistics::toString;"
+    ]
+  },
+  "unsafe_justifications": [
+    "Access to static variable g_cacheStats requires unsafe code, but is wrapped in a Mutex for thread safety."
+  ],
+  "crate_dependencies": [
+    "lazy_static = \"1.4.0\"",
+    "std::sync::Arc",
+    "std::sync::Mutex"
+  ],
+  "thinking_trace": "```yaml\nPLAN_START\nownership_map:\n  \"CacheStatistics g_cacheStats\": \"Arc<Mutex<CacheStatistics>>\"\n  \"std::string\": \"String\"\n  \"std::ostringstream\": \"String\"\n\ntype_map:\n  \"struct CacheStatistics\": \"struct CacheStatistics\"\n  \"std::string\": \"String\"\n  \"std::ostringstream\": \"String\"\n\nerror_map:\n  \"No explicit error handling in C++\": \"Result<T, E> could be used for error handling if needed\"\n\nlifetime_annotations:\n  - \"No explicit lifetime annotations needed beyond what is handled by Arc and Mutex\"\n\ntrait_hierarchy:\n  - name: \"CacheStatistics\"\n    methods: [\"hitRate\", \"toString\"]\n    supertraits: []\n\nmodule_layout:\n  modules:\n    \"common\": [\"CacheStatistics\", \"g_cacheStats\", \"CacheAppTxnContext_Init\", \"CacheAppTxnContext_Quit\", \"CacheStatistics::toString\"]\n  reexports:\n    - \"pub use CacheStatistics;\"\n    - \"pub use CacheAppTxnContext_Init;\"\n    - \"pub use CacheAppTxnContext_Quit;\"\n    - \"pub use CacheStatistics::toString;\"\n\nunsafe_justifications:\n  - \"Access to static variable g_cacheStats requires unsafe code, but is wrapped in a Mutex for thread safety.\"\n\ncrate_dependencies:\n  - \"lazy_static = \\\"1.4.0\\\"\"\n  - \"std::sync::Arc\"\n  - \"std::sync::Mutex\"\nPLAN_END\n```"
+}

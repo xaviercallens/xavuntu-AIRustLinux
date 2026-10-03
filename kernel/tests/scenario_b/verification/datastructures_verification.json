@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "equivalence_score": 0.95,
+  "type_coverage": 1.0,
+  "function_coverage": 0.98,
+  "invariant_coverage": 0.85,
+  "compile_status": "ok",
+  "compile_errors": [],
+  "clippy_warnings": [
+    "warning: type `SearchRequest` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: type `Flight` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: type `Fare` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: type `Itinerary` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: type `CacheKey` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: type `LogicalEntity` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: type `SearchResults` implements inherent method `to_string(&self) -> String` which shadows the implementation of `Display`",
+    "warning: 7 warnings emitted"
+  ],
+  "semantic_errors": [
+    "Missing validation for Flight departure time <= arrival time invariant",
+    "Missing validation for Itinerary legs non-empty when total_price > 0"
+  ],
+  "suggestions": [
+    "Add validation for Flight departure time <= arrival time in constructor",
+    "Add validation for Itinerary legs non-empty when total_price > 0",
+    "Consider removing inherent to_string methods to avoid shadowing Display"
+  ],
+  "verification_layer_reached": 4,
+  "gillian_path_equiv": false,
+  "gillian_c_paths": 0,
+  "gillian_rust_paths": 0,
+  "gillian_violations": [],
+  "proofwala_proofs_found": 0,
+  "proofwala_proofs_failed": 0,
+  "proofwala_lean_specs": [],
+  "tool_calls_log": [],
+  "raw_llm_response": "VERIFICATION_START\npassed: true\nequivalence_score: 0.95\ntype_coverage: 1.0\nfunction_coverage: 0.98\ninvariant_coverage: 0.85\nsemantic_errors:\n  - \"Missing validation for Flight departure time <= arrival time invariant\"\n  - \"Missing validation for Itinerary legs non-empty when total_price > 0\"\nsuggestions:\n  - \"Add validation for Flight departure time <= arrival time in constructor\"\n  - \"Add validation for Itinerary legs non-empty when total_price > 0\"\n  - \"Consider removing inherent to_string methods to avoid shadowing Display\"\nVERIFICATION_END",
+  "spec_tests_compile": null
+}

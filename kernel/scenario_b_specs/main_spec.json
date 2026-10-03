@@ -1,0 +1,13 @@
+{
+  "types": [],
+  "ownership": [],
+  "error_paths": [],
+  "functions": [],
+  "invariants": [],
+  "concurrency": {
+    "thread_safety": "",
+    "shared_state": []
+  },
+  "dependencies": [],
+  "raw_spec": ""
+}

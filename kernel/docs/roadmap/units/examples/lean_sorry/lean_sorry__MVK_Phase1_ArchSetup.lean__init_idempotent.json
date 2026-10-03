@@ -1,0 +1,21 @@
+{
+  "id": "lean_sorry::MVK/Phase1/ArchSetup.lean::init_idempotent",
+  "type": "lean_sorry",
+  "file": "specs/lean4/MVK/Phase1/ArchSetup.lean",
+  "target": "theorem init_idempotent",
+  "line": 61,
+  "statement_hash": "556b320bf3c74de5",
+  "allowed_edits": [
+    "specs/lean4/MVK/Phase1/ArchSetup.lean"
+  ],
+  "hints": [
+    "try: simp [*]",
+    "try: omega",
+    "try: decide",
+    "try: aesop",
+    "try: induction on the relevant argument, then simp_all"
+  ],
+  "oracle": "scripts/check_unit.py --type lean_sorry --file specs/lean4/MVK/Phase1/ArchSetup.lean --theorem init_idempotent",
+  "max_attempts": 3,
+  "escalate_to": "T2"
+}

@@ -1,0 +1,429 @@
+{
+  "types": [
+    {
+      "cpp": "SearchRequest",
+      "rust": "struct SearchRequest { origin: String, destination: String, date: String, num_passengers: i32 }",
+      "ownership": "owned",
+      "notes": "Direct translation of value type with owned String fields"
+    },
+    {
+      "cpp": "Flight",
+      "rust": "struct Flight { carrier: String, flight_no: String, origin: String, destination: String, dep_time: String, arr_time: String }",
+      "ownership": "owned",
+      "notes": "Direct translation of value type with owned String fields"
+    },
+    {
+      "cpp": "Fare",
+      "rust": "struct Fare { carrier: String, origin: String, destination: String, base_price: f64, fare_class: String }",
+      "ownership": "owned",
+      "notes": "Direct translation of value type with owned String fields"
+    },
+    {
+      "cpp": "Itinerary",
+      "rust": "struct Itinerary { legs: Vec<Flight>, total_price: f64, pricing_details: Option<String> }",
+      "ownership": "owned",
+      "notes": "Vec for legs, owned fields"
+    },
+    {
+      "cpp": "CacheKey",
+      "rust": "struct CacheKey { origin: String, destination: String, date: String, num_passengers: i32 }",
+      "ownership": "owned",
+      "notes": "Direct translation of value type with owned String fields"
+    },
+    {
+      "cpp": "LogicalEntity",
+      "rust": "struct LogicalEntity { flights: Vec<Flight>, fares: Vec<Fare> }",
+      "ownership": "owned",
+      "notes": "Vec for flights and fares"
+    },
+    {
+      "cpp": "SearchResults",
+      "rust": "struct SearchResults { itineraries: Vec<Itinerary>, status: SearchStatus, was_from_cache: bool, processing_time_ms: f64, message: Option<String> }",
+      "ownership": "owned",
+      "notes": "Vec for itineraries, owned fields"
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "Value types with no pointers",
+      "rust_pattern": "Structs with owned fields",
+      "rationale": "Rust structs directly map to C++ value types with owned data"
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "No explicit error handling in C++",
+      "recovery": "None",
+      "rust": "Result<T, E> will be used for error handling in Rust implementation"
+    }
+  ],
+  "functions": [
+    {
+      "name": "SearchRequest::SearchRequest",
+      "pre": [
+        "orig, dest, dt are valid strings",
+        "pax >= 0"
+      ],
+      "post": [
+        "origin == orig",
+        "destination == dest",
+        "date == dt",
+        "num_passengers == pax"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "SearchRequest::operator==",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if all fields are equal"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "SearchRequest::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns properly formatted string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is string length"
+    },
+    {
+      "name": "Flight::Flight",
+      "pre": [
+        "All string parameters are valid"
+      ],
+      "post": [
+        "All fields initialized correctly"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "Flight::operator==",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if all fields are equal"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "Flight::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns properly formatted string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is string length"
+    },
+    {
+      "name": "Fare::Fare",
+      "pre": [
+        "All string parameters are valid",
+        "price >= 0"
+      ],
+      "post": [
+        "All fields initialized correctly"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "Fare::operator==",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if all fields are equal"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "Fare::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns properly formatted string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is string length"
+    },
+    {
+      "name": "Itinerary::Itinerary",
+      "pre": [
+        "flightLegs is valid vector"
+      ],
+      "post": [
+        "legs initialized with flightLegs",
+        "totalPrice == 0.0"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of legs"
+    },
+    {
+      "name": "Itinerary::addLeg",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "flight added to legs"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "Itinerary::operator==",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if legs and totalPrice are equal"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of legs"
+    },
+    {
+      "name": "Itinerary::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns properly formatted string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is string length"
+    },
+    {
+      "name": "CacheKey::CacheKey",
+      "pre": [
+        "orig, dest, dt are valid strings",
+        "pax >= 0"
+      ],
+      "post": [
+        "All fields initialized correctly"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheKey::fromRequest",
+      "pre": [
+        "req is valid SearchRequest"
+      ],
+      "post": [
+        "Returns CacheKey initialized from request fields"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheKey::operator==",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if all fields are equal"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheKey::operator<",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if fields are in order"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "CacheKey::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns properly formatted string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is string length"
+    },
+    {
+      "name": "LogicalEntity::LogicalEntity",
+      "pre": [
+        "flts and frs are valid vectors"
+      ],
+      "post": [
+        "flights and fares initialized correctly"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of flights and fares"
+    },
+    {
+      "name": "LogicalEntity::isEmpty",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if flights or fares are empty"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "LogicalEntity::getCombinationCount",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns product of flights and fares sizes"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "LogicalEntity::operator==",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns true if flights and fares are equal"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is number of flights and fares"
+    },
+    {
+      "name": "LogicalEntity::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns properly formatted string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is string length"
+    },
+    {
+      "name": "SearchResults::addItinerary",
+      "pre": [
+        "itin is valid Itinerary"
+      ],
+      "post": [
+        "itinerary added to itineraries"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "SearchResults::sortByPrice",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "itineraries sorted by totalPrice"
+      ],
+      "side_effects": [
+        "Modifies itineraries order"
+      ],
+      "complexity": "O(n log n) where n is number of itineraries"
+    },
+    {
+      "name": "SearchResults::toString",
+      "pre": [
+        "None"
+      ],
+      "post": [
+        "Returns properly formatted string"
+      ],
+      "side_effects": [
+        "None"
+      ],
+      "complexity": "O(n) where n is string length"
+    }
+  ],
+  "invariants": [
+    "SearchRequest must have non-empty origin, destination, and date",
+    "Flight must have valid depTime <= arrTime",
+    "Fare must have basePrice >= 0",
+    "Itinerary legs must be non-empty if totalPrice > 0",
+    "LogicalEntity must have non-empty flights or fares",
+    "SearchResults itineraries must be sorted by price if sortByPrice called"
+  ],
+  "concurrency": {
+    "thread_safety": "All types are single-threaded with no shared state",
+    "shared_state": [
+      "None"
+    ]
+  },
+  "dependencies": [
+    "std::string -> String",
+    "std::vector -> Vec",
+    "<sstream> -> std::fmt",
+    "<algorithm> -> std::sort",
+    "<iomanip> -> std::fmt"
+  ],
+  "raw_spec": "types:\n  - cpp: \"SearchRequest\"\n    rust: \"struct SearchRequest { origin: String, destination: String, date: String, num_passengers: i32 }\"\n    ownership: \"owned\"\n    notes: \"Direct translation of value type with owned String fields\"\n\n  - cpp: \"Flight\"\n    rust: \"struct Flight { carrier: String, flight_no: String, origin: String, destination: String, dep_time: String, arr_time: String }\"\n    ownership: \"owned\"\n    notes: \"Direct translation of value type with owned String fields\"\n\n  - cpp: \"Fare\"\n    rust: \"struct Fare { carrier: String, origin: String, destination: String, base_price: f64, fare_class: String }\"\n    ownership: \"owned\"\n    notes: \"Direct translation of value type with owned String fields\"\n\n  - cpp: \"Itinerary\"\n    rust: \"struct Itinerary { legs: Vec<Flight>, total_price: f64, pricing_details: Option<String> }\"\n    ownership: \"owned\"\n    notes: \"Vec for legs, owned fields\"\n\n  - cpp: \"CacheKey\"\n    rust: \"struct CacheKey { origin: String, destination: String, date: String, num_passengers: i32 }\"\n    ownership: \"owned\"\n    notes: \"Direct translation of value type with owned String fields\"\n\n  - cpp: \"LogicalEntity\"\n    rust: \"struct LogicalEntity { flights: Vec<Flight>, fares: Vec<Fare> }\"\n    ownership: \"owned\"\n    notes: \"Vec for flights and fares\"\n\n  - cpp: \"SearchResults\"\n    rust: \"struct SearchResults { itineraries: Vec<Itinerary>, status: SearchStatus, was_from_cache: bool, processing_time_ms: f64, message: Option<String> }\"\n    ownership: \"owned\"\n    notes: \"Vec for itineraries, owned fields\"\n\nownership:\n  - cpp_pattern: \"Value types with no pointers\"\n    rust_pattern: \"Structs with owned fields\"\n    rationale: \"Rust structs directly map to C++ value types with owned data\"\n\nerror_paths:\n  - source: \"No explicit error handling in C++\"\n    recovery: \"None\"\n    rust: \"Result<T, E> will be used for error handling in Rust implementation\"\n\nfunctions:\n  - name: \"SearchRequest::SearchRequest\"\n    pre: [\"orig, dest, dt are valid strings\", \"pax >= 0\"]\n    post: [\"origin == orig\", \"destination == dest\", \"date == dt\", \"num_passengers == pax\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"SearchRequest::operator==\"\n    pre: [\"None\"]\n    post: [\"Returns true if all fields are equal\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"SearchRequest::toString\"\n    pre: [\"None\"]\n    post: [\"Returns properly formatted string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is string length\"\n\n  - name: \"Flight::Flight\"\n    pre: [\"All string parameters are valid\"]\n    post: [\"All fields initialized correctly\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"Flight::operator==\"\n    pre: [\"None\"]\n    post: [\"Returns true if all fields are equal\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"Flight::toString\"\n    pre: [\"None\"]\n    post: [\"Returns properly formatted string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is string length\"\n\n  - name: \"Fare::Fare\"\n    pre: [\"All string parameters are valid\", \"price >= 0\"]\n    post: [\"All fields initialized correctly\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"Fare::operator==\"\n    pre: [\"None\"]\n    post: [\"Returns true if all fields are equal\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"Fare::toString\"\n    pre: [\"None\"]\n    post: [\"Returns properly formatted string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is string length\"\n\n  - name: \"Itinerary::Itinerary\"\n    pre: [\"flightLegs is valid vector\"]\n    post: [\"legs initialized with flightLegs\", \"totalPrice == 0.0\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of legs\"\n\n  - name: \"Itinerary::addLeg\"\n    pre: [\"None\"]\n    post: [\"flight added to legs\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"Itinerary::operator==\"\n    pre: [\"None\"]\n    post: [\"Returns true if legs and totalPrice are equal\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of legs\"\n\n  - name: \"Itinerary::toString\"\n    pre: [\"None\"]\n    post: [\"Returns properly formatted string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is string length\"\n\n  - name: \"CacheKey::CacheKey\"\n    pre: [\"orig, dest, dt are valid strings\", \"pax >= 0\"]\n    post: [\"All fields initialized correctly\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"CacheKey::fromRequest\"\n    pre: [\"req is valid SearchRequest\"]\n    post: [\"Returns CacheKey initialized from request fields\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"CacheKey::operator==\"\n    pre: [\"None\"]\n    post: [\"Returns true if all fields are equal\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"CacheKey::operator<\"\n    pre: [\"None\"]\n    post: [\"Returns true if fields are in order\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"CacheKey::toString\"\n    pre: [\"None\"]\n    post: [\"Returns properly formatted string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is string length\"\n\n  - name: \"LogicalEntity::LogicalEntity\"\n    pre: [\"flts and frs are valid vectors\"]\n    post: [\"flights and fares initialized correctly\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of flights and fares\"\n\n  - name: \"LogicalEntity::isEmpty\"\n    pre: [\"None\"]\n    post: [\"Returns true if flights or fares are empty\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"LogicalEntity::getCombinationCount\"\n    pre: [\"None\"]\n    post: [\"Returns product of flights and fares sizes\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"LogicalEntity::operator==\"\n    pre: [\"None\"]\n    post: [\"Returns true if flights and fares are equal\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is number of flights and fares\"\n\n  - name: \"LogicalEntity::toString\"\n    pre: [\"None\"]\n    post: [\"Returns properly formatted string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is string length\"\n\n  - name: \"SearchResults::addItinerary\"\n    pre: [\"itin is valid Itinerary\"]\n    post: [\"itinerary added to itineraries\"]\n    side_effects: [\"None\"]\n    complexity: \"O(1)\"\n\n  - name: \"SearchResults::sortByPrice\"\n    pre: [\"None\"]\n    post: [\"itineraries sorted by totalPrice\"]\n    side_effects: [\"Modifies itineraries order\"]\n    complexity: \"O(n log n) where n is number of itineraries\"\n\n  - name: \"SearchResults::toString\"\n    pre: [\"None\"]\n    post: [\"Returns properly formatted string\"]\n    side_effects: [\"None\"]\n    complexity: \"O(n) where n is string length\"\n\ninvariants:\n  - \"SearchRequest must have non-empty origin, destination, and date\"\n  - \"Flight must have valid depTime <= arrTime\"\n  - \"Fare must have basePrice >= 0\"\n  - \"Itinerary legs must be non-empty if totalPrice > 0\"\n  - \"LogicalEntity must have non-empty flights or fares\"\n  - \"SearchResults itineraries must be sorted by price if sortByPrice called\"\n\nconcurrency:\n  thread_safety: \"All types are single-threaded with no shared state\"\n  shared_state: [\"None\"]\n\ndependencies:\n  - \"std::string -> String\"\n  - \"std::vector -> Vec\"\n  - \"<sstream> -> std::fmt\"\n  - \"<algorithm> -> std::sort\"\n  - \"<iomanip> -> std::fmt\""
+}

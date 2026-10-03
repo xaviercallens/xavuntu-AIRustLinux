@@ -1,0 +1,31 @@
+{
+  "benchmark_start": "2026-05-19T08:45:08Z",
+  "iterations": 1000,
+  "benchmarks": [
+    {
+      "name": "Socket Buffer Allocation",
+      "c_time_seconds": 0E-9,
+      "rust_time_seconds": 0.000001583,
+      "speedup": 0,
+      "iterations": 1000,
+      "winner": "c"
+    },
+    {
+      "name": "ARP Packet Processing",
+      "c_time_seconds": 0E-9,
+      "rust_time_seconds": 4.2E-8,
+      "speedup": 0,
+      "iterations": 1000,
+      "winner": "c"
+    },
+    {
+      "name": "Route Lookup (FIB)",
+      "c_time_seconds": 0E-9,
+      "rust_time_seconds": 4.2E-8,
+      "speedup": 0,
+      "iterations": 1000,
+      "winner": "c"
+    }
+  ],
+  "benchmark_end": "2026-05-19T08:45:14Z"
+}

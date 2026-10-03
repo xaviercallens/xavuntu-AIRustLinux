@@ -1,0 +1,21 @@
+{
+  "id": "lean_sorry::MVK/Phase4/ARP.lean::arp_send_safety",
+  "type": "lean_sorry",
+  "file": "specs/lean4/MVK/Phase4/ARP.lean",
+  "target": "theorem arp_send_safety",
+  "line": 27,
+  "statement_hash": "96d31bd82d808ed1",
+  "allowed_edits": [
+    "specs/lean4/MVK/Phase4/ARP.lean"
+  ],
+  "hints": [
+    "try: simp [*]",
+    "try: omega",
+    "try: decide",
+    "try: aesop",
+    "try: induction on the relevant argument, then simp_all"
+  ],
+  "oracle": "scripts/check_unit.py --type lean_sorry --file specs/lean4/MVK/Phase4/ARP.lean --theorem arp_send_safety",
+  "max_attempts": 3,
+  "escalate_to": "T2"
+}

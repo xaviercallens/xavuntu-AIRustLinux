@@ -1,0 +1,16 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+    gcloud container clusters get-credentials mvk-benchmark --zone us-central1-a --project gen-lang-client-0625573011
+    echo "=== PODS ==="
+    kubectl get pods -A
+    echo "=== DESCRIBE ALL DEFAULT ==="
+    kubectl describe pods -n default
+    echo "=== LOGS FAILED PODS ==="
+    for pod in $(kubectl get pods --field-selector=status.phase!=Running -n default -o jsonpath='{.items[*].metadata.name}'); do
+      kubectl logs $pod
+    done

@@ -1,0 +1,272 @@
+{
+  "types": [
+    {
+      "cpp": "Itinerary",
+      "rust": "struct Itinerary",
+      "ownership": "&",
+      "notes": "Passed by reference, no ownership taken"
+    },
+    {
+      "cpp": "LogicalEntity",
+      "rust": "struct LogicalEntity",
+      "ownership": "&",
+      "notes": "Passed by reference, no ownership taken"
+    },
+    {
+      "cpp": "SearchRequest",
+      "rust": "struct SearchRequest",
+      "ownership": "&",
+      "notes": "Passed by reference, no ownership taken"
+    },
+    {
+      "cpp": "Fare",
+      "rust": "struct Fare",
+      "ownership": "&",
+      "notes": "Passed by reference, no ownership taken"
+    },
+    {
+      "cpp": "Flight",
+      "rust": "struct Flight",
+      "ownership": "&",
+      "notes": "Passed by reference, no ownership taken"
+    },
+    {
+      "cpp": "std::string",
+      "rust": "String",
+      "ownership": "owned",
+      "notes": "String is owned in Rust"
+    },
+    {
+      "cpp": "const Fare*",
+      "rust": "&Fare",
+      "ownership": "&",
+      "notes": "Pointer to Fare becomes reference in Rust"
+    },
+    {
+      "cpp": "double",
+      "rust": "f64",
+      "ownership": "owned",
+      "notes": "Primitive type, no ownership"
+    },
+    {
+      "cpp": "int",
+      "rust": "i32",
+      "ownership": "owned",
+      "notes": "Primitive type, no ownership"
+    }
+  ],
+  "ownership": [
+    {
+      "cpp_pattern": "const &",
+      "rust_pattern": "&",
+      "rationale": "References in C++ map to references in Rust"
+    },
+    {
+      "cpp_pattern": "raw pointer",
+      "rust_pattern": "&",
+      "rationale": "Raw pointers in C++ map to references in Rust"
+    },
+    {
+      "cpp_pattern": "std::string&",
+      "rust_pattern": "String",
+      "rationale": "String in Rust is owned, so we take ownership"
+    }
+  ],
+  "error_paths": [
+    {
+      "source": "PricingException",
+      "recovery": "throw PricingException",
+      "rust": "Result<T, Error>"
+    },
+    {
+      "source": "Invalid passenger count",
+      "recovery": "log warning and return 0.0",
+      "rust": "Result<T, Error>"
+    },
+    {
+      "source": "Invalid tax rate",
+      "recovery": "log warning and return",
+      "rust": "Result<T, Error>"
+    },
+    {
+      "source": "Invalid booking fee",
+      "recovery": "log warning and return",
+      "rust": "Result<T, Error>"
+    }
+  ],
+  "functions": [
+    {
+      "name": "computePrice",
+      "pre": [
+        "itin, entity, req are valid"
+      ],
+      "post": [
+        "returns total price"
+      ],
+      "side_effects": [
+        "increments pricingCount_"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "computePriceWithDetails",
+      "pre": [
+        "itin, entity, req are valid"
+      ],
+      "post": [
+        "returns total price and fills outDetails"
+      ],
+      "side_effects": [
+        "increments pricingCount_"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "setTaxRate",
+      "pre": [
+        "rate is valid (0.0-1.0)"
+      ],
+      "post": [
+        "taxRate_ is updated"
+      ],
+      "side_effects": [
+        "logs change"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "getTaxRate",
+      "pre": [
+        "none"
+      ],
+      "post": [
+        "returns current taxRate_"
+      ],
+      "side_effects": [
+        "none"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "setBookingFee",
+      "pre": [
+        "fee is valid (>=0)"
+      ],
+      "post": [
+        "bookingFee_ is updated"
+      ],
+      "side_effects": [
+        "logs change"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "getBookingFee",
+      "pre": [
+        "none"
+      ],
+      "post": [
+        "returns current bookingFee_"
+      ],
+      "side_effects": [
+        "none"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "resetToDefaults",
+      "pre": [
+        "none"
+      ],
+      "post": [
+        "taxRate_, bookingFee_, pricingCount_ are reset"
+      ],
+      "side_effects": [
+        "logs reset"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "getPricingCount",
+      "pre": [
+        "none"
+      ],
+      "post": [
+        "returns current pricingCount_"
+      ],
+      "side_effects": [
+        "none"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "resetPricingCount",
+      "pre": [
+        "none"
+      ],
+      "post": [
+        "pricingCount_ is reset"
+      ],
+      "side_effects": [
+        "logs reset"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "findMatchingFare",
+      "pre": [
+        "flight and fares are valid"
+      ],
+      "post": [
+        "returns matching Fare or null"
+      ],
+      "side_effects": [
+        "throws PricingException if no match"
+      ],
+      "complexity": "O(n)"
+    },
+    {
+      "name": "calculateTax",
+      "pre": [
+        "baseFare is valid"
+      ],
+      "post": [
+        "returns tax amount"
+      ],
+      "side_effects": [
+        "none"
+      ],
+      "complexity": "O(1)"
+    },
+    {
+      "name": "applyPassengerMultiplier",
+      "pre": [
+        "basePrice and numPassengers are valid"
+      ],
+      "post": [
+        "returns multiplied price"
+      ],
+      "side_effects": [
+        "logs warning for invalid numPassengers"
+      ],
+      "complexity": "O(1)"
+    }
+  ],
+  "invariants": [
+    "Deterministic pricing: same inputs produce same output",
+    "Linear scaling: price for N passengers = N × (single passenger price)",
+    "Fare availability: every flight in itinerary must have a matching fare",
+    "Non-negative final price: all components are non-negative",
+    "Precision: monetary values are formatted to 2 decimal places"
+  ],
+  "concurrency": {
+    "thread_safety": "Not thread-safe, no synchronization primitives used",
+    "shared_state": [
+      "taxRate_",
+      "bookingFee_",
+      "pricingCount_"
+    ]
+  },
+  "dependencies": [],
+  "raw_spec": "types:\n  - cpp: \"Itinerary\"\n    rust: \"struct Itinerary\"\n    ownership: \"&\"\n    notes: \"Passed by reference, no ownership taken\"\n  - cpp: \"LogicalEntity\"\n    rust: \"struct LogicalEntity\"\n    ownership: \"&\"\n    notes: \"Passed by reference, no ownership taken\"\n  - cpp: \"SearchRequest\"\n    rust: \"struct SearchRequest\"\n    ownership: \"&\"\n    notes: \"Passed by reference, no ownership taken\"\n  - cpp: \"Fare\"\n    rust: \"struct Fare\"\n    ownership: \"&\"\n    notes: \"Passed by reference, no ownership taken\"\n  - cpp: \"Flight\"\n    rust: \"struct Flight\"\n    ownership: \"&\"\n    notes: \"Passed by reference, no ownership taken\"\n  - cpp: \"std::string\"\n    rust: \"String\"\n    ownership: \"owned\"\n    notes: \"String is owned in Rust\"\n  - cpp: \"const Fare*\"\n    rust: \"&Fare\"\n    ownership: \"&\"\n    notes: \"Pointer to Fare becomes reference in Rust\"\n  - cpp: \"double\"\n    rust: \"f64\"\n    ownership: \"owned\"\n    notes: \"Primitive type, no ownership\"\n  - cpp: \"int\"\n    rust: \"i32\"\n    ownership: \"owned\"\n    notes: \"Primitive type, no ownership\"\n\nownership:\n  - cpp_pattern: \"const &\"\n    rust_pattern: \"&\"\n    rationale: \"References in C++ map to references in Rust\"\n  - cpp_pattern: \"raw pointer\"\n    rust_pattern: \"&\"\n    rationale: \"Raw pointers in C++ map to references in Rust\"\n  - cpp_pattern: \"std::string&\"\n    rust_pattern: \"String\"\n    rationale: \"String in Rust is owned, so we take ownership\"\n\nerror_paths:\n  - source: \"PricingException\"\n    recovery: \"throw PricingException\"\n    rust: \"Result<T, Error>\"\n  - source: \"Invalid passenger count\"\n    recovery: \"log warning and return 0.0\"\n    rust: \"Result<T, Error>\"\n  - source: \"Invalid tax rate\"\n    recovery: \"log warning and return\"\n    rust: \"Result<T, Error>\"\n  - source: \"Invalid booking fee\"\n    recovery: \"log warning and return\"\n    rust: \"Result<T, Error>\"\n\nfunctions:\n  - name: \"computePrice\"\n    pre: [\"itin, entity, req are valid\"]\n    post: [\"returns total price\"]\n    side_effects: [\"increments pricingCount_\"]\n    complexity: \"O(n)\"\n  - name: \"computePriceWithDetails\"\n    pre: [\"itin, entity, req are valid\"]\n    post: [\"returns total price and fills outDetails\"]\n    side_effects: [\"increments pricingCount_\"]\n    complexity: \"O(n)\"\n  - name: \"setTaxRate\"\n    pre: [\"rate is valid (0.0-1.0)\"]\n    post: [\"taxRate_ is updated\"]\n    side_effects: [\"logs change\"]\n    complexity: \"O(1)\"\n  - name: \"getTaxRate\"\n    pre: [\"none\"]\n    post: [\"returns current taxRate_\"]\n    side_effects: [\"none\"]\n    complexity: \"O(1)\"\n  - name: \"setBookingFee\"\n    pre: [\"fee is valid (>=0)\"]\n    post: [\"bookingFee_ is updated\"]\n    side_effects: [\"logs change\"]\n    complexity: \"O(1)\"\n  - name: \"getBookingFee\"\n    pre: [\"none\"]\n    post: [\"returns current bookingFee_\"]\n    side_effects: [\"none\"]\n    complexity: \"O(1)\"\n  - name: \"resetToDefaults\"\n    pre: [\"none\"]\n    post: [\"taxRate_, bookingFee_, pricingCount_ are reset\"]\n    side_effects: [\"logs reset\"]\n    complexity: \"O(1)\"\n  - name: \"getPricingCount\"\n    pre: [\"none\"]\n    post: [\"returns current pricingCount_\"]\n    side_effects: [\"none\"]\n    complexity: \"O(1)\"\n  - name: \"resetPricingCount\"\n    pre: [\"none\"]\n    post: [\"pricingCount_ is reset\"]\n    side_effects: [\"logs reset\"]\n    complexity: \"O(1)\"\n  - name: \"findMatchingFare\"\n    pre: [\"flight and fares are valid\"]\n    post: [\"returns matching Fare or null\"]\n    side_effects: [\"throws PricingException if no match\"]\n    complexity: \"O(n)\"\n  - name: \"calculateTax\"\n    pre: [\"baseFare is valid\"]\n    post: [\"returns tax amount\"]\n    side_effects: [\"none\"]\n    complexity: \"O(1)\"\n  - name: \"applyPassengerMultiplier\"\n    pre: [\"basePrice and numPassengers are valid\"]\n    post: [\"returns multiplied price\"]\n    side_effects: [\"logs warning for invalid numPassengers\"]\n    complexity: \"O(1)\"\n\ninvariants:\n  - \"Deterministic pricing: same inputs produce same output\"\n  - \"Linear scaling: price for N passengers = N × (single passenger price)\"\n  - \"Fare availability: every flight in itinerary must have a matching fare\"\n  - \"Non-negative final price: all components are non-negative\"\n  - \"Precision: monetary values are formatted to 2 decimal places\"\n\nconcurrency:\n  thread_safety: \"Not thread-safe, no synchronization primitives used\"\n  shared_state: [\"taxRate_\", \"bookingFee_\", \"pricingCount_\"]"
+}

@@ -1,0 +1,11 @@
+[package]
+name = "kernel_tests"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+kernel_types = { path = "../kernel_types" }
+arp = { path = "../arp" }
+tcp_ipv6 = { path = "../tcp_ipv6" }
