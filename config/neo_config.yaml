@@ -1,0 +1,40 @@
+# ==============================================================================
+# Neo-AI Sovereign Terminal Assistant Configuration for Xavuntu AI & GWAYA v3
+# ==============================================================================
+
+# Local Open-Weights Inference (Ollama)
+model: "gwaya-qwen:14b-t4"           # Qwen 14B Doctoral Reasoner in TPU ReBAR memory
+fallback_model: "gwaya-qwen:3.8-quant" # Fast 3.8B quantized backup
+ollama_url: "http://127.0.0.1:11434"
+stream: true
+temperature: 0.7
+max_context_tokens: 4096
+
+# Zero-Trust Security & Command Approval (GWAYA System 1)
+require_approval: true               # Prompt user [Enter/n] before executing mutating commands
+auto_approve_all: false              # When true, skips human prompt (still screened by S1)
+enable_gwaya_s1: true                # Sub-microsecond adversarial semantic LSM filter
+
+# AttentionMatter Long-Term Memory (LTM)
+enable_redis_ltm: true               # Adaptive context pruning & durable semantic facts
+redis_host: "127.0.0.1"
+redis_port: 6379
+session_id: "xavuntu-neo"
+
+# Machine Communication Protocols (MCP)
+protocols:
+  terminal:
+    enabled: true
+    timeout_sec: 60
+  files:
+    enabled: true
+    max_read_bytes: 1048576          # 1MB max file read
+  analyze:
+    enabled: true
+    collect_proc: true
+    collect_kula: true
+  network:
+    enabled: true
+  security:
+    enabled: true
+    audit_shield: true

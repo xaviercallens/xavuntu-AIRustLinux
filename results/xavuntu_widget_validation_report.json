@@ -1,8 +1,8 @@
 {
   "workflow": "workflowXavuntusWidget.py",
-  "timestamp": 1791040721.7804275,
+  "timestamp": 1791047904.7175157,
   "all_gates_passed": true,
-  "proof_receipt": "PROOF_RECEIPT:XAVUNTU_WIDGET_VOICE_AIOS_20261003_18E1C40EB344E809",
+  "proof_receipt": "PROOF_RECEIPT:XAVUNTU_WIDGET_VOICE_AIOS_NEO_20261003_001B23640EB2D7DC",
   "gates": [
     {
       "gate_name": "Gate 1: UI & GNOME Cyberpunk Aesthetics",
@@ -13,7 +13,7 @@
         "remote_display_ports_verified": true,
         "display_endpoint": "http://34.42.238.129:6080"
       },
-      "duration_ms": 16347.02
+      "duration_ms": 12855.54
     },
     {
       "gate_name": "Gate 2: Modular Card Widget & Kula Telemetry",
@@ -23,9 +23,9 @@
         "hud_compilation": "OK",
         "kula_http_200": true,
         "kula_endpoint": "http://127.0.0.1:27960",
-        "disk_free_gb": 20.82
+        "disk_free_gb": 20.79
       },
-      "duration_ms": 8984.11
+      "duration_ms": 6382.6
     },
     {
       "gate_name": "Gate 3: KAL Multi-Model & Voice Control",
@@ -39,17 +39,17 @@
         "voice_command_speech": "Statut syst\u00e8me Xavuntu nominal. Ar\u00e8ne TPU 16 giga-octets classe T4 active. Huit processeurs op\u00e9rationnels, z\u00e9ro anomalie d\u00e9tect\u00e9e.",
         "sovereign_model_present": true,
         "ollama_models_found": [
-          "gwaya-qwen:14b-t4              e8d514aea2bb    9.0 GB    57 minutes ago       ",
-          "gwaya-qwen:3.8-quant           a302f3e60fa1    3.3 GB    About an hour ago    ",
-          "qwen2.5:3b-instruct-q8_0       cd6aa8b25d7a    3.3 GB    About an hour ago    ",
-          "qwen2.5:14b-instruct-q4_K_M    7cdf5a0187d5    9.0 GB    About an hour ago    ",
-          "gwaya-qwen:7b-t4               e7a5ff69d14c    4.7 GB    4 hours ago          ",
-          "qwen2.5:7b                     845dbda0ea48    4.7 GB    4 hours ago          ",
-          "gwaya-qwen:3.8                 6afb28c2d117    1.9 GB    5 hours ago          ",
-          "qwen2.5:3b                     357c53fb659c    1.9 GB    5 hours ago"
+          "gwaya-qwen:14b-t4              e8d514aea2bb    9.0 GB    3 hours ago    ",
+          "gwaya-qwen:3.8-quant           a302f3e60fa1    3.3 GB    3 hours ago    ",
+          "qwen2.5:3b-instruct-q8_0       cd6aa8b25d7a    3.3 GB    3 hours ago    ",
+          "qwen2.5:14b-instruct-q4_K_M    7cdf5a0187d5    9.0 GB    3 hours ago    ",
+          "gwaya-qwen:7b-t4               e7a5ff69d14c    4.7 GB    6 hours ago    ",
+          "qwen2.5:7b                     845dbda0ea48    4.7 GB    6 hours ago    ",
+          "gwaya-qwen:3.8                 6afb28c2d117    1.9 GB    7 hours ago    ",
+          "qwen2.5:3b                     357c53fb659c    1.9 GB    7 hours ago"
         ]
       },
-      "duration_ms": 7350.4
+      "duration_ms": 6339.15
     },
     {
       "gate_name": "Gate 4: Sovereign Cyber Protection",
@@ -67,7 +67,7 @@
         ],
         "remote_guard_operational": true
       },
-      "duration_ms": 8023.63
+      "duration_ms": 6581.29
     },
     {
       "gate_name": "Gate 5: Thermodynamic Energy & AntiStub Monotonicity",
@@ -78,7 +78,7 @@
         "stub_violations": [],
         "delta_e_joules": -42.8
       },
-      "duration_ms": 3.53
+      "duration_ms": 1.79
     },
     {
       "gate_name": "Gate 6: Redis Long-Term Memory & Context Management",
@@ -92,7 +92,7 @@
         "remote_redis_pong": true,
         "remote_ltm_manager_ok": true
       },
-      "duration_ms": 19964.49
+      "duration_ms": 13507.14
     },
     {
       "gate_name": "Gate 7: RunuX AI Runtime Optimization",
@@ -107,7 +107,7 @@
         "paged_kv_blocks_allocated": 4,
         "remote_runux_cli_ok": true
       },
-      "duration_ms": 7967.03
+      "duration_ms": 6299.01
     },
     {
       "gate_name": "Gate 8: AIOS System Administrator (LinuxOS-AI)",
@@ -125,7 +125,35 @@
         "aios_cli_executable": true,
         "remote_aios_cli_ok": true
       },
-      "duration_ms": 18940.03
+      "duration_ms": 12572.69
+    },
+    {
+      "gate_name": "Gate 9: Neo-AI Sovereign Terminal (Vasco0x4/Neo-AI)",
+      "passed": true,
+      "score": 1.0,
+      "details": {
+        "neo_modules_ok": true,
+        "mcp_protocols_registered": [
+          "terminal",
+          "files",
+          "analyze",
+          "network",
+          "security"
+        ],
+        "protocols_ok": true,
+        "gwaya_system1_adversarial_guard_ok": true,
+        "redis_ltm_active": true,
+        "ollama_local_online": true,
+        "ollama_models": [
+          "all-minilm:latest",
+          "qwen2.5-coder:1.5b"
+        ],
+        "neo_cli_executable": true,
+        "neo_config_present": true,
+        "gwaya_daemon_tool_ok": true,
+        "remote_neo_cli_ok": true
+      },
+      "duration_ms": 8454.4
     }
   ],
   "thermodynamic_delta_e": -42.8

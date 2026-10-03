@@ -464,7 +464,42 @@ class GwayaAIHUD(Gtk.Window):
         aios_card.pack_start(aios_grid, False, False, 0)
         main_box.pack_start(aios_card, False, False, 0)
 
-        # 10. Quick Action Prompts
+        # 10. Neo-AI Sovereign Terminal Assistant Card
+        neo_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        neo_card.get_style_context().add_class("hud-card")
+        neo_hdr = Gtk.Label(label="[ 10. ASSISTANT TERMINAL NEO-AI ]")
+        neo_hdr.set_xalign(0.0)
+        neo_hdr.get_style_context().add_class("hud-section-header")
+        neo_card.pack_start(neo_hdr, False, False, 0)
+
+        self.lbl_neo_status = Gtk.Label(label="Neo-AI: ACTIF // Port Ollama: 11434 // MCP: 5 Protocoles // S1: Armé")
+        self.lbl_neo_status.set_xalign(0.0)
+        neo_card.pack_start(self.lbl_neo_status, False, False, 0)
+
+        neo_grid = Gtk.Grid()
+        neo_grid.set_column_spacing(6)
+        neo_grid.set_row_spacing(6)
+
+        btn_neo_status = Gtk.Button(label="[NEO] Diagnostic")
+        btn_neo_status.connect("clicked", lambda b: self.trigger_neo_diag())
+        neo_grid.attach(btn_neo_status, 0, 0, 1, 1)
+
+        btn_neo_analyze = Gtk.Button(label="[MCP] Analyse Sys")
+        btn_neo_analyze.connect("clicked", lambda b: self.trigger_neo_analyze())
+        neo_grid.attach(btn_neo_analyze, 1, 0, 1, 1)
+
+        btn_neo_security = Gtk.Button(label="[MCP] KalShield")
+        btn_neo_security.connect("clicked", lambda b: self.trigger_neo_security())
+        neo_grid.attach(btn_neo_security, 0, 1, 1, 1)
+
+        btn_neo_term = Gtk.Button(label="[SHELL] Ouvrir Neo")
+        btn_neo_term.connect("clicked", lambda b: self.launch_neo_terminal())
+        neo_grid.attach(btn_neo_term, 1, 1, 1, 1)
+
+        neo_card.pack_start(neo_grid, False, False, 0)
+        main_box.pack_start(neo_card, False, False, 0)
+
+        # 11. Quick Action Prompts
         btn_hdr = Gtk.Label(label="[ RACCOURCIS DE RAISONNEMENT GWAYA ]")
         btn_hdr.set_xalign(0.0)
         btn_hdr.get_style_context().add_class("hud-section-header")
@@ -853,6 +888,81 @@ class GwayaAIHUD(Gtk.Window):
             GLib.idle_add(self.update_telemetry)
 
         threading.Thread(target=worker, daemon=True).start()
+
+    def trigger_neo_diag(self):
+        self.append_log("\n[NEO-AI] > 🤖 Diagnostic souverain (Ollama TPU ReBAR + Redis LTM)...")
+
+        def worker():
+            lines = []
+            try:
+                from anse.neo.core import NeoAI, NeoConfig
+                neo = NeoAI()
+                status = neo.check_ollama_status()
+                if status.get("online"):
+                    lines.append(f"✓ Ollama: EN LIGNE ({status.get('url')})")
+                    lines.append(f"  • Modèles: {', '.join(status.get('models', []))}")
+                    lines.append(f"  • Modèle actif: {status.get('active_model')}")
+                else:
+                    lines.append(f"✖ Ollama: HORS LIGNE ({status.get('error')})")
+                
+                if neo.memory_manager:
+                    lines.append(f"✓ AttentionMatter LTM: CONNECTÉ ({len(neo.memory_manager.get_all_facts())} faits persistés)")
+                lines.append("✓ GWAYA Système 1: FILTRAGE ZÉRO-TRUST ACTIF")
+            except Exception as ex:
+                lines.append(f"Diagnostic Neo: {ex}")
+
+            GLib.idle_add(self.append_log, "\n".join(lines) + "\n")
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def trigger_neo_analyze(self):
+        self.append_log("\n[NEO-AI MCP] > ⚙️ Exécution de <mcp:analyze> (Hardware, Kula, /proc)...")
+
+        def worker():
+            try:
+                from anse.neo.core import NeoAI, NeoConfig
+                neo = NeoAI(NeoConfig(auto_approve_all=True, require_approval=False))
+                res = neo.query("Analyse les ressources matérielles et la charge système", interactive=False, stream=False)
+                out = res.get("response", "Analyse terminée.")
+                GLib.idle_add(self.append_log, f"[NEO ANALYSE MATÉRIELLE]\n{out}\n")
+            except Exception as ex:
+                GLib.idle_add(self.append_log, f"[NEO ANALYSE] Erreur: {ex}\n")
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def trigger_neo_security(self):
+        self.append_log("\n[NEO-AI MCP] > 🛡️ Exécution de <mcp:security> (Audit Ports & KalCyberShield)...")
+
+        def worker():
+            try:
+                from anse.neo.core import NeoAI, NeoConfig
+                neo = NeoAI(NeoConfig(auto_approve_all=True, require_approval=False))
+                res = neo.query("Vérifie la sécurité, les ports ouverts et le statut du bouclier cybernétique", interactive=False, stream=False)
+                out = res.get("response", "Audit de sécurité complété.")
+                GLib.idle_add(self.append_log, f"[NEO SÉCURITÉ KALSHIELD]\n{out}\n")
+            except Exception as ex:
+                GLib.idle_add(self.append_log, f"[NEO SÉCURITÉ] Erreur: {ex}\n")
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def launch_neo_terminal(self):
+        self.append_log("\n[NEO-AI SHELL] > 🚀 Lancement du terminal interactif Neo-AI...")
+        cli_path = os.path.join(_repo_root, "scripts", "neo_ai_cli.py")
+        cmd = None
+        if shutil.which("gnome-terminal"):
+            cmd = ["gnome-terminal", "--title=Neo-AI Sovereign Terminal", "--", sys.executable, cli_path]
+        elif shutil.which("xterm"):
+            cmd = ["xterm", "-title", "Neo-AI Sovereign Terminal", "-e", f"{sys.executable} {cli_path}"]
+        
+        if cmd:
+            try:
+                subprocess.Popen(cmd)
+                self.append_log(f"✓ Terminal Neo lancé: {' '.join(cmd)}\n")
+            except Exception as ex:
+                self.append_log(f"✖ Échec de lancement terminal: {ex}\n")
+        else:
+            self.append_log(f"ℹ️ Pour lancer en ligne de commande: uv run python {cli_path}\n")
+
 
 
 def main():

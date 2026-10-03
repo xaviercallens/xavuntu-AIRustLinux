@@ -388,6 +388,18 @@ class GwayaMCPServer:
                 "description": "Get full operational status of GWAYA v3 and the Ollama server on Xavuntu.",
                 "inputSchema": {"type": "object", "properties": {}},
             },
+            {
+                "name": "gwaya_neo_query",
+                "description": "Execute sovereign terminal query through Neo-AI with local open weights, GWAYA S1 screening, and Redis LTM.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "User prompt or command for Neo-AI"},
+                        "auto_approve": {"type": "boolean", "description": "Auto-approve safe commands without prompt"},
+                    },
+                    "required": ["query"],
+                },
+            },
         ]
 
     def handle_call_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
@@ -413,6 +425,15 @@ class GwayaMCPServer:
                 "models_available": self.engine.sys2.list_models(),
                 "hardware_guard": self.engine.guard.read_guard_status().to_dict(),
             }
+        elif tool_name == "gwaya_neo_query":
+            query = arguments.get("query", "")
+            auto_approve = arguments.get("auto_approve", True)
+            try:
+                from anse.neo.core import NeoAI, NeoConfig
+                neo = NeoAI(NeoConfig(auto_approve_all=auto_approve, require_approval=not auto_approve))
+                return neo.query(query, interactive=False, stream=False)
+            except Exception as e:
+                return {"error": str(e), "query": query}
         else:
             return {"error": f"Unknown tool: {tool_name}"}
 
@@ -485,6 +506,15 @@ class GwayaHTTPHandler(BaseHTTPRequestHandler):
                 data = json.loads(body)
                 query = data.get("query", "")
                 res = self.mcp_server.handle_call_tool("gwaya_eval_intent", {"query": query})
+                self._send_json(200, res)
+            except Exception as e:
+                self._send_json(400, {"error": str(e)})
+        elif self.path in ["/api/neo/query", "/neo/query"]:
+            try:
+                data = json.loads(body)
+                query = data.get("query", "")
+                auto_approve = data.get("auto_approve", True)
+                res = self.mcp_server.handle_call_tool("gwaya_neo_query", {"query": query, "auto_approve": auto_approve})
                 self._send_json(200, res)
             except Exception as e:
                 self._send_json(400, {"error": str(e)})
