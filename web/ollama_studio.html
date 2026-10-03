@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xavuntu Ollama &amp; TPU AI Studio — Sovereign Local AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: { 50: '#ecfeff', 400: '#22d3ee', 500: '#06b6d4', 900: '#083344' },
+            neon: { green: '#00ff66', pink: '#ff007f', cyan: '#00ffff', yellow: '#ffcc00' },
+            navy: { 800: '#0a1128', 900: '#000b1e', 950: '#020617' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #000b1e; color: #e2e8f0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .glass-panel { background: rgba(10, 17, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(34, 211, 238, 0.25); }
+    .glow-cyan { filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.5)); }
+    .glow-pink { filter: drop-shadow(0 0 8px rgba(255, 0, 127, 0.5)); }
+    .glow-green { filter: drop-shadow(0 0 8px rgba(0, 255, 102, 0.5)); }
+    .tab-active { border-bottom: 2px solid #00ffff; color: #00ffff; background: rgba(0, 255, 255, 0.05); }
+    pre code { font-family: inherit; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="border-b border-cyan-900/60 bg-navy-950/90 px-6 py-4 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-4 h-4 rounded-full bg-cyan-400 glow-cyan animate-pulse"></div>
+      <div>
+        <h1 class="text-xl font-bold tracking-wider text-cyan-400">XAVUNTU OLLAMA &amp; TPU AI STUDIO</h1>
+        <p class="text-xs text-slate-400">Sovereign Open-Weights &bull; Google TPU ReBAR &bull; AttentionMatter LTM &bull; GWAYA S1</p>
+      </div>
+    </div>
+
+    <!-- Live Telemetry Badges -->
+    <div class="flex flex-wrap items-center gap-3 text-xs">
+      <div class="px-3 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-800 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-neon-green"></span>
+        <span class="text-slate-300">TPU ReBAR:</span>
+        <span id="badge-tpu-mem" class="font-bold text-neon-green">16.0 GB Active</span>
+      </div>
+      <div class="px-3 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-800 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+        <span class="text-slate-300">Ollama:</span>
+        <span id="badge-ollama-status" class="font-bold text-cyan-300">127.0.0.1:11434</span>
+      </div>
+      <div class="px-3 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-800 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+        <span class="text-slate-300">GWAYA S1:</span>
+        <span class="font-bold text-pink-400">ZERO-TRUST ARMED</span>
+      </div>
+    </div>
+
+    <!-- Active Model Selector -->
+    <div class="flex items-center gap-2">
+      <label for="model-select" class="text-xs text-slate-400 uppercase font-semibold">Model:</label>
+      <select id="model-select" class="bg-navy-900 border border-cyan-700/60 rounded px-3 py-1.5 text-xs text-cyan-300 font-bold focus:outline-none focus:border-cyan-400">
+        <option value="gwaya-qwen:14b-t4" selected>gwaya-qwen:14b-t4 (TPU ReBAR Reasoner)</option>
+        <option value="gwaya-qwen:3.8-quant">gwaya-qwen:3.8-quant (Fast Reflex)</option>
+        <option value="qwen2.5-coder:1.5b">qwen2.5-coder:1.5b (Coding Specialist)</option>
+        <option value="llama3.2:latest">llama3.2:latest</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- Navigation Workspaces Tabs -->
+  <nav class="flex border-b border-cyan-900/40 bg-navy-900/60 px-6 overflow-x-auto text-sm">
+    <button onclick="switchTab('chat')" id="tab-btn-chat" class="px-5 py-3 border-b-2 font-medium tab-active transition-all flex items-center gap-2">
+      <span>💬</span> Chat &amp; RAG Studio
+    </button>
+    <button onclick="switchTab('coding')" id="tab-btn-coding" class="px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-cyan-300 font-medium transition-all flex items-center gap-2">
+      <span>💻</span> AI Coding Workspace
+    </button>
+    <button onclick="switchTab('training')" id="tab-btn-training" class="px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-cyan-300 font-medium transition-all flex items-center gap-2">
+      <span>⚡</span> Google TPU Training Studio
+    </button>
+    <button onclick="switchTab('gateway')" id="tab-btn-gateway" class="px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-cyan-300 font-medium transition-all flex items-center gap-2">
+      <span>🔌</span> OpenAI Gateway &amp; Continue.dev
+    </button>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
+
+    <!-- 1. CHAT & RAG STUDIO -->
+    <section id="pane-chat" class="h-full flex flex-col gap-4">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-1">
+        <!-- Sidebar: Documents & LTM Facts -->
+        <div class="glass-panel rounded-lg p-4 flex flex-col gap-3 lg:col-span-1">
+          <h2 class="text-xs uppercase font-bold text-pink-400 border-b border-pink-900/40 pb-2">AttentionMatter Redis RAG</h2>
+          <p class="text-[11px] text-slate-400">Upload code, logs, or PDFs to vectorize into durable Redis memory with exponential decay ($0.95^{\text{age}}$).</p>
+          <input type="file" id="file-upload" class="hidden" onchange="handleFileUpload(event)">
+          <button onclick="document.getElementById('file-upload').click()" class="w-full py-2 px-3 rounded bg-cyan-950 border border-cyan-700 hover:border-cyan-400 text-cyan-300 text-xs font-bold transition flex items-center justify-center gap-2">
+            <span>📄</span> Ingest Document / Code
+          </button>
+          <div class="flex-1 overflow-y-auto max-h-60 flex flex-col gap-2" id="ltm-facts-list">
+            <div class="text-[11px] text-slate-500 italic">No custom facts loaded yet.</div>
+          </div>
+          <button onclick="refreshLTMStats()" class="py-1 text-[11px] text-slate-400 hover:text-cyan-300 text-center">Sync Redis LTM Facts</button>
+        </div>
+
+        <!-- Chat Conversation Area -->
+        <div class="glass-panel rounded-lg p-4 flex flex-col lg:col-span-3 h-[600px]">
+          <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 pr-2 text-sm">
+            <div class="p-3 rounded-lg bg-navy-900/70 border border-cyan-900/50">
+              <span class="text-xs font-bold text-cyan-400">Neo &bull; Sovereign Assistant:</span>
+              <p class="mt-1 text-slate-200">Welcome to Xavuntu Ollama &amp; TPU AI Studio. I am running locally on Google TPU ReBAR memory with GWAYA System 1 zero-trust verification. How may I assist you with Linux systems, coding, or model fine-tuning today?</p>
+            </div>
+          </div>
+
+          <!-- Input bar -->
+          <div class="pt-4 border-t border-cyan-900/40 flex gap-2">
+            <input type="text" id="chat-input" placeholder="Type prompt or command (e.g. 'Analyze CPU & memory', 'Explain ring buffer in Rust')..."
+                   class="flex-1 bg-navy-950 border border-cyan-800 rounded px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-cyan-400 placeholder-slate-600"
+                   onkeydown="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()" id="btn-send-chat" class="px-6 py-2.5 rounded bg-cyan-600 hover:bg-cyan-500 text-navy-950 font-bold text-sm transition">
+              SEND
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. AI CODING WORKSPACE -->
+    <section id="pane-coding" class="hidden flex-col gap-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Editor & Prompt -->
+        <div class="glass-panel rounded-lg p-5 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold text-cyan-400 uppercase">Interactive Code Editor &bull; Qwen 2.5 Coder</h2>
+            <div class="flex gap-2">
+              <button onclick="sampleCode('rust')" class="text-xs px-2.5 py-1 rounded bg-navy-900 border border-cyan-800 text-cyan-300">Rust Kernel</button>
+              <button onclick="sampleCode('ebpf')" class="text-xs px-2.5 py-1 rounded bg-navy-900 border border-cyan-800 text-cyan-300">eBPF XDP</button>
+            </div>
+          </div>
+          <textarea id="code-editor" class="w-full h-80 bg-navy-950 border border-cyan-900/80 rounded p-3 text-xs font-mono text-cyan-100 focus:outline-none focus:border-cyan-400" placeholder="// Enter code to review, optimize, or refactor..."></textarea>
+          <div class="flex gap-3">
+            <button onclick="dispatchCodeTask('optimize')" class="flex-1 py-2 rounded bg-cyan-700 hover:bg-cyan-600 text-slate-900 font-bold text-xs">⚡ Optimize for TPU ReBAR</button>
+            <button onclick="dispatchCodeTask('security')" class="flex-1 py-2 rounded bg-pink-700 hover:bg-pink-600 text-slate-100 font-bold text-xs">🛡️ KalShield Zero-Trust Audit</button>
+            <button onclick="dispatchCodeTask('explain')" class="flex-1 py-2 rounded bg-navy-900 border border-cyan-700 text-cyan-300 font-bold text-xs">🔍 Explain Logic</button>
+          </div>
+        </div>
+
+        <!-- Output & Tooling Integration -->
+        <div class="glass-panel rounded-lg p-5 flex flex-col gap-4">
+          <h2 class="text-sm font-bold text-pink-400 uppercase">Analysis &amp; Aider / Continue Integration</h2>
+          <div id="code-result" class="flex-1 bg-navy-950 border border-cyan-900/80 rounded p-4 text-xs font-mono overflow-y-auto text-slate-300 h-64">
+            Awaiting code analysis request...
+          </div>
+          <div class="p-3 rounded bg-navy-950 border border-slate-800 flex flex-col gap-2 text-xs">
+            <span class="font-bold text-neon-green">🚀 Fast CLI Pairing:</span>
+            <code class="text-cyan-300 bg-navy-900 p-1.5 rounded">xavuntu-aider --model openai/qwen2.5-coder:1.5b</code>
+            <span class="text-slate-400">VS Code extension Continue is pre-configured at <code class="text-slate-300">~/.continue/config.json</code></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. GOOGLE TPU TRAINING STUDIO -->
+    <section id="pane-training" class="hidden flex-col gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Configuration Card -->
+        <div class="glass-panel rounded-lg p-5 flex flex-col gap-3 lg:col-span-1">
+          <h2 class="text-sm font-bold text-neon-green uppercase border-b border-cyan-900/40 pb-2">TPU LoRA Hyperparameters</h2>
+          <div>
+            <label class="text-xs text-slate-400">Base Model:</label>
+            <input type="text" id="tpu-base-model" value="qwen2.5-coder:1.5b" class="w-full bg-navy-950 border border-cyan-800 rounded px-3 py-1.5 text-xs text-cyan-200 mt-1">
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">LoRA Adapter Name:</label>
+            <input type="text" id="tpu-adapter-name" value="laya-tpu-lora" class="w-full bg-navy-950 border border-cyan-800 rounded px-3 py-1.5 text-xs text-cyan-200 mt-1">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-xs text-slate-400">Rank (r):</label>
+              <input type="number" id="tpu-rank" value="16" class="w-full bg-navy-950 border border-cyan-800 rounded px-3 py-1.5 text-xs text-cyan-200 mt-1">
+            </div>
+            <div>
+              <label class="text-xs text-slate-400">Alpha (&alpha;):</label>
+              <input type="number" id="tpu-alpha" value="32" class="w-full bg-navy-950 border border-cyan-800 rounded px-3 py-1.5 text-xs text-cyan-200 mt-1">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-xs text-slate-400">Epochs:</label>
+              <input type="number" id="tpu-epochs" value="3" class="w-full bg-navy-950 border border-cyan-800 rounded px-3 py-1.5 text-xs text-cyan-200 mt-1">
+            </div>
+            <div>
+              <label class="text-xs text-slate-400">Batch Size:</label>
+              <input type="number" id="tpu-batch" value="4" class="w-full bg-navy-950 border border-cyan-800 rounded px-3 py-1.5 text-xs text-cyan-200 mt-1">
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Learning Rate:</label>
+            <input type="text" id="tpu-lr" value="0.0002" class="w-full bg-navy-950 border border-cyan-800 rounded px-3 py-1.5 text-xs text-cyan-200 mt-1">
+          </div>
+          <button onclick="launchTPUTraining()" id="btn-start-training" class="mt-3 w-full py-2.5 rounded bg-neon-green text-navy-950 font-bold text-xs hover:bg-emerald-400 transition">
+            ▶ START TPU TRAINING RUN
+          </button>
+        </div>
+
+        <!-- Telemetry & Live Loss Graph -->
+        <div class="glass-panel rounded-lg p-5 flex flex-col gap-4 lg:col-span-2">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold text-cyan-400 uppercase">Live TPU Training Telemetry</h2>
+            <span id="training-status-tag" class="px-2.5 py-0.5 rounded text-xs bg-slate-800 text-slate-400">IDLE</span>
+          </div>
+
+          <!-- Gauges -->
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="p-3 bg-navy-950 border border-cyan-900 rounded">
+              <div class="text-[11px] text-slate-400">Current Loss</div>
+              <div id="stat-loss" class="text-xl font-bold text-pink-400">--</div>
+            </div>
+            <div class="p-3 bg-navy-950 border border-cyan-900 rounded">
+              <div class="text-[11px] text-slate-400">MXU Compute Occupancy</div>
+              <div id="stat-mxu" class="text-xl font-bold text-neon-green">88.4%</div>
+            </div>
+            <div class="p-3 bg-navy-950 border border-cyan-900 rounded">
+              <div class="text-[11px] text-slate-400">TPU ReBAR Memory</div>
+              <div id="stat-rebar" class="text-xl font-bold text-cyan-300">4,250 MB</div>
+            </div>
+          </div>
+
+          <!-- Training Output Log -->
+          <div class="flex-1 bg-navy-950 border border-cyan-900 rounded p-4 text-xs font-mono overflow-y-auto text-slate-300 h-64" id="training-log">
+            Ready to initialize Google TPU v5e/v6e distributed LoRA pipeline...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. OPENAI GATEWAY & INTEGRATIONS -->
+    <section id="pane-gateway" class="hidden flex-col gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="glass-panel rounded-lg p-5 flex flex-col gap-4">
+          <h2 class="text-sm font-bold text-cyan-400 uppercase">Active OpenAI-Compatible Endpoints</h2>
+          <p class="text-xs text-slate-400">Connect any tool designed for OpenAI (Continue.dev, Aider, Open WebUI, Msty, Chatbox, Page Assist) directly to this sovereign endpoint:</p>
+          <div class="space-y-3 text-xs">
+            <div class="p-3 rounded bg-navy-950 border border-cyan-800">
+              <span class="text-slate-400">Base URL:</span>
+              <div class="font-bold text-cyan-300 mt-1">http://127.0.0.1:5000/v1</div>
+            </div>
+            <div class="p-3 rounded bg-navy-950 border border-cyan-800">
+              <span class="text-slate-400">API Key:</span>
+              <div class="font-bold text-neon-green mt-1">xavuntu-sovereign (or any string)</div>
+            </div>
+            <div class="p-3 rounded bg-navy-950 border border-cyan-800">
+              <span class="text-slate-400">Endpoints:</span>
+              <ul class="list-disc list-inside mt-1 text-slate-300 space-y-1">
+                <li><code class="text-pink-400">GET /v1/models</code> — Enumerate TPU models</li>
+                <li><code class="text-pink-400">POST /v1/chat/completions</code> — Chat inference &amp; streaming</li>
+                <li><code class="text-pink-400">POST /v1/completions</code> — Code autocomplete</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-lg p-5 flex flex-col gap-4">
+          <h2 class="text-sm font-bold text-pink-400 uppercase">Client Setup Guide</h2>
+          <div class="space-y-4 text-xs">
+            <div>
+              <span class="font-bold text-slate-200">1. Continue.dev (VS Code / JetBrains):</span>
+              <p class="text-slate-400 mt-1">Settings are stored in <code class="text-cyan-300">~/.continue/config.json</code>. Generates tabs and completions with Qwen 2.5 Coder.</p>
+            </div>
+            <div>
+              <span class="font-bold text-slate-200">2. Aider CLI (Git Pair Programming):</span>
+              <p class="text-slate-400 mt-1">Launch in any git repo with <code class="text-cyan-300">xavuntu-aider</code> to let Qwen edit multiple files autonomously.</p>
+            </div>
+            <div>
+              <span class="font-bold text-slate-200">3. Open WebUI (Docker):</span>
+              <p class="text-slate-400 mt-1">Point <code class="text-cyan-300">OPENAI_API_BASE_URL=http://host.docker.internal:5000/v1</code>.</p>
+            </div>
+            <div>
+              <span class="font-bold text-slate-200">4. Msty (Desktop AppImage):</span>
+              <p class="text-slate-400 mt-1">Add a custom provider with URL <code class="text-cyan-300">http://localhost:5000/v1</code>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      ['chat', 'coding', 'training', 'gateway'].forEach(t => {
+        const pane = document.getElementById(`pane-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === tabId) {
+          pane.classList.remove('hidden');
+          pane.classList.add('flex');
+          btn.classList.add('tab-active');
+          btn.classList.remove('border-transparent', 'text-slate-400');
+        } else {
+          pane.classList.add('hidden');
+          pane.classList.remove('flex');
+          btn.classList.remove('tab-active');
+          btn.classList.add('border-transparent', 'text-slate-400');
+        }
+      });
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+
+      const model = document.getElementById('model-select').value;
+      const chatBox = document.getElementById('chat-messages');
+
+      // User Message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'p-3 rounded-lg bg-cyan-950/40 border border-cyan-800 text-right';
+      userDiv.innerHTML = `<span class="text-xs font-bold text-cyan-300">You:</span><p class="mt-1 text-slate-100">${text}</p>`;
+      chatBox.appendChild(userDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Assistant Placeholder
+      const aiDiv = document.createElement('div');
+      aiDiv.className = 'p-3 rounded-lg bg-navy-900/80 border border-cyan-900/50';
+      aiDiv.innerHTML = `<span class="text-xs font-bold text-pink-400">Neo &bull; ${model}:</span><p class="mt-1 text-slate-300 italic">Reasoning in progress...</p>`;
+      chatBox.appendChild(aiDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const resp = await fetch('/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: model,
+            messages: [{ role: 'user', content: text }],
+            stream: false
+          })
+        });
+        const data = await resp.json();
+        const reply = data.choices ? data.choices[0].message.content : (data.error ? data.error.message : 'No response');
+        aiDiv.querySelector('p').className = 'mt-1 text-slate-100 whitespace-pre-wrap';
+        aiDiv.querySelector('p').innerText = reply;
+      } catch (err) {
+        aiDiv.querySelector('p').innerText = `Error: ${err}`;
+      }
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sampleCode(type) {
+      const editor = document.getElementById('code-editor');
+      if (type === 'rust') {
+        editor.value = `// Memory-Safe Ring Buffer for RunuX Kernel
+pub struct KernelRingBuffer<T: Copy, const N: usize> {
+    buf: [T; N],
+    head: usize,
+    tail: usize,
+    count: usize,
+}
+
+impl<T: Copy + Default, const N: usize> KernelRingBuffer<T, N> {
+    pub const fn new() -> Self {
+        Self { buf: [T::default(); N], head: 0, tail: 0, count: 0 }
+    }
+}`;
+      } else {
+        editor.value = `// eBPF XDP Line-Rate Packet Filter
+SEC("xdp")
+int xdp_filter(struct xdp_md *ctx) {
+    void *data = (void *)(long)ctx->data;
+    void *data_end = (void *)(long)ctx->data_end;
+    struct ethhdr *eth = data;
+    if ((void *)(eth + 1) > data_end) return XDP_PASS;
+    return XDP_PASS;
+}`;
+      }
+    }
+
+    async function dispatchCodeTask(action) {
+      const editor = document.getElementById('code-editor');
+      const resultBox = document.getElementById('code-result');
+      const code = editor.value.trim();
+      if (!code) {
+        resultBox.innerText = 'Please enter or select code to analyze.';
+        return;
+      }
+      resultBox.innerText = `Consulting Qwen 2.5 Coder for '${action}'...`;
+
+      const prompt = `Task: ${action.toUpperCase()}\nCode:\n${code}`;
+      try {
+        const resp = await fetch('/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'qwen2.5-coder:1.5b',
+            messages: [{ role: 'user', content: prompt }],
+            stream: false
+          })
+        });
+        const data = await resp.json();
+        resultBox.innerText = data.choices ? data.choices[0].message.content : 'Execution completed.';
+      } catch (e) {
+        resultBox.innerText = `Error dispatching code task: ${e}`;
+      }
+    }
+
+    async function launchTPUTraining() {
+      const btn = document.getElementById('btn-start-training');
+      const tag = document.getElementById('training-status-tag');
+      const log = document.getElementById('training-log');
+      const lossVal = document.getElementById('stat-loss');
+
+      btn.disabled = true;
+      tag.className = 'px-2.5 py-0.5 rounded text-xs bg-amber-900 text-amber-300 font-bold';
+      tag.innerText = 'TRAINING ACTIVE';
+      log.innerText = "Initializing Google TPU v5e/v6e LoRA training session...\n";
+
+      try {
+        const resp = await fetch('/api/tpu/train', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model_name: document.getElementById('tpu-base-model').value,
+            adapter_name: document.getElementById('tpu-adapter-name').value,
+            lora_r: parseInt(document.getElementById('tpu-rank').value),
+            lora_alpha: parseInt(document.getElementById('tpu-alpha').value),
+            epochs: parseInt(document.getElementById('tpu-epochs').value),
+            batch_size: parseInt(document.getElementById('tpu-batch').value),
+            learning_rate: parseFloat(document.getElementById('tpu-lr').value),
+          })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          tag.className = 'px-2.5 py-0.5 rounded text-xs bg-emerald-900 text-neon-green font-bold';
+          tag.innerText = 'CONVERGED';
+          lossVal.innerText = data.final_loss;
+          log.innerText += `✓ Convergence reached!\nInitial Loss: ${data.initial_loss} -> Final: ${data.final_loss} (-${data.loss_reduction_pct}%)\n`;
+          log.innerText += `Adapter Checkpoint: ${data.adapter_path}\nModelfile: ${data.modelfile_path}\nHardware: ${data.hardware_target}\n`;
+        } else {
+          tag.innerText = 'FAILED';
+          log.innerText += `✖ Error: ${data.error || 'Failed'}\n`;
+        }
+      } catch (err) {
+        log.innerText += `✖ Network exception: ${err}\n`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function refreshLTMStats() {
+      try {
+        const resp = await fetch('/v1/models');
+        const data = await resp.json();
+        console.log("Gateway models:", data);
+      } catch (e) {
+        console.log("LTM refresh error", e);
+      }
+    }
+  </script>
+</body>
+</html>

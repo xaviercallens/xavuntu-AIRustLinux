@@ -5,6 +5,9 @@
 [![Base OS](https://img.shields.io/badge/Base-Ubuntu%2024.04%20LTS%20Noble-E95420?logo=ubuntu)](https://ubuntu.com)
 [![Hardware Acceleration](https://img.shields.io/badge/Hardware-Google%20TPU%20v5e%2Fv6e%20%7C%20Xeon%20AVX--512-blue?logo=google-cloud)](https://cloud.google.com/tpu)
 [![Doctoral Reasoner](https://img.shields.io/badge/Cognitive%20AI-Qwen%2014B%20%7C%203.8%20Quant-8A2BE2)](https://ollama.com)
+[![Ollama Studio](https://img.shields.io/badge/Web%20Studio-Ollama%20Cyberpunk%20UI-ff007f?logo=html5)](web/ollama_studio.html)
+[![TPU Training](https://img.shields.io/badge/Training-Google%20TPU%20LoRA-4285F4?logo=google-cloud)](anse/training/tpu_trainer.py)
+[![AI Coding](https://img.shields.io/badge/AI%20Coding-Continue.dev%20%2B%20Aider-00ffcc?logo=visual-studio-code)](scripts/setup_ai_coding.py)
 [![Memory Architecture](https://img.shields.io/badge/Memory-AttentionMatter%20%2B%20Redis%20LTM-DC382D?logo=redis)](https://redis.io)
 [![Runtime Optimizer](https://img.shields.io/badge/Optimization-PolarQuant%203--bit%20(8.0x%20Gain)-00C7B7)](https://github.com/xaviercallens/runux-ai-runtime)
 [![SysAdmin AIOS](https://img.shields.io/badge/SysAdmin-AIOS%20(LinuxOS--AI%20Integrated)-00ff66?logo=gnubash)](scripts/aios_cli.py)
@@ -25,7 +28,7 @@ For over three decades, the Linux kernel and Unix philosophy have formed the bed
 - **System administration** has remained trapped in cryptic command-line incantations and fragile package scripting.
 - **AI terminal assistants** too often rely on insecure cloud APIs, transmit system data externally, or execute unchecked commands blindly.
 
-**Xavuntu is our collective answer.** Built from the ground up by combining a bare-metal, memory-safe Rust kernel (**RunuX**) with the **Ubuntu 24.04 LTS (Noble Numbat)** userspace, a high-performance **RunuX AI Runtime**, persistent **Redis Long-Term Memory (AttentionMatter)**, an autonomous **AIOps autopilot**, the integrated **LinuxOS-AI (`aios`) System Administrator**, the **Neo-AI Sovereign Terminal Assistant**, and a **GNOME Flashback Cyberpunk Neon Desktop**, Xavuntu is designed for developers, systems researchers, AI engineers, and Linux enthusiasts who believe computing should be **autonomous, memory-safe, sovereign, zero-trust, and stunning to look at**.
+**Xavuntu is our collective answer.** Built from the ground up by combining a bare-metal, memory-safe Rust kernel (**RunuX**) with the **Ubuntu 24.04 LTS (Noble Numbat)** userspace, a high-performance **RunuX AI Runtime**, persistent **Redis Long-Term Memory (AttentionMatter)**, an autonomous **AIOps autopilot**, the integrated **LinuxOS-AI (`aios`) System Administrator**, the **Neo-AI Sovereign Terminal Assistant**, an **OpenAI-Compatible Local Gateway**, **Google TPU LoRA Model Training Studio**, and a **GNOME Flashback Cyberpunk Neon Desktop**, Xavuntu is designed for developers, systems researchers, AI engineers, and Linux enthusiasts who believe computing should be **autonomous, memory-safe, sovereign, zero-trust, and stunning to look at**.
 
 We invite kernel hackers, distro-hoppers, Rustaceans, and open-source AI builders worldwide to test, benchmark, hack on, and contribute to Xavuntu!
 
@@ -35,9 +38,11 @@ We invite kernel hackers, distro-hoppers, Rustaceans, and open-source AI builder
 
 Xavuntu provides a native **GNOME Flashback (Metacity)** desktop styled in glowing **Cyberpunk Neon** (`materia-cyberpunk-neon` theme with deep navy `#000b1e`, cyan `#0abdc6`, and red emergency accents), backed by the sovereign **KAL 9000** cockpit wallpaper.
 
-The centerpiece of the user experience is the **GWAYA AI & Cyber HUD**, an interactive, modular card-based widget connecting kernel telemetry, AI reasoning, memory, cyber protection, the AIOS system administrator, and the Neo-AI sovereign terminal assistant into one unified control deck.
+The centerpiece of the user experience is the **GWAYA AI & Cyber HUD**, an interactive, modular card-based widget connecting kernel telemetry, AI reasoning, memory, cyber protection, the AIOS system administrator, the Neo-AI sovereign terminal assistant, and Ollama Studio into one unified control deck.
 
-![Xavuntu GNOME Cyberpunk Desktop & AIOS / Neo-AI HUD](docs/assets/xavuntu_neo_hud.png)
+![Xavuntu GNOME Cyberpunk Desktop with Ollama Studio & GWAYA HUD](docs/assets/xavuntu_studio_hud.png)
+*Desktop HUD active on GNOME Flashback with Neo-AI Sovereign Terminal and Ollama AI Studio on Google Cloud Workstation.*
+*(Hosted on GCP SocrateAI Data Lake: [xavuntu_studio_hud.png](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu_studio_hud.png))*
 
 ### Key HUD Modules:
 1. **[ 1. Cognitive AI & Modèle Souverain ]**: Switch on-the-fly between **Qwen 14B Doctoral Reasoner** (`gwaya-qwen:14b-t4`) and **Qwen 3.8 Quant** (`gwaya-qwen:3.8-quant`) with active Ollama local execution and dual-process System 1 (Laya-LoRA) / System 2 (Tree-of-Thoughts / MCTS) reasoning.
@@ -133,6 +138,39 @@ neo -m gwaya-qwen:14b-t4 -q "Analyse les goulots d'étranglement de la mémoire"
 
 ---
 
+## 🎨 Ollama Web Studio, Google TPU Model Training & AI Coding Suite
+
+Xavuntu incorporates a complete, market-leading sovereign AI developer ecosystem inspired by the best patterns of Open WebUI, Msty, LM Studio, Continue.dev, and Aider — purpose-built for Linux, local Qwen open-weights, and Google Cloud TPU hardware:
+
+![Ollama Cyberpunk Web Studio & TPU Trainer](docs/assets/xavuntu_studio_hud.png)
+*(Direct Data Lake URL: [https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu_studio_hud.png](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu_studio_hud.png))*
+
+### 1. 🌌 Ollama Cyberpunk Web Studio (`web/ollama_studio.html`)
+- **Multi-Workspace Hub**: Seamless switching between **💬 Chat & RAG Studio**, **💻 AI Coding & Autocomplete**, **⚡ Google TPU LoRA Trainer**, and **🔌 OpenAI Gateway Settings**.
+- **Context Injection**: Live sliding window with Redis Long-Term Memory (AttentionMatter $0.95^{\text{age}}$ decay) integration.
+- **Cyberpunk UI**: Responsive dark theme (`#030712`, `#00ffcc`, `#ff007f`) with real-time token/s velocity and VRAM/TPU ReBAR dials.
+- Accessible directly on `http://127.0.0.1:5000/studio` or via HUD button **`[WEB] Studio Ollama`**.
+
+### 2. 🔌 Zero-Friction OpenAI-Compatible Gateway (`anse/gateway/openai_proxy.py`)
+- Standardized API endpoints mapped directly to local open-weights Ollama instances:
+  - `GET  /v1/models` — Discovers available local Qwen & GWAYA checkpoints.
+  - `POST /v1/chat/completions` — Streaming & batch conversational completions with GWAYA System 1 zero-trust safety pre-screening.
+  - `POST /v1/completions` — Ultra-low latency code completion (Fill-in-the-Middle) for IDE extensions.
+- Allows instant plug-and-play connection with **Open WebUI**, **Msty**, **LibreChat**, **Continue.dev**, or **Aider** without modifying third-party code.
+
+### 3. ⚡ Autonomous Google TPU LoRA Model Training (`anse/training/tpu_trainer.py`)
+- Hardware-native PyTorch-XLA / JAX/Flax orchestration for Google Cloud **TPU v4, v5e, and v6e** pods.
+- Automatic 16.0 GB ReBAR Unified Arena memory allocation and bfloat16 mixed precision.
+- LoRA adapter targeting (`q_proj`, `v_proj`, `k_proj`, `o_proj`) with rank $r=16$, $\alpha=32$, and cosine learning rate schedules.
+- Automatic Ollama `Modelfile` generation with `ADAPTER` directives for 1-click deployment into local Ollama.
+
+### 4. 💻 AI Coding with Continue.dev & Aider CLI (`scripts/setup_ai_coding.py`)
+- Automated single-command configuration: `python3 scripts/setup_ai_coding.py --all`
+- Configures **Continue.dev** in VS Code (`~/.continue/config.json`) targeting `gwaya-qwen:14b-t4` for chat and `qwen2.5-coder:1.5b` for tab autocomplete.
+- Generates `/usr/local/bin/xavuntu-aider` CLI wrapper pairing terminal coding with local sovereign Qwen models.
+
+---
+
 ## 🤖 LinuxOS-AI Integration: The Complete 4-Phase AI Operating System
 
 We have analyzed, leveraged, and integrated the concepts of [LinuxOS-AI](https://github.com/ANVEAI/linuxos-ai) directly into Xavuntu AI. While LinuxOS-AI laid out an ambitious 4-phase vision for an AI-native OS, Xavuntu now realizes all four phases in a single, cohesive, sovereign stack:
@@ -207,7 +245,8 @@ All verified release artifacts are hosted publicly on Google Cloud Storage:
 - **Manifest JSON**: [xavuntu_image_manifest.json](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu_image_manifest.json)
 - **Hybrid ISO**: [xavuntu-noble-v13-rust-kernel.iso](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu-noble-v13-rust-kernel.iso)
 - **Raw Disk Archive**: [xavuntu-noble-v13-rust-kernel-disk.raw.tar.gz](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu-noble-v13-rust-kernel-disk.raw.tar.gz)
-- **Desktop Screenshot (Neo-AI & AIOS HUD)**: [xavuntu_neo_hud.png](docs/assets/xavuntu_neo_hud.png)
+- **Desktop Screenshot (Ollama Studio & TPU AI HUD)**: [xavuntu_studio_hud.png](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu_studio_hud.png) (Local: [docs/assets/xavuntu_studio_hud.png](docs/assets/xavuntu_studio_hud.png))
+- **Desktop Screenshot (Neo-AI & AIOS HUD)**: [xavuntu_neo_hud.png](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu_neo_hud.png) (Local: [docs/assets/xavuntu_neo_hud.png](docs/assets/xavuntu_neo_hud.png))
 - **Sovereign Wallpaper**: [xavuntu_kal_wallpaper.jpg](https://storage.googleapis.com/socrateai-datalake-gen-lang-client-0625573011/xavuntu-images/xavuntu_kal_wallpaper.jpg)
 
 ---

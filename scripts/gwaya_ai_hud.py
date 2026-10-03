@@ -496,6 +496,14 @@ class GwayaAIHUD(Gtk.Window):
         btn_neo_term.connect("clicked", lambda b: self.launch_neo_terminal())
         neo_grid.attach(btn_neo_term, 1, 1, 1, 1)
 
+        btn_studio_web = Gtk.Button(label="[WEB] Studio Ollama")
+        btn_studio_web.connect("clicked", lambda b: self.launch_ollama_studio())
+        neo_grid.attach(btn_studio_web, 0, 2, 1, 1)
+
+        btn_ai_coding = Gtk.Button(label="[CODE] Continue/Aider")
+        btn_ai_coding.connect("clicked", lambda b: self.trigger_ai_coding_setup())
+        neo_grid.attach(btn_ai_coding, 1, 2, 1, 1)
+
         neo_card.pack_start(neo_grid, False, False, 0)
         main_box.pack_start(neo_card, False, False, 0)
 
@@ -962,6 +970,43 @@ class GwayaAIHUD(Gtk.Window):
                 self.append_log(f"✖ Échec de lancement terminal: {ex}\n")
         else:
             self.append_log(f"ℹ️ Pour lancer en ligne de commande: uv run python {cli_path}\n")
+
+    def launch_ollama_studio(self):
+        self.append_log("\n[STUDIO OLLAMA] > 🌐 Ouverture de l'interface Web Ollama & TPU Studio (Port 5000)...")
+        studio_url = "http://localhost:5000/studio"
+        try:
+            if shutil.which("xdg-open"):
+                subprocess.Popen(["xdg-open", studio_url])
+            elif shutil.which("google-chrome"):
+                subprocess.Popen(["google-chrome", studio_url])
+            elif shutil.which("firefox"):
+                subprocess.Popen(["firefox", studio_url])
+            self.append_log(f"✓ Navigateur ouvert vers: {studio_url}\n")
+        except Exception as ex:
+            self.append_log(f"ℹ️ Accès URL direct: {studio_url} ({ex})\n")
+
+    def trigger_ai_coding_setup(self):
+        self.append_log("\n[AI CODING] > 🛠️ Configuration de Continue.dev (VS Code) & Aider CLI...")
+
+        def worker():
+            lines = []
+            try:
+                setup_script = os.path.join(_repo_root, "scripts", "setup_ai_coding.py")
+                res = subprocess.run([sys.executable, setup_script, "--all"], capture_output=True, text=True, timeout=10)
+                if res.returncode == 0:
+                    lines.append("✓ Continue.dev (~/.continue/config.json) & Aider configurés avec succès !")
+                    lines.append("  • Passerelle OpenAI: http://127.0.0.1:5000/v1")
+                    lines.append("  • Modèle Chat: gwaya-qwen:14b-t4 (TPU ReBAR)")
+                    lines.append("  • Modèle Autocomplétion: qwen2.5-coder:1.5b")
+                    lines.append("  • Lanceur Aider: xavuntu-aider")
+                else:
+                    lines.append(f"✖ Erreur de configuration: {res.stderr.strip()}")
+            except Exception as ex:
+                lines.append(f"Exception AI Coding: {ex}")
+
+            GLib.idle_add(self.append_log, "\n".join(lines) + "\n")
+
+        threading.Thread(target=worker, daemon=True).start()
 
 
 
